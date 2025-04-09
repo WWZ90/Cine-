@@ -1,5 +1,7 @@
-import 'package:cinemania/config/constants/environment.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:cinemania/presentation/providers/movies/movies_providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatelessWidget {
   static const name = 'home-screen';
@@ -7,6 +9,37 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text(Environment.movieDBKey)));
+    return Scaffold(body: _HomeView());
+  }
+}
+
+class _HomeView extends ConsumerStatefulWidget {
+  const _HomeView();
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends ConsumerState<_HomeView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final nowPlaying = ref.watch(nowPlayingMoviesProvider);
+    if (nowPlaying.isEmpty) {
+      return CircularProgressIndicator(strokeWidth: 2);
+    }
+    return Column(
+      children: [
+        CustomAppbar(),
+        MoviesSlideShow(movies: nowPlaying),
+      ],
+    );
   }
 }
