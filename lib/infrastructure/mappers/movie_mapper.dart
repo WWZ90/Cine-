@@ -1,4 +1,5 @@
 import 'package:cinemania/domain/entities/movie.dart';
+import 'package:cinemania/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinemania/infrastructure/models/moviedb/movie_moviedb.dart';
 
 class MovieMapper {
@@ -23,5 +24,28 @@ class MovieMapper {
     video: moviedb.video,
     voteAverage: moviedb.voteAverage,
     voteCount: moviedb.voteCount,
+  );
+
+  static Movie movieDetailsToEntity(MovieDetailsResponse movie) => Movie(
+    adult: movie.adult,
+    backdropPath:
+        movie.backdropPath != ''
+            ? 'https://image.tmdb.org/t/p/w500${movie.backdropPath}'
+            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoWcWg0E8pSjBNi0TtiZsqu8uD2PAr_K11DA&s',
+    genreIds: movie.genres.map((e) => e.name).toList(),
+    id: movie.id,
+    originalLanguage: movie.originalLanguage,
+    originalTitle: movie.originalTitle,
+    overview: movie.overview,
+    popularity: movie.popularity,
+    posterPath:
+        movie.posterPath != ''
+            ? 'https://image.tmdb.org/t/p/w500${movie.posterPath}'
+            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoWcWg0E8pSjBNi0TtiZsqu8uD2PAr_K11DA&s',
+    releaseDate: movie.releaseDate,
+    title: movie.title,
+    video: movie.video,
+    voteAverage: movie.voteAverage.toDouble(),
+    voteCount: movie.voteCount,
   );
 }

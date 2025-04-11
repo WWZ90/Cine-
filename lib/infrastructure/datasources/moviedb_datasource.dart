@@ -1,9 +1,11 @@
 import 'package:cinemania/infrastructure/mappers/movie_mapper.dart';
+import 'package:cinemania/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinemania/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:dio/dio.dart';
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/movies_datasource.dart';
 import 'package:cinemania/domain/entities/movie.dart';
+import 'package:flutter/widgets.dart';
 
 class MoviedbDatasource extends MoviesDatasource {
   final dio = Dio(
@@ -52,7 +54,7 @@ class MoviedbDatasource extends MoviesDatasource {
 
     return _jsonToMovie(response.data);
   }
-  
+
   @override
   Future<List<Movie>> getTopRated({int page = 1}) async {
     final response = await dio.get(
@@ -62,5 +64,18 @@ class MoviedbDatasource extends MoviesDatasource {
 
     return _jsonToMovie(response.data);
   }
-  
+
+  @override
+  Future<Movie> getMovieById(String id) async {
+    final response = await dio.get('/movie/$id');
+    if (response.statusCode != 200) {
+      throw Exception('Movie with id $id not found');
+    }
+
+    final movieDetails = MovieDetailsResponse.fromJson(response.data);
+
+    final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
+
+    return movie;
+  }
 }
