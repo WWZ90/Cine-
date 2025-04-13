@@ -23,7 +23,7 @@ class MovieDetailsResponse {
     final String tagline;
     final String title;
     final bool video;
-    final int voteAverage;
+    final double voteAverage;
     final int voteCount;
 
     MovieDetailsResponse({
@@ -136,7 +136,7 @@ class Genre {
 
 class ProductionCompany {
     final int id;
-    final String logoPath;
+    final String? logoPath;
     final String name;
     final String originCountry;
 
