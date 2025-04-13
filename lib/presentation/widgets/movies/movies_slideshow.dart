@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart'
-    show GradientImageBackground, PreciseRatingBar, StarsRatingBarWithInfo;
+    show GradientImageBackground, StarsRatingBarWithInfo;
 import 'package:flutter/material.dart';
 import 'package:cinemania/domain/entities/movie.dart';
 import 'package:like_button/like_button.dart';

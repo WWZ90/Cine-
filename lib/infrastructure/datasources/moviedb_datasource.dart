@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/movies_datasource.dart';
 import 'package:cinemania/domain/entities/movie.dart';
-import 'package:flutter/widgets.dart';
 
 class MoviedbDatasource extends MoviesDatasource {
   final dio = Dio(
