@@ -22,13 +22,15 @@ class GradientImageBackground extends StatelessWidget {
     assert(gradientColors.length == stops.length, 'Colors and stops must have the same length.');
 
     return Positioned.fill(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: gradientColors,
-            stops: stops,
+      child: IgnorePointer(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: gradientColors,
+              stops: stops,
+            ),
           ),
         ),
       ),

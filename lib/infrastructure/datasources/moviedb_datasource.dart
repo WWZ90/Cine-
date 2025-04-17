@@ -1,6 +1,9 @@
+import 'package:cinemania/domain/entities/video.dart';
 import 'package:cinemania/infrastructure/mappers/movie_mapper.dart';
+import 'package:cinemania/infrastructure/mappers/video_mapper.dart';
 import 'package:cinemania/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinemania/infrastructure/models/moviedb/moviedb_response.dart';
+import 'package:cinemania/infrastructure/models/video/video_response.dart';
 import 'package:dio/dio.dart';
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/movies_datasource.dart';
@@ -22,6 +25,15 @@ class MoviedbDatasource extends MoviesDatasource {
             .map((moviedb) => MovieMapper.movieDBToEntity(moviedb))
             .toList();
     return movies;
+  }
+
+  List<Video> _jsonToVideo(Map<String, dynamic> json) {
+    final videoResponse = VideoResponse.fromJson(json);
+    final List<Video> videos =
+        videoResponse.results
+            .map((video) => VideoMapper.videoToEntity(video))
+            .toList();
+    return videos;
   }
 
   @override
@@ -65,16 +77,47 @@ class MoviedbDatasource extends MoviesDatasource {
   }
 
   @override
-  Future<Movie> getMovieById(String id) async {
-    final response = await dio.get('/movie/$id');
-    if (response.statusCode != 200) {
-      throw Exception('Movie with id $id not found');
+  Future<Movie> getMovieById(String id, {CancelToken? cancelToken}) async {
+    try {
+      final response = await dio.get('/movie/$id', cancelToken: cancelToken);
+      if (response.statusCode != 200) {
+        throw Exception('Movie with id $id not found');
+      }
+
+      final movieDetails = MovieDetailsResponse.fromJson(response.data);
+
+      final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
+
+      return movie;
+    } catch (e) {
+      rethrow;
     }
+  }
 
-    final movieDetails = MovieDetailsResponse.fromJson(response.data);
+  @override
+  Future<List<Video>> getVideosByMovieId(String id) async {
+    try {
+      final response = await dio.get('/movie/$id/videos');
+      if (response.statusCode != 200) {
+        throw Exception('Movie with id $id not found');
+      }
 
-    final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
+      List<Video> videos = _jsonToVideo(response.data);
 
-    return movie;
+      if (videos.isEmpty) {
+        final responseEn = await dio.get(
+          '/movie/$id/videos',
+          queryParameters: {'language': 'en-US'},
+        );
+
+        if (responseEn.statusCode == 200) {
+          videos = _jsonToVideo(responseEn.data);
+        }
+      }
+
+      return videos;
+    } catch (e) {
+      return [];
+    }
   }
 }

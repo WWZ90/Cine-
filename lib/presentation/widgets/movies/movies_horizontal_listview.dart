@@ -1,9 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/domain/entities/movie.dart';
+import 'package:cinemania/presentation/screens/movies/movie_screen.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:network_to_file_image/network_to_file_image.dart';
 
 class MoviesHorizontalListview extends StatefulWidget {
   final List<Movie> movies;
@@ -62,6 +65,8 @@ class _MoviesHorizontalListviewState extends State<MoviesHorizontalListview> {
               scrollDirection: Axis.horizontal,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
+                widget.movies[index].uniqueID =
+                    '${widget.movies[index].id}-"movie-section"-${widget.title}';
                 return FadeInRight(child: _Slide(movie: widget.movies[index]));
               },
             ),
@@ -116,22 +121,25 @@ class _Slide extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              context.push('/movie-screen/${movie.id}');
+              context.pushNamed(MovieScreen.name, extra: movie);
             },
             child: SizedBox(
-              height: 200,
+              height: 199,
               width: 150,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: CachedNetworkImage(
-                  imageUrl: movie.posterPath,
-                  fit: BoxFit.cover,
-                  fadeInDuration: Duration(milliseconds: 200),
-                  placeholder: (context, url) {
-                    return Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    );
-                  },
+              child: Hero(
+                tag: movie.uniqueID.toString(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(
+                    image: NetworkToFileImage(
+                      url: movie.posterPath,
+                      file: LocalImageFileManager.fileFromUrl(
+                        movie.posterPath,
+                      ),
+                      debug: true,
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
