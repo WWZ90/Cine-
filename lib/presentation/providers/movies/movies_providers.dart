@@ -26,6 +26,18 @@ final topRatedMoviesProvider =
       return MoviesNotifier(fetchMoreMovies: fecthMoreMovies);
     });
 
+final similarMoviesProvider = StateNotifierProvider.family<
+  MoviesNotifier,
+  List<Movie>,
+  String
+>((ref, movieId) {
+  // Creamos un closure que solo expone {int page} y ya llama al repositorio con movieId
+  fetchMoreMovies({int page = 1}) =>
+      ref.read(movieRepositoryProvider).getSimilar(movieId, page: page);
+
+  return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+});
+
 typedef MovieCallback = Future<List<Movie>> Function({int page});
 
 class MoviesNotifier extends StateNotifier<List<Movie>> {

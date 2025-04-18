@@ -18,8 +18,8 @@ class CoverPhoto extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Image(
           image: NetworkToFileImage(
-            url: movie.backdropPath,
-            file: LocalImageFileManager.fileFromUrl(movie.backdropPath),
+            url: movie.posterPath,
+            file: LocalImageFileManager.fileFromUrl(movie.posterPath),
           ),
           height: 350.0,
           width: MediaQuery.of(context).size.width,

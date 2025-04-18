@@ -1,4 +1,6 @@
+import 'package:cinemania/domain/entities/movie_detail.dart';
 import 'package:cinemania/domain/entities/video.dart';
+import 'package:cinemania/infrastructure/mappers/movie_detail_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/movie_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/video_mapper.dart';
 import 'package:cinemania/infrastructure/models/moviedb/movie_details.dart';
@@ -77,7 +79,10 @@ class MoviedbDatasource extends MoviesDatasource {
   }
 
   @override
-  Future<Movie> getMovieById(String id, {CancelToken? cancelToken}) async {
+  Future<MovieDetail> getMovieById(
+    String id, {
+    CancelToken? cancelToken,
+  }) async {
     try {
       final response = await dio.get('/movie/$id', cancelToken: cancelToken);
       if (response.statusCode != 200) {
@@ -86,7 +91,9 @@ class MoviedbDatasource extends MoviesDatasource {
 
       final movieDetails = MovieDetailsResponse.fromJson(response.data);
 
-      final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
+      final MovieDetail movie = MovieDetailMapper.movieDetailsToEntity(
+        movieDetails,
+      );
 
       return movie;
     } catch (e) {
@@ -120,4 +127,15 @@ class MoviedbDatasource extends MoviesDatasource {
       return [];
     }
   }
+  
+  @override
+  Future<List<Movie>> getSimilar(String id, {int page = 1}) async{
+    final response = await dio.get(
+      '/movie/$id/similar',
+      queryParameters: {'page': page},
+    );
+
+    return _jsonToMovie(response.data);
+  }
+
 }

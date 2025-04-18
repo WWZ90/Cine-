@@ -1,10 +1,11 @@
 import 'package:cinemania/domain/entities/movie.dart';
+import 'package:cinemania/domain/entities/movie_detail.dart';
 import 'package:cinemania/presentation/providers/movies/movies_repository_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final movieDetailProvider =
-    StateNotifierProvider<MovieMapNotifier, Map<String, Movie>>((ref) {
+    StateNotifierProvider<MovieMapNotifier, Map<String, MovieDetail>>((ref) {
       final movieRepository = ref.watch(movieRepositoryProvider);
       return MovieMapNotifier(
         getMovie:
@@ -14,9 +15,9 @@ final movieDetailProvider =
     });
 
 typedef GetMovieCallback =
-    Future<Movie> Function(String movieId, {CancelToken? cancelToken});
+    Future<MovieDetail> Function(String movieId, {CancelToken? cancelToken});
 
-class MovieMapNotifier extends StateNotifier<Map<String, Movie>> {
+class MovieMapNotifier extends StateNotifier<Map<String, MovieDetail>> {
   CancelToken? _cancelToken;
   final GetMovieCallback getMovie;
   MovieMapNotifier({required this.getMovie}) : super({});

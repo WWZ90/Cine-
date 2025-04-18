@@ -9,7 +9,7 @@ class CoverCard extends StatelessWidget {
   final double uploadLimit;
   final num valueBack;
   final Movie movie;
-  final double angleForCard = 6.5;
+  final double angleForCard = 7;
 
   const CoverCard({
     super.key,
@@ -23,7 +23,7 @@ class CoverCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: size.height * 0.25,
+      top: size.height * 0.35,
       left: size.width / 24,
       child: Transform(
         alignment: Alignment.topRight,

@@ -1,0 +1,15 @@
+import 'package:cinemania/domain/datasources/actors_datasource.dart';
+import 'package:cinemania/domain/entities/actor.dart';
+import 'package:cinemania/domain/repositories/actors_repository.dart';
+import 'package:cinemania/infrastructure/datasources/actor_moviedb_datasource.dart';
+
+class ActorRepositoryImpl extends ActorsRepository {
+  final ActorsDatasource datasource;
+
+  ActorRepositoryImpl(this.datasource);
+
+  @override
+  Future<List<Actor>> getActorsByMovie(String movieId) {
+    return datasource.getActorsByMovie(movieId);
+  }
+}

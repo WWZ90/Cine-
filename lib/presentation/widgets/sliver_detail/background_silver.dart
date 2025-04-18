@@ -15,40 +15,23 @@ class BackgroundSilver extends StatelessWidget {
           right: 0,
           bottom: 0,
           top: 0,
-          child: (data.posterPath != null)
-              ? Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                  ),
-                  child: Image(
-                    image: NetworkToFileImage(
-                      url: data.posterPath,
-                      file: LocalImageFileManager.fileFromUrl(data.posterPath),
-                    ),
-                    height: 350.0,
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                  ),
-                  // child: CachedNetworkImage(
-                  //   fit: BoxFit.cover,
-                  //   imageUrl: pelicula.getBackgroundImg(),
-                  //   height: 350.0,
-                  // ),
-                )
-              : Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                  ),
-                  child: Image(
-                    image: NetworkToFileImage(
-                      url: data.backdropPath,
-                      file: LocalImageFileManager.fileFromUrl(data.backdropPath),
-                    ),
-                    height: 350.0,
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+          child: Container(
+            decoration: BoxDecoration(shape: BoxShape.rectangle),
+            child: Image(
+              image: NetworkToFileImage(
+                url: data.posterPath,
+                file: LocalImageFileManager.fileFromUrl(data.posterPath),
+              ),
+              height: 350.0,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
+            ),
+            // child: CachedNetworkImage(
+            //   fit: BoxFit.cover,
+            //   imageUrl: pelicula.getBackgroundImg(),
+            //   height: 350.0,
+            // ),
+          ),
         ),
       ],
     );

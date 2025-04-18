@@ -1,5 +1,6 @@
 import 'package:cinemania/domain/datasources/movies_datasource.dart';
 import 'package:cinemania/domain/entities/movie.dart';
+import 'package:cinemania/domain/entities/movie_detail.dart';
 import 'package:cinemania/domain/entities/video.dart';
 import 'package:cinemania/domain/repositories/movies_repository.dart';
 import 'package:dio/dio.dart';
@@ -30,12 +31,17 @@ class MovieRepositoryImpl extends MoviesRepository {
   }
 
   @override
-  Future<Movie> getMovieById(String id, {CancelToken? cancelToken}) {
+  Future<MovieDetail> getMovieById(String id, {CancelToken? cancelToken}) {
     return datasource.getMovieById(id, cancelToken: cancelToken);
   }
 
   @override
   Future<List<Video>> getVideosByMovieId(String id) {
     return datasource.getVideosByMovieId(id);
+  }
+  
+  @override
+  Future<List<Movie>> getSimilar(String id, {int page = 1}) {
+    return datasource.getSimilar(id);
   }
 }
