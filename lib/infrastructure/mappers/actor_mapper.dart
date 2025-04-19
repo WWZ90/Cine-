@@ -7,8 +7,8 @@ class ActorMapper {
     name: cast.name,
     character: cast.character,
     profilePath:
-        cast.profilePath != null
+        cast.profilePath != ''
             ? 'https://image.tmdb.org/t/p/w500${cast.profilePath}'
-            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOtu74pEiq7ofeQeTsco0migV16zZoBwSlGg&s',
+            : 'no-avatar',
   );
 }

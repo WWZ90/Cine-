@@ -124,11 +124,13 @@ class _Slide extends StatelessWidget {
               context.pushNamed(MovieScreen.name, extra: movie);
             },
             child: SizedBox(
-              height: 199,
+              height: 195,
               width: 150,
               child: Hero(
                 tag: movie.uniqueID.toString(),
-                child: ClipRRect(
+                child: LoadImage(url: movie.posterPath, h: 200, w: 150),
+                
+                /*ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image(
                     image: NetworkToFileImage(
@@ -140,7 +142,7 @@ class _Slide extends StatelessWidget {
                     ),
                     fit: BoxFit.cover,
                   ),
-                ),
+                ),*/
               ),
             ),
           ),

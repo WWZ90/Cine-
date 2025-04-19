@@ -16,6 +16,28 @@ class LoadImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (url == 'no-poster') {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.asset(
+          'assets/images/no-poster.png',
+          width: w,
+          height: h,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    if (url == 'no-avatar') {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.asset(
+          'assets/images/no-avatar.png',
+          width: w,
+          height: h,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image(

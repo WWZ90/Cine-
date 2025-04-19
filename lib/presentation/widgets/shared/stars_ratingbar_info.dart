@@ -34,7 +34,7 @@ class StarsRatingBarWithInfo extends StatelessWidget {
         ),
         SizedBox(width: 5),
         Text(
-          '(${HumanFormats.number(movie.popularity)})',
+          '(${HumanFormats.number(movie.voteCount.toDouble())})',
           style: textSyle.bodyMedium,
         ),
       ],

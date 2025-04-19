@@ -1,4 +1,5 @@
 import 'package:cinemania/domain/entities/movie_detail.dart';
+import 'package:cinemania/domain/entities/review.dart';
 import 'package:cinemania/domain/entities/video.dart';
 import 'package:cinemania/infrastructure/mappers/movie_detail_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/movie_mapper.dart';
@@ -26,6 +27,8 @@ class MoviedbDatasource extends MoviesDatasource {
             .where((moviedb) => moviedb.posterPath != 'no-poster')
             .map((moviedb) => MovieMapper.movieDBToEntity(moviedb))
             .toList();
+
+    movies.sort((a, b) => b.voteAverage.compareTo(a.voteAverage));
     return movies;
   }
 
@@ -127,9 +130,9 @@ class MoviedbDatasource extends MoviesDatasource {
       return [];
     }
   }
-  
+
   @override
-  Future<List<Movie>> getSimilar(String id, {int page = 1}) async{
+  Future<List<Movie>> getSimilar(String id, {int page = 1}) async {
     final response = await dio.get(
       '/movie/$id/similar',
       queryParameters: {'page': page},
@@ -138,4 +141,12 @@ class MoviedbDatasource extends MoviesDatasource {
     return _jsonToMovie(response.data);
   }
 
+  @override
+  Future<List<Movie>> getMoviesByGenreId(String id, {int page = 1}) async {
+    final response = await dio.get(
+      '/discover/movie',
+      queryParameters: {'with_genres': id, 'page': page},
+    );
+    return _jsonToMovie(response.data);
+  }
 }

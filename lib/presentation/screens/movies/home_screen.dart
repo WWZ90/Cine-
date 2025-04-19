@@ -1,4 +1,5 @@
 import 'package:cinemania/presentation/providers/movies/initial_loading_provider.dart';
+import 'package:cinemania/presentation/widgets/movies/genres_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
@@ -32,6 +33,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     ref.read(upcomingMoviesProvider.notifier).loadNextPage();
     ref.read(popularMoviesProvider.notifier).loadNextPage();
     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    ref.read(genresMovieProvider.notifier).loadGenres();
   }
 
   @override
@@ -44,6 +46,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
+    final genres = ref.watch(genresMovieProvider);
     //final slideShowMovies = ref.watch(moviesSlideShowProvider);
     // if (nowPlaying.isEmpty) {
     //   return CircularProgressIndicator(strokeWidth: 2);
@@ -80,6 +83,8 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                     ref.read(popularMoviesProvider.notifier).loadNextPage();
                   },
                 ),
+                SizedBox(height: 20),
+                GenresTab(genres: genres),
                 MoviesHorizontalListview(
                   movies: topRatedMovies,
                   title: 'Top Rated',
