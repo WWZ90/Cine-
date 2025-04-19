@@ -1,12 +1,9 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/domain/entities/movie.dart';
 import 'package:cinemania/presentation/screens/movies/movie_screen.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
 
 class MoviesHorizontalListview extends StatefulWidget {
   final List<Movie> movies;

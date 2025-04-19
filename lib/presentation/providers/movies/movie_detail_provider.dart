@@ -1,4 +1,3 @@
-import 'package:cinemania/domain/entities/movie.dart';
 import 'package:cinemania/domain/entities/movie_detail.dart';
 import 'package:cinemania/presentation/providers/movies/movies_repository_provider.dart';
 import 'package:dio/dio.dart';

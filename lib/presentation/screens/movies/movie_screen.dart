@@ -326,7 +326,7 @@ class _SimilarMovies extends ConsumerWidget {
 
 class _ReviewsByMovie extends ConsumerStatefulWidget {
   final String movieId;
-  const _ReviewsByMovie({required this.movieId, super.key});
+  const _ReviewsByMovie({required this.movieId});
 
   @override
   ConsumerState<_ReviewsByMovie> createState() => _ReviewsByMovieState();

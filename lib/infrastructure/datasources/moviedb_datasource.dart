@@ -1,5 +1,5 @@
+import 'package:dio/dio.dart';
 import 'package:cinemania/domain/entities/movie_detail.dart';
-import 'package:cinemania/domain/entities/review.dart';
 import 'package:cinemania/domain/entities/video.dart';
 import 'package:cinemania/infrastructure/mappers/movie_detail_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/movie_mapper.dart';
@@ -7,7 +7,6 @@ import 'package:cinemania/infrastructure/mappers/video_mapper.dart';
 import 'package:cinemania/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinemania/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:cinemania/infrastructure/models/video/video_response.dart';
-import 'package:dio/dio.dart';
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/movies_datasource.dart';
 import 'package:cinemania/domain/entities/movie.dart';

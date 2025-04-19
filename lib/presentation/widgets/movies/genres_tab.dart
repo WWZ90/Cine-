@@ -1,5 +1,4 @@
 import 'package:cinemania/domain/entities/genre.dart';
-import 'package:cinemania/presentation/providers/genres/genres_movies_provider.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

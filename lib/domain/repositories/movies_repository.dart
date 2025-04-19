@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:cinemania/domain/entities/movie.dart';
 import 'package:cinemania/domain/entities/movie_detail.dart';
-import 'package:cinemania/domain/entities/review.dart';
 import 'package:cinemania/domain/entities/video.dart';
 
 abstract class MoviesRepository {
