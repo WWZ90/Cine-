@@ -133,8 +133,8 @@ class _CustomSliverAppBar extends StatelessWidget {
                 SizedBox(height: 10),
                 Wrap(
                   alignment: WrapAlignment.center,
-                  spacing: 8,
-                  runSpacing: 4,
+                  spacing: 2,
+                  runSpacing: 0,
                   children: [
                     ...movieDetails.genres.map(
                       (genre) => Container(
@@ -160,10 +160,10 @@ class _CustomSliverAppBar extends StatelessWidget {
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 15),
                       ],
                     )
-                    : SizedBox(height: 10),
+                    : SizedBox(height: 15),
                 _ReviewsByMovie(movieId: movie.id.toString()),
                 SizedBox(height: 20),
                 _ActosByMovie(movieId: movie.id.toString()),
