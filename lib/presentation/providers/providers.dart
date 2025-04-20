@@ -9,3 +9,5 @@ export 'videos/video_provider.dart';
 export 'videos/video_repository_provider.dart';
 export 'reviews/reviews_by_movie_provider.dart';
 export 'reviews/reviews_repository_provider.dart';
+export 'searchs/searchs_multi_provider.dart';
+export 'searchs/searchs_repository_provider.dart';

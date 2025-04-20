@@ -1,17 +1,18 @@
-import 'package:cinemania/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
-import 'package:cinemania/domain/entities/movie.dart';
+import 'package:cinemania/config/helpers/human_formats.dart';
 import 'package:cinemania/presentation/widgets/shared/precise_ratingbar.dart';
 
 class StarsRatingBarWithInfo extends StatelessWidget {
-  final Movie movie;
+  final double rating;
+  final int voteCount;
   final double? iconSize;
   final Color? color;
   final Color? colorVotesText;
 
   const StarsRatingBarWithInfo({
     super.key,
-    required this.movie,
+    required this.rating,
+    this.voteCount = 0,
     this.iconSize = 20,
     this.color = Colors.yellow,
     this.colorVotesText = Colors.white,
@@ -23,20 +24,18 @@ class StarsRatingBarWithInfo extends StatelessWidget {
     return Row(
       children: [
         PreciseRatingBar(
-          rating: movie.voteAverage * 5 / 10,
+          rating: rating * 5 / 10,
           iconSize: iconSize!,
           filledColor: color!,
         ),
         SizedBox(width: 3),
-        Text(
-          '${movie.voteAverage.toStringAsFixed(1)}/10',
-          style: TextStyle(color: color),
-        ),
+        Text('${rating.toStringAsFixed(1)}/10', style: TextStyle(color: color)),
         SizedBox(width: 5),
-        Text(
-          '(${HumanFormats.number(movie.voteCount.toDouble())})',
-          style: textSyle.bodyMedium,
-        ),
+        if (voteCount != 0)
+          Text(
+            '(${HumanFormats.number(voteCount.toDouble())})',
+            style: textSyle.bodyMedium,
+          ),
       ],
     );
   }

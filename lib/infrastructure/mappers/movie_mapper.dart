@@ -8,7 +8,7 @@ class MovieMapper {
         moviedb.backdropPath != ''
             ? 'https://image.tmdb.org/t/p/w500${moviedb.backdropPath}'
             : 'no-poster',
-    genreIds: moviedb.genreIds.map((e) => e.toString()).toList(),
+    genreIds: moviedb.genreIds.map((e) => e).toList(),
     id: moviedb.id,
     originalLanguage: moviedb.originalLanguage,
     originalTitle: moviedb.originalTitle,

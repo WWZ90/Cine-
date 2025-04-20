@@ -29,7 +29,8 @@ class CustomBottomDescription extends StatelessWidget {
             ? Row(
               children: <Widget>[
                 StarsRatingBarWithInfo(
-                  movie: movie,
+                  rating: movie.voteAverage,
+                  voteCount: movie.voteCount,
                   iconSize: 13,
                   color: Colors.yellow,
                 ),

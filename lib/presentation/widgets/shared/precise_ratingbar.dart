@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class PreciseRatingBar extends StatelessWidget {
   final double rating; // Ej: 3.7
+  final double voteCount; // Ej: 3.7
   final double iconSize;
   final Color filledColor;
   final Color unfilledColor;
@@ -13,6 +14,7 @@ class PreciseRatingBar extends StatelessWidget {
     this.iconSize = 24.0,
     this.filledColor = Colors.amber,
     this.unfilledColor = Colors.grey,
+    this.voteCount = 0,
   });
 
   @override

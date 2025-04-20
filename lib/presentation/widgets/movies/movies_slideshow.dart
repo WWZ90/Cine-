@@ -72,8 +72,9 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
               onTapUp: (_) => _onUserInteractionEnd(),
               child: AnimatedSwitcher(
                 duration: Duration(milliseconds: 800),
-                transitionBuilder: (child, animation) =>
-                    FadeTransition(opacity: animation, child: child),
+                transitionBuilder:
+                    (child, animation) =>
+                        FadeTransition(opacity: animation, child: child),
                 child: Stack(
                   key: ValueKey(movie.id), // Necesario para animación correcta
                   fit: StackFit.expand,
@@ -83,7 +84,9 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
                       child: Image(
                         image: NetworkToFileImage(
                           url: movie.posterPath,
-                          file: LocalImageFileManager.fileFromUrl(movie.posterPath),
+                          file: LocalImageFileManager.fileFromUrl(
+                            movie.posterPath,
+                          ),
                           debug: true,
                         ),
                         fit: BoxFit.cover,
@@ -109,12 +112,17 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              StarsRatingBarWithInfo(movie: movie),
+                              StarsRatingBarWithInfo(
+                                rating: movie.voteAverage,
+                                voteCount: movie.voteCount,
+                              ),
                             ],
                           ),
                           LikeButton(
                             size: 30,
-                            animationDuration: const Duration(milliseconds: 500),
+                            animationDuration: const Duration(
+                              milliseconds: 500,
+                            ),
                             onTap: (isLiked) async => !isLiked,
                           ),
                         ],
@@ -128,7 +136,9 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
           const SizedBox(height: 10),
           // Indicador
           SmoothPageIndicator(
-            controller: PageController(initialPage: _currentIndex), // dummy controller
+            controller: PageController(
+              initialPage: _currentIndex,
+            ), // dummy controller
             count: widget.movies.length,
             effect: const WormEffect(
               dotHeight: 6,

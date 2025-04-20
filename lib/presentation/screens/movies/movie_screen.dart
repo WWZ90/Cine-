@@ -408,16 +408,10 @@ class _ReviewsByMovieState extends ConsumerState<_ReviewsByMovie> {
                               children: [
                                 Row(
                                   children: [
-                                    PreciseRatingBar(
+                                    StarsRatingBarWithInfo(
                                       rating:
                                           review.authorDetails.rating! * 0.5,
                                       iconSize: 13,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      '${review.authorDetails.rating!.toStringAsFixed(1)} / 10',
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ],
                                 ),
@@ -434,7 +428,9 @@ class _ReviewsByMovieState extends ConsumerState<_ReviewsByMovie> {
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
-                            border: Border.all(color: const Color.fromARGB(255, 44, 44, 44)),
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 44, 44, 44),
+                            ),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Scrollbar(

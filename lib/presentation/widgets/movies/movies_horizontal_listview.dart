@@ -158,7 +158,8 @@ class _Slide extends StatelessWidget {
           ),
 
           StarsRatingBarWithInfo(
-            movie: movie,
+            rating: movie.voteAverage,
+            voteCount: movie.voteCount,
             iconSize: 11,
             color: Colors.yellow.shade600,
           ),
