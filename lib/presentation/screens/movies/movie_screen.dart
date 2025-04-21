@@ -271,7 +271,7 @@ class _ActosByMovie extends ConsumerWidget {
 
     final actors = actorsByMovie[movieId]!;
     return SizedBox(
-      height: 245,
+      height: 248,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: actors.length,

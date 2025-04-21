@@ -17,3 +17,4 @@ export 'sliver_detail/custom_bottom_sliver.dart';
 export 'sliver_detail/cut_rectangle.dart';
 export 'sliver_detail/data_cut_rectangle.dart';
 export 'sliver_detail/favorit_circle.dart';
+export 'movies/genres_tab.dart';

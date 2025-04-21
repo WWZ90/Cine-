@@ -16,9 +16,10 @@ class LoadImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double borderRadius = 5;
     if (url == 'no-poster') {
       return ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(borderRadius),
         child: Image.asset(
           'assets/images/no-poster.png',
           width: w,
@@ -29,7 +30,7 @@ class LoadImage extends StatelessWidget {
     }
     if (url == 'no-avatar') {
       return ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(borderRadius),
         child: Image.asset(
           'assets/images/no-avatar.png',
           width: w,
@@ -39,7 +40,7 @@ class LoadImage extends StatelessWidget {
       );
     }
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: Image(
         image: NetworkToFileImage(
           url: url,
