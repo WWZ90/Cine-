@@ -1,31 +1,33 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemania/domain/entities/movie.dart';
 import 'package:cinemania/presentation/screens/movies/movie_screen.dart';
+import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class MoviesHorizontalListview extends StatefulWidget {
-  final List<Movie> movies;
+class SliderHorizontalListview extends StatefulWidget {
+  final List<dynamic> allData;
   final String? title;
   final String? subTitle;
+  final String type;
 
   final VoidCallback? loadNextPage;
 
-  const MoviesHorizontalListview({
+  const SliderHorizontalListview({
     super.key,
-    required this.movies,
+    required this.allData,
     this.title,
     this.subTitle,
+    required this.type,
     this.loadNextPage,
   });
 
   @override
-  State<MoviesHorizontalListview> createState() =>
-      _MoviesHorizontalListviewState();
+  State<SliderHorizontalListview> createState() =>
+      _SliderHorizontalListviewState();
 }
 
-class _MoviesHorizontalListviewState extends State<MoviesHorizontalListview> {
+class _SliderHorizontalListviewState extends State<SliderHorizontalListview> {
   final scrollController = ScrollController();
   @override
   void initState() {
@@ -57,14 +59,16 @@ class _MoviesHorizontalListviewState extends State<MoviesHorizontalListview> {
           SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
-              itemCount: widget.movies.length,
+              itemCount: widget.allData.length,
               controller: scrollController,
               scrollDirection: Axis.horizontal,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                widget.movies[index].uniqueID =
-                    '${widget.movies[index].id}-"movie-section"-${widget.title}';
-                return FadeInRight(child: _Slide(movie: widget.movies[index]));
+                widget.allData[index].uniqueID =
+                    '${widget.allData[index].id}-"${widget.type}-section"-${widget.title}';
+                return FadeInRight(
+                  child: _Slide(data: widget.allData[index], type: widget.type),
+                );
               },
             ),
           ),
@@ -105,8 +109,9 @@ class _Title extends StatelessWidget {
 }
 
 class _Slide extends StatelessWidget {
-  final Movie movie;
-  const _Slide({required this.movie});
+  final dynamic data;
+  final String type;
+  const _Slide({required this.data, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -118,15 +123,20 @@ class _Slide extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              context.pushNamed(MovieScreen.name, extra: movie);
+              if (type == 'Movie') {
+                context.pushNamed(MovieScreen.name, extra: data);
+              }
+              if (type == 'TVShow') {
+                context.pushNamed(TVShowScreen.name, extra: data);
+              }
             },
             child: SizedBox(
               height: 195,
               width: 150,
               child: Hero(
-                tag: movie.uniqueID.toString(),
-                child: LoadImage(url: movie.posterPath, h: 200, w: 150),
-                
+                tag: data.uniqueID.toString(),
+                child: LoadImage(url: data.posterPath, h: 200, w: 150),
+
                 /*ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image(
@@ -150,7 +160,7 @@ class _Slide extends StatelessWidget {
           SizedBox(
             width: 150,
             child: Text(
-              movie.title,
+              data.title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: textStyle.titleSmall,
@@ -158,8 +168,8 @@ class _Slide extends StatelessWidget {
           ),
 
           StarsRatingBarWithInfo(
-            rating: movie.voteAverage,
-            voteCount: movie.voteCount,
+            rating: data.voteAverage,
+            voteCount: data.voteCount,
             iconSize: 11,
             color: Colors.yellow.shade600,
           ),

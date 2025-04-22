@@ -86,7 +86,7 @@ class _CustomSliverAppBar extends StatelessWidget {
             minExtend: kToolbarHeight,
             maxExtend: size.height * 0.55, //0.35
             size: size,
-            movie: movie,
+            data: movie,
             videos: videos,
           ),
         ),
@@ -177,86 +177,7 @@ class _CustomSliverAppBar extends StatelessWidget {
   }
 }
 
-class AppBarNetflix extends SliverPersistentHeaderDelegate {
-  final double maxExtend;
-  final double minExtend;
-  final Size size;
-  final Movie movie;
-  final List<Video> videos;
 
-  const AppBarNetflix({
-    required this.maxExtend,
-    required this.minExtend,
-    required this.size,
-    required this.movie,
-    required this.videos,
-  });
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    final percent = shrinkOffset / maxExtend;
-    //validate the angle at which the card returns
-    final uploadLimit = 13 / 100;
-    //return value of the card
-    final valueBack = (1 - percent - 0.77).clamp(0, uploadLimit);
-
-    final fixRotation = pow(percent, 1.5);
-
-    final card = CoverCard(
-      size: size,
-      percent: percent,
-      uploadLimit: uploadLimit,
-      valueBack: valueBack,
-      movie: movie,
-    );
-
-    final bottomsSliverBar = CustomBottomSliverBar(
-      size: size,
-      fixRotation: fixRotation,
-      percent: percent,
-      movie: movie,
-    );
-
-    return Stack(
-      children: [
-        BackgroundSilver(data: movie),
-        bottomsSliverBar,
-        if (percent > uploadLimit) ...[
-          card,
-          bottomsSliverBar,
-        ] else ...[
-          bottomsSliverBar,
-          card,
-        ],
-        videos.isNotEmpty
-            ? VideoPlay(
-              size: size,
-              percent: percent,
-              id: movie.id,
-              urlImage: movie.posterPath,
-              image: movie.posterPath,
-              video: videos,
-            )
-            : SizedBox(),
-        FavoriteCircle(size: size, percent: percent, data: movie),
-      ],
-    );
-  }
-
-  @override
-  double get maxExtent => maxExtend;
-
-  @override
-  double get minExtent => minExtend;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      false;
-}
 
 class _ActosByMovie extends ConsumerWidget {
   final String movieId;
@@ -313,10 +234,11 @@ class _SimilarMovies extends ConsumerWidget {
     if (similarMovies.isEmpty) {
       return CircularProgressIndicator(strokeWidth: 2);
     }
-    return MoviesHorizontalListview(
-      movies: similarMovies,
+    return SliderHorizontalListview(
+      allData: similarMovies,
       title: 'Similar movies',
       subTitle: 'All time',
+      type: 'Movie',
       loadNextPage: () {
         ref.read(similarMoviesProvider(movieId).notifier).loadNextPage();
       },

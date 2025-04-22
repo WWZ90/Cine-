@@ -23,3 +23,22 @@ class VideosNotifier extends StateNotifier<List<Video>> {
     state = videos;
   }
 }
+
+final videosTVShowProvider =
+    StateNotifierProvider<VideosTVShowNotifier, List<Video>>((ref) {
+      final videosTVShowRepository =
+          ref.watch(videoTVShowRepositoryProvider).getVideosByTVShowId;
+      return VideosTVShowNotifier(getVideosTVShow: videosTVShowRepository);
+    });
+
+typedef GetVideosTVShowCallback = Future<List<Video>> Function(String tvShowId);
+
+class VideosTVShowNotifier extends StateNotifier<List<Video>> {
+  GetVideosTVShowCallback getVideosTVShow;
+  VideosTVShowNotifier({required this.getVideosTVShow}) : super([]);
+
+  Future<void> loadVideosTVShow(String tvShowId) async {
+    final videos = await getVideosTVShow(tvShowId);
+    state = videos;
+  }
+}

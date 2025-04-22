@@ -5,8 +5,8 @@ import 'package:network_to_file_image/network_to_file_image.dart';
 
 class CoverPhoto extends StatelessWidget {
   final Size size;
-  final Movie movie;
-  const CoverPhoto({super.key, required this.size, required this.movie});
+  final dynamic data;
+  const CoverPhoto({super.key, required this.size, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class CoverPhoto extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Image(
           image: NetworkToFileImage(
-            url: movie.posterPath,
-            file: LocalImageFileManager.fileFromUrl(movie.posterPath),
+            url: data.posterPath,
+            file: LocalImageFileManager.fileFromUrl(data.posterPath),
           ),
           height: 350.0,
           width: MediaQuery.of(context).size.width,

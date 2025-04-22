@@ -1,4 +1,3 @@
-import 'package:cinemania/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
@@ -6,12 +5,13 @@ import '../widgets.dart';
 class CustomBottomSliver extends StatelessWidget {
   final Size size;
   final double percent;
-  final Movie movie;
+  final dynamic data;
 
-  const CustomBottomSliver({super.key, 
+  const CustomBottomSliver({
+    super.key,
     required this.size,
     required this.percent,
-    required this.movie,
+    required this.data,
   });
 
   @override
@@ -23,14 +23,8 @@ class CustomBottomSliver extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          CustomPaint(
-            painter: CutRectangle(backgroundColor),
-          ),
-          DataCutRentangle(
-            size: size,
-            percent: percent,
-            movie: movie,
-          ),
+          CustomPaint(painter: CutRectangle(backgroundColor)),
+          DataCutRentangle(size: size, percent: percent, data: data),
         ],
       ),
     );

@@ -7,13 +7,13 @@ class CustomBottomSliverBar extends StatelessWidget {
   final Size size;
   final num fixRotation;
   final double percent;
-  final Movie movie;
+  final dynamic data;
   const CustomBottomSliverBar({
     super.key,
     required this.size,
     required this.fixRotation,
     required this.percent,
-    required this.movie,
+    required this.data,
   });
 
   @override
@@ -22,7 +22,7 @@ class CustomBottomSliverBar extends StatelessWidget {
       bottom: 0,
       left: -size.width * fixRotation.clamp(0, 0.45),
       right: 0,
-      child: CustomBottomSliver(size: size, percent: percent, movie: movie),
+      child: CustomBottomSliver(size: size, percent: percent, data: data),
     );
   }
 }

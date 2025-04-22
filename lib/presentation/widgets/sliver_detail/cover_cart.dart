@@ -8,7 +8,7 @@ class CoverCard extends StatelessWidget {
   final double percent;
   final double uploadLimit;
   final num valueBack;
-  final Movie movie;
+  final dynamic data;
   final double angleForCard = 7;
 
   const CoverCard({
@@ -17,7 +17,7 @@ class CoverCard extends StatelessWidget {
     required this.percent,
     required this.uploadLimit,
     required this.valueBack,
-    required this.movie,
+    required this.data,
   });
 
   @override
@@ -33,7 +33,7 @@ class CoverCard extends StatelessWidget {
                   ? (valueBack * angleForCard)
                   : percent * angleForCard,
             ),
-        child: CoverPhoto(size: size, movie: movie),
+        child: CoverPhoto(size: size, data: data),
       ),
     );
   }

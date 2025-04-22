@@ -154,11 +154,11 @@ class _SearchsItems extends StatelessWidget {
                 return GestureDetector(
                   child: _ListItems(
                     type: 'Película',
-                    imgUrl: response.posterPath!,
-                    title: response.title!,
-                    rating: response.voteAverage!,
-                    voteCount: response.voteCount!,
-                    overview: response.overview!,
+                    imgUrl: response.posterPath ?? '',
+                    title: response.title ?? '',
+                    rating: response.voteAverage ?? '',
+                    voteCount: response.voteCount ?? '',
+                    overview: response.overview ?? '',
                   ),
                   onTap: () {
                     onSelected(context, response);
@@ -167,18 +167,23 @@ class _SearchsItems extends StatelessWidget {
               } else if (response.mediaType == "person") {
                 return _ListItems(
                   type: 'Persona',
-                  imgUrl: response.profilePath!,
-                  title: response.name!,
-                  knownForDepartment: response.knownForDepartment!,
+                  imgUrl: response.profilePath ?? '',
+                  title: response.name ?? '',
+                  knownForDepartment: response.knownForDepartment ?? '',
                 );
               } else if (response.mediaType == "tv") {
-                return _ListItems(
-                  type: 'Serie',
-                  imgUrl: response.posterPath!,
-                  title: response.name!,
-                  rating: response.voteAverage!,
-                  voteCount: response.voteCount!,
-                  overview: response.overview!,
+                return GestureDetector(
+                  child: _ListItems(
+                    type: 'Serie',
+                    imgUrl: response.posterPath ?? '',
+                    title: response.name ?? '',
+                    rating: response.voteAverage!,
+                    voteCount: response.voteCount ?? '',
+                    overview: response.overview ?? '',
+                  ),
+                  onTap: () {
+                    onSelected(context, response);
+                  },
                 );
               } else {
                 return Container(color: ThemeData().primaryColor);

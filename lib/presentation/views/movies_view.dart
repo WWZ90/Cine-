@@ -47,29 +47,32 @@ class HomeViewState extends ConsumerState<MoviesView> {
           delegate: SliverChildBuilderDelegate((context, index) {
             return Column(
               children: [
-                MoviesSlideShow(movies: nowPlaying),
-                MoviesHorizontalListview(
-                  movies: upcomingMovies,
+                TopSlideShow(allData: nowPlaying, type: 'Movie',),
+                SliderHorizontalListview(
+                  allData: upcomingMovies,
                   title: 'Upcoming',
                   subTitle: 'Soon',
+                  type: 'Movie',
                   loadNextPage: () {
                     ref.read(upcomingMoviesProvider.notifier).loadNextPage();
                   },
                 ),
-                MoviesHorizontalListview(
-                  movies: popularMovies,
+                SliderHorizontalListview(
+                  allData: popularMovies,
                   title: 'Populares',
                   subTitle: 'This month',
+                  type: 'Movie',
                   loadNextPage: () {
                     ref.read(popularMoviesProvider.notifier).loadNextPage();
                   },
                 ),
                 SizedBox(height: 20),
                 GenresTab(genres: genres),
-                MoviesHorizontalListview(
-                  movies: topRatedMovies,
+                SliderHorizontalListview(
+                  allData: topRatedMovies,
                   title: 'Top Rated',
                   subTitle: 'All time',
+                  type: 'Movie',
                   loadNextPage: () {
                     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
                   },

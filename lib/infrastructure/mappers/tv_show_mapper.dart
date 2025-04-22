@@ -12,7 +12,7 @@ class TvShowMapper {
     id: tvShow.id,
     originCountry: tvShow.originCountry,
     originalLanguage: tvShow.originalLanguage,
-    originalName: tvShow.originalName,
+    originalTitle: tvShow.originalName,
     overview: tvShow.overview,
     popularity: tvShow.popularity,
     posterPath:
@@ -20,7 +20,7 @@ class TvShowMapper {
             ? 'https://image.tmdb.org/t/p/w500${tvShow.posterPath}'
             : 'no-poster',
     firstAirDate: tvShow.firstAirDate,
-    name: tvShow.name,
+    title: tvShow.name,
     voteAverage: tvShow.voteAverage,
     voteCount: tvShow.voteCount,
   );

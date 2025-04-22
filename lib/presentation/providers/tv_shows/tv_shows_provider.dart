@@ -2,6 +2,12 @@ import 'package:cinemania/domain/entities/tv_show.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final airingTodayTVShowsProvider =
+    StateNotifierProvider<TvShowNotifier, List<TVShow>>((ref) {
+      final fetchMore = ref.watch(tvShowRepositoryProvider).getOnTheAir;
+      return TvShowNotifier(fetchMoreTVShows: fetchMore);
+    });
+
 final onTheAirTVShowsProvider =
     StateNotifierProvider<TvShowNotifier, List<TVShow>>((ref) {
       final fetchMore = ref.watch(tvShowRepositoryProvider).getOnTheAir;

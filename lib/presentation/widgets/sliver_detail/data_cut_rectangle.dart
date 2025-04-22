@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:cinemania/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
@@ -9,11 +8,11 @@ class DataCutRentangle extends StatelessWidget {
     super.key,
     required this.size,
     required this.percent,
-    required this.movie,
+    required this.data,
   });
   final Size size;
   final double percent;
-  final Movie movie;
+  final dynamic data;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class DataCutRentangle extends StatelessWidget {
                   (percent > 0.48 ? pow(percent, 10.5).clamp(0.0, 0.06) : 0.0),
             ),
             child: Text(
-              movie.title,
+              data.title,
               style: TextStyle(
                 //color: Colors.white,
                 fontSize: 17,
@@ -49,7 +48,7 @@ class DataCutRentangle extends StatelessWidget {
               duration: const Duration(milliseconds: 400),
               opacity: 1 - pow(percent, 0.05).toDouble(),
               child: CustomBottomDescription(
-                movie: movie,
+                data: data,
               ),
             ),
           ],

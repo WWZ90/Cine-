@@ -1,5 +1,5 @@
-export 'movies/movies_horizontal_listview.dart';
-export 'movies/movies_slideshow.dart';
+export 'shared/slider_horizontal_listview.dart';
+export 'shared/top_slideshow.dart';
 export 'shared/custom_appbar.dart';
 export 'shared/custom_bottom_navigation.dart';
 export 'shared/full_screen_loader.dart';
@@ -18,3 +18,4 @@ export 'sliver_detail/cut_rectangle.dart';
 export 'sliver_detail/data_cut_rectangle.dart';
 export 'sliver_detail/favorit_circle.dart';
 export 'movies/genres_tab.dart';
+export 'sliver_detail/appbar_netflix.dart';

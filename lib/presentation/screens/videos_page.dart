@@ -12,7 +12,7 @@ class VideosPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<Video> videos = ref.watch(videosMovieProvider);
+    final List<Video> videos = ref.watch(videosTVShowProvider);
 
     final typeIcons = {
       Type.TRAILER: Icons.movie_filter,

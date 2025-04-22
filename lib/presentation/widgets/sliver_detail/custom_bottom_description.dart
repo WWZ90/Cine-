@@ -1,14 +1,12 @@
-import 'package:cinemania/domain/entities/movie.dart';
-
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
 
 class CustomBottomDescription extends StatelessWidget {
-  final Movie movie;
+  final dynamic data;
   const CustomBottomDescription({
     super.key,
-    required this.movie,
+    required this.data,
   });
 
   @override
@@ -17,7 +15,7 @@ class CustomBottomDescription extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          movie.originalTitle,
+          data.originalTitle,
           style: TextStyle(
             //color: Colors.white,
             fontSize: 16,
@@ -25,12 +23,12 @@ class CustomBottomDescription extends StatelessWidget {
           textAlign: TextAlign.start,
           overflow: TextOverflow.ellipsis,
         ),
-        (movie.voteAverage > 0)
+        (data.voteAverage > 0)
             ? Row(
               children: <Widget>[
                 StarsRatingBarWithInfo(
-                  rating: movie.voteAverage,
-                  voteCount: movie.voteCount,
+                  rating: data.voteAverage,
+                  voteCount: data.voteCount,
                   iconSize: 13,
                   color: Colors.yellow,
                 ),

@@ -1,8 +1,10 @@
 import 'package:cinemania/domain/entities/movie.dart';
 import 'package:cinemania/domain/entities/search.dart';
+import 'package:cinemania/domain/entities/tv_show.dart';
 import 'package:cinemania/presentation/delegates/multi_search_delegate.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
+import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -58,6 +60,27 @@ class CustomAppbar extends ConsumerWidget {
                     );
 
                     context.pushNamed(MovieScreen.name, extra: movie);
+                  }
+
+                  if (response.mediaType == 'tv') {
+                    TVShow tvShow = TVShow(
+                      id: response.id,
+                      title: response.name!,
+                      originalTitle: response.originalName!,
+                      adult: response.adult,
+                      backdropPath: response.backdropPath!,
+                      genreIds: response.genreIds!,
+                      originCountry: response.originCountry!,
+                      originalLanguage: response.originalLanguage!,
+                      overview: response.overview!,
+                      popularity: response.popularity,
+                      posterPath: response.posterPath!,
+                      firstAirDate: response.firstAirDate!,
+                      voteAverage: response.voteAverage!,
+                      voteCount: response.voteCount!,
+                    );
+
+                    context.pushNamed(TVShowScreen.name, extra: tvShow);
                   }
                 },
                 icon: Icon(Icons.search),

@@ -33,7 +33,7 @@ class TVShowDB {
 
     factory TVShowDB.fromJson(Map<String, dynamic> json) => TVShowDB(
         adult: json["adult"],
-        backdropPath: json["backdrop_path"],
+        backdropPath: json["backdrop_path"] ?? '',
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
         originCountry: List<String>.from(json["origin_country"].map((x) => x)),
@@ -41,8 +41,8 @@ class TVShowDB {
         originalName: json["original_name"],
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
-        posterPath: json["poster_path"],
-        firstAirDate: DateTime.parse(json["first_air_date"]),
+        posterPath: json["poster_path"] ?? '',
+        firstAirDate: DateTime.parse(json["first_air_date"] as String? ?? '') ,
         name: json["name"],
         voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],

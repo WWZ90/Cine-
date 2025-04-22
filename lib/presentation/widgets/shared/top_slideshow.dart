@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cinemania/config/helpers/file_storage.dart';
@@ -12,15 +13,16 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../screens/screens.dart';
 
-class MoviesSlideShow extends StatefulWidget {
-  final List<Movie> movies;
-  const MoviesSlideShow({super.key, required this.movies});
+class TopSlideShow extends StatefulWidget {
+  final List<dynamic> allData;
+  final String type; //Movie - TVShow - Person
+  const TopSlideShow({super.key, required this.allData, required this.type});
 
   @override
-  State<MoviesSlideShow> createState() => _MoviesSlideShowState();
+  State<TopSlideShow> createState() => _TopSlideShowState();
 }
 
-class _MoviesSlideShowState extends State<MoviesSlideShow> {
+class _TopSlideShowState extends State<TopSlideShow> {
   int _currentIndex = 0;
   Timer? _autoPlayTimer;
   Timer? _resumeTimer;
@@ -35,7 +37,7 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
     _autoPlayTimer?.cancel();
     _autoPlayTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       setState(() {
-        _currentIndex = (_currentIndex + 1) % widget.movies.length;
+        _currentIndex = (_currentIndex + 1) % widget.allData.length;
       });
     });
   }
@@ -58,7 +60,8 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
 
   @override
   Widget build(BuildContext context) {
-    final movie = widget.movies[_currentIndex];
+    final data = widget.allData[_currentIndex];
+    data.uniqueID = '${data.id}"-"${widget.type}-section"-${data.title}';
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SizedBox(
@@ -67,7 +70,14 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () => context.pushNamed(MovieScreen.name, extra: movie),
+              onTap: () {
+                if (widget.type == 'Movie') {
+                  context.pushNamed(MovieScreen.name, extra: data);
+                }
+                if (widget.type == 'TVShow') {
+                  context.pushNamed(TVShowScreen.name, extra: data);
+                }
+              },
               onTapDown: (_) => _onUserInteractionStart(),
               onTapUp: (_) => _onUserInteractionEnd(),
               child: AnimatedSwitcher(
@@ -76,16 +86,16 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
                     (child, animation) =>
                         FadeTransition(opacity: animation, child: child),
                 child: Stack(
-                  key: ValueKey(movie.id), // Necesario para animación correcta
+                  key: ValueKey(data.id), // Necesario para animación correcta
                   fit: StackFit.expand,
                   children: [
                     Hero(
-                      tag: movie.id,
+                      tag: data.uniqueID,
                       child: Image(
                         image: NetworkToFileImage(
-                          url: movie.posterPath,
+                          url: data.posterPath,
                           file: LocalImageFileManager.fileFromUrl(
-                            movie.posterPath,
+                            data.posterPath,
                           ),
                           debug: true,
                         ),
@@ -104,7 +114,7 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                movie.title,
+                                data.title,
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
@@ -113,8 +123,8 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
                               ),
                               const SizedBox(height: 5),
                               StarsRatingBarWithInfo(
-                                rating: movie.voteAverage,
-                                voteCount: movie.voteCount,
+                                rating: data.voteAverage,
+                                voteCount: data.voteCount,
                               ),
                             ],
                           ),
@@ -139,7 +149,7 @@ class _MoviesSlideShowState extends State<MoviesSlideShow> {
             controller: PageController(
               initialPage: _currentIndex,
             ), // dummy controller
-            count: widget.movies.length,
+            count: widget.allData.length,
             effect: const WormEffect(
               dotHeight: 6,
               dotWidth: 6,

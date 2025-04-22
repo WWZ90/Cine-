@@ -33,7 +33,9 @@ final appRouter = GoRouter(
 
 // lib/config/router.dart
 
+import 'package:cinemania/domain/entities/tv_show.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
+import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -61,7 +63,9 @@ final GoRouter appRouter = GoRouter(
           body: navigationShell,
           bottomNavigationBar: CustomBottomNavigation(
             currentIndex: navigationShell.currentIndex,
-            onTap: (idx, _) => navigationShell.goBranch(idx, initialLocation: idx == 0),
+            onTap:
+                (idx, _) =>
+                    navigationShell.goBranch(idx, initialLocation: idx == 0),
           ),
         );
       },
@@ -95,6 +99,16 @@ final GoRouter appRouter = GoRouter(
               path: '/tv',
               name: TVShowsViews.name,
               builder: (context, state) => const TVShowsViews(),
+              routes: [
+                GoRoute(
+                  path: 'tv-show-screen',
+                  name: TVShowScreen.name,
+                  builder: (context, state) {
+                    final tvShow = state.extra as TVShow;
+                    return TVShowScreen(tvShow: tvShow);
+                  },
+                ),
+              ],
             ),
           ],
         ),

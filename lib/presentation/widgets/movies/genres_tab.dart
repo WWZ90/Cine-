@@ -93,8 +93,9 @@ class _GenreMoviesTab extends ConsumerWidget {
     if (movies.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
-    return MoviesHorizontalListview(
-      movies: movies,
+    return SliderHorizontalListview(
+      allData: movies,
+      type: 'Movie',
       loadNextPage: () {
         ref
             .read(moviesByGenreProvider(genreId.toString()).notifier)
