@@ -1,5 +1,4 @@
 import 'package:cinemania/config/helpers/file_storage.dart';
-import 'package:cinemania/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 

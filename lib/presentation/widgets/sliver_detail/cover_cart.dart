@@ -1,4 +1,3 @@
-import 'package:cinemania/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';

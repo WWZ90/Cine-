@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart'
     show GradientImageBackground, StarsRatingBarWithInfo;
-import 'package:cinemania/domain/entities/movie.dart';
 import 'package:like_button/like_button.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
