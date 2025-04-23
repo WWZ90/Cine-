@@ -38,4 +38,9 @@ class TvShowRepositoryImpl extends TvShowRepository {
   Future<List<Video>> getVideosByTVShowId(String id) {
     return datasource.getVideosByTVShowId(id);
   }
+  
+  @override
+  Future<List<TVShow>> getTVShowByGenreId(String id, {int page = 1}) {
+    return datasource.getTVShowByGenreId(id);
+  }
 }

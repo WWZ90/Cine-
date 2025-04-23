@@ -1,4 +1,5 @@
 import 'package:cinemania/domain/entities/genre.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,8 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/movies/movies_providers.dart';
 
 class GenresTab extends ConsumerStatefulWidget {
+  final String type;
   final List<Genre> genres;
-  const GenresTab({required this.genres, super.key});
+  const GenresTab({required this.type, required this.genres, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _GenresTabState();
@@ -23,17 +25,33 @@ class _GenresTabState extends ConsumerState<GenresTab>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final firstId = widget.genres[0].id;
-      ref
-          .read(moviesByGenreProvider(firstId.toString()).notifier)
-          .loadNextPage();
+
+      if (widget.type == 'Movie') {
+        ref
+            .read(moviesByGenreProvider(firstId.toString()).notifier)
+            .loadNextPage();
+      }
+
+      if (widget.type == 'TVShow') {
+        ref
+            .read(tvShowsByGenreProvider(firstId.toString()).notifier)
+            .loadNextPage();
+      }
     });
 
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         final newGenreId = widget.genres[_tabController.index].id;
-        ref
-            .read(moviesByGenreProvider(newGenreId.toString()).notifier)
-            .loadNextPage();
+        if (widget.type == 'Movie') {
+          ref
+              .read(moviesByGenreProvider(newGenreId.toString()).notifier)
+              .loadNextPage();
+        }
+        if (widget.type == 'TVShow') {
+          ref
+              .read(tvShowsByGenreProvider(newGenreId.toString()).notifier)
+              .loadNextPage();
+        }
       }
     });
   }
@@ -72,9 +90,11 @@ class _GenresTabState extends ConsumerState<GenresTab>
           child: TabBarView(
             controller: _tabController,
             children:
-                widget.genres
-                    .map((g) => _GenreMoviesTab(genreId: g.id))
-                    .toList(),
+                widget.genres.map((g) {
+                  return widget.type == 'Movie'
+                      ? _GenreTab(genreId: g.id, type: 'Movie')
+                      : _GenreTab(genreId: g.id, type: 'TVShow');
+                }).toList(),
           ),
         ),
       ],
@@ -82,25 +102,42 @@ class _GenresTabState extends ConsumerState<GenresTab>
   }
 }
 
-class _GenreMoviesTab extends ConsumerWidget {
+class _GenreTab extends ConsumerWidget {
+  final String type;
   final int genreId;
-  const _GenreMoviesTab({required this.genreId});
+
+  const _GenreTab({required this.type, required this.genreId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final movies = ref.watch(moviesByGenreProvider(genreId.toString()));
-    // while loading the first page, movies.isEmpty is our indicator
-    if (movies.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+    if (type == 'Movie') {
+      final movies = ref.watch(moviesByGenreProvider(genreId.toString()));
+      if (movies.isEmpty) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      return SliderHorizontalListview(
+        allData: movies,
+        type: 'Movie',
+        loadNextPage: () {
+          ref
+              .read(moviesByGenreProvider(genreId.toString()).notifier)
+              .loadNextPage();
+        },
+      );
+    } else {
+      final tvShows = ref.watch(tvShowsByGenreProvider(genreId.toString()));
+      if (tvShows.isEmpty) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      return SliderHorizontalListview(
+        allData: tvShows,
+        type: 'TVShow',
+        loadNextPage: () {
+          ref
+              .read(tvShowsByGenreProvider(genreId.toString()).notifier)
+              .loadNextPage();
+        },
+      );
     }
-    return SliderHorizontalListview(
-      allData: movies,
-      type: 'Movie',
-      loadNextPage: () {
-        ref
-            .read(moviesByGenreProvider(genreId.toString()).notifier)
-            .loadNextPage();
-      },
-    );
   }
 }

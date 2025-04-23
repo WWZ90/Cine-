@@ -26,6 +26,17 @@ final topRatedTVShowsProvider =
       return TvShowNotifier(fetchMoreTVShows: fetchMore);
     });
 
+final tvShowsByGenreProvider = StateNotifierProvider.family<
+  TvShowNotifier,
+  List<TVShow>,
+  String
+>((ref, genreId) {
+  fetchMoreTVShows({int page = 1}) =>
+      ref.read(tvShowRepositoryProvider).getTVShowByGenreId(genreId, page: page);
+
+  return TvShowNotifier(fetchMoreTVShows: fetchMoreTVShows);
+});
+
 typedef TvShowCallBack = Future<List<TVShow>> Function({int page});
 
 class TvShowNotifier extends StateNotifier<List<TVShow>> {

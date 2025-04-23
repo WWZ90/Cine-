@@ -19,6 +19,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
     ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
     ref.read(popularTVShowsProvider.notifier).loadNextPage();
     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
+    ref.read(genresTVShowProvider.notifier).loadGenres();
   }
 
   @override
@@ -31,6 +32,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
     final onTheAir = ref.watch(onTheAirTVShowsProvider);
     final popular = ref.watch(popularTVShowsProvider);
     final topRated = ref.watch(topRatedTVShowsProvider);
+    final genres = ref.watch(genresTVShowProvider);
 
     return CustomScrollView(
       slivers: [
@@ -53,7 +55,9 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                   title: 'On the air',
                   subTitle: 'This week',
                   loadNextPage: () {
-                    ref.read(airingTodayTVShowsProvider.notifier).loadNextPage();
+                    ref
+                        .read(airingTodayTVShowsProvider.notifier)
+                        .loadNextPage();
                   },
                 ),
                 SliderHorizontalListview(
@@ -65,6 +69,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                     ref.read(popularTVShowsProvider.notifier).loadNextPage();
                   },
                 ),
+                GenresTab(genres: genres, type: 'TVShow'),
                 SliderHorizontalListview(
                   allData: topRated,
                   type: 'TVShow',

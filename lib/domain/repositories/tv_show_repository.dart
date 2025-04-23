@@ -9,4 +9,5 @@ abstract class TvShowRepository {
   Future<List<TVShow>> getTopRated({int page = 1});
   Future<TvShowDetails> getTVShowById(String id);
   Future<List<Video>> getVideosByTVShowId(String id);
+  Future<List<TVShow>> getTVShowByGenreId(String id, {int page = 1});
 }

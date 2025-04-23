@@ -11,4 +11,9 @@ class GenreRepositoryImpl extends GenresRepository {
   Future<List<Genre>> getGenresMovie() {
     return datasource.getGenresMovie();
   }
+  
+  @override
+  Future<List<Genre>> getGenresTVShow() {
+    return datasource.getGenresTVShow();
+  }
 }

@@ -5,3 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final genresMoviesRepositoryProvider = Provider((ref) {
   return GenreRepositoryImpl(GenreMoviedbDatasource());
 });
+
+final genresTVShowRepositoryProvider = Provider((ref) {
+  return GenreRepositoryImpl(GenreMoviedbDatasource());
+});

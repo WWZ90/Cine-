@@ -67,7 +67,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                   },
                 ),
                 SizedBox(height: 20),
-                GenresTab(genres: genres),
+                GenresTab(genres: genres, type: 'Movie'),
                 SliderHorizontalListview(
                   allData: topRatedMovies,
                   title: 'Top Rated',

@@ -117,4 +117,13 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
 
     return videos;
   }
+  
+  @override
+  Future<List<TVShow>> getTVShowByGenreId(String id, {int page = 1}) async {
+    final response = await dio.get(
+      '/discover/tv',
+      queryParameters: {'with_genres': id, 'page': page},
+    );
+    return _jsonToTVShow(response.data);
+  }
 }
