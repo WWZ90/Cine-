@@ -96,28 +96,32 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
 
   @override
   Future<List<Video>> getVideosByTVShowId(String id) async {
-    final response = await dio.get('/tv/$id/videos');
+    try {
+      final response = await dio.get('/tv/$id/videos');
 
-    if (response.statusCode != 200) {
-      throw Exception('TVShow with id $id not found');
-    }
-
-    List<Video> videos = _jsonToVideo(response.data);
-
-    if (videos.isEmpty) {
-      final responseEn = await dio.get(
-        '/movie/$id/videos',
-        queryParameters: {'language': 'en-US'},
-      );
-
-      if (responseEn.statusCode == 200) {
-        videos = _jsonToVideo(responseEn.data);
+      if (response.statusCode != 200) {
+        throw Exception('TVShow with id $id not found');
       }
-    }
 
-    return videos;
+      List<Video> videos = _jsonToVideo(response.data);
+
+      if (videos.isEmpty) {
+        final responseEn = await dio.get(
+          '/movie/$id/videos',
+          queryParameters: {'language': 'en-US'},
+        );
+
+        if (responseEn.statusCode == 200) {
+          videos = _jsonToVideo(responseEn.data);
+        }
+      }
+
+      return videos;
+    } catch (e) {
+      return [];
+    }
   }
-  
+
   @override
   Future<List<TVShow>> getTVShowByGenreId(String id, {int page = 1}) async {
     final response = await dio.get(

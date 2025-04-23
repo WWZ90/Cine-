@@ -71,7 +71,7 @@ class TvShowDetailsResponse {
     Map<String, dynamic> json,
   ) => TvShowDetailsResponse(
     adult: json["adult"],
-    backdropPath: json["backdrop_path"],
+    backdropPath: json["backdrop_path"] ?? '',
     createdBy: List<CreatedBy>.from(
       json["created_by"].map((x) => CreatedBy.fromJson(x)),
     ),
@@ -102,7 +102,7 @@ class TvShowDetailsResponse {
     originalName: json["original_name"],
     overview: json["overview"],
     popularity: json["popularity"]?.toDouble(),
-    posterPath: json["poster_path"],
+    posterPath: json["poster_path"] ?? '',
     productionCompanies: List<Network>.from(
       json["production_companies"].map((x) => Network.fromJson(x)),
     ),

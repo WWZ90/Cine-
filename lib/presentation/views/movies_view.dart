@@ -12,16 +12,6 @@ class MoviesView extends ConsumerStatefulWidget {
 
 class HomeViewState extends ConsumerState<MoviesView> {
   @override
-  void initState() {
-    super.initState();
-    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
-    ref.read(popularMoviesProvider.notifier).loadNextPage();
-    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
-    ref.read(genresMovieProvider.notifier).loadGenres();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final initialLoading = ref.watch(initialLoadingProvider);
 
@@ -35,19 +25,12 @@ class HomeViewState extends ConsumerState<MoviesView> {
 
     return CustomScrollView(
       slivers: [
-        SliverAppBar(
-          floating: true,
-          backgroundColor: Colors.black54,
-          flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-            title: CustomAppbar(),
-          ),
-        ),
+        CustomAppbar(),
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             return Column(
               children: [
-                TopSlideShow(allData: nowPlaying, type: 'Movie',),
+                TopSlideShow(allData: nowPlaying, type: 'Movie'),
                 SliderHorizontalListview(
                   allData: upcomingMovies,
                   title: 'Upcoming',

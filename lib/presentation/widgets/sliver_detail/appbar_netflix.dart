@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cinemania/domain/entities/video.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class AppBarNetflix extends SliverPersistentHeaderDelegate {
   final double maxExtend;
@@ -70,6 +71,18 @@ class AppBarNetflix extends SliverPersistentHeaderDelegate {
             )
             : SizedBox(),
         FavoriteCircle(size: size, percent: percent, data: data),
+        Positioned(
+          top: 30,
+          left: 10,
+          child: IconButton.filled(
+            color: Colors.black45,
+            focusColor: Colors.black38,
+            onPressed: () {
+              context.pop();
+            },
+            icon: Icon(Icons.arrow_back_ios_outlined),
+          ),
+        ),
       ],
     );
   }

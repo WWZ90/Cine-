@@ -13,21 +13,7 @@ class TVShowsViews extends ConsumerStatefulWidget {
 
 class TVShowsViewsState extends ConsumerState<TVShowsViews> {
   @override
-  void initState() {
-    super.initState();
-    ref.read(airingTodayTVShowsProvider.notifier).loadNextPage();
-    ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
-    ref.read(popularTVShowsProvider.notifier).loadNextPage();
-    ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
-    ref.read(genresTVShowProvider.notifier).loadGenres();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final initialLoading = ref.watch(initialLoadingTVShowProvider);
-
-    if (initialLoading) return CircularProgressIndicator(strokeWidth: 2);
-
     final airingToday = ref.watch(airingTodayTVShowsProvider);
     final onTheAir = ref.watch(onTheAirTVShowsProvider);
     final popular = ref.watch(popularTVShowsProvider);
@@ -36,14 +22,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
 
     return CustomScrollView(
       slivers: [
-        SliverAppBar(
-          floating: true,
-          backgroundColor: Colors.black54,
-          flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-            title: CustomAppbar(),
-          ),
-        ),
+        CustomAppbar(),
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             return Column(
@@ -55,9 +34,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                   title: 'On the air',
                   subTitle: 'This week',
                   loadNextPage: () {
-                    ref
-                        .read(airingTodayTVShowsProvider.notifier)
-                        .loadNextPage();
+                    ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
                   },
                 ),
                 SliderHorizontalListview(

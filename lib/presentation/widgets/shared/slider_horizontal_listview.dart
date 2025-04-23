@@ -65,7 +65,7 @@ class _SliderHorizontalListviewState extends State<SliderHorizontalListview> {
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 widget.allData[index].uniqueID =
-                    '${widget.allData[index].id}-"${widget.type}-section"-${widget.title}';
+                    '${widget.allData[index].id}-${widget.type}-section-${widget.title}';
                 return FadeInRight(
                   child: _Slide(data: widget.allData[index], type: widget.type),
                 );

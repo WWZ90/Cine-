@@ -60,7 +60,7 @@ class _TopSlideShowState extends State<TopSlideShow> {
   @override
   Widget build(BuildContext context) {
     final data = widget.allData[_currentIndex];
-    data.uniqueID = '${data.id}"-"${widget.type}-section"-${data.title}';
+    data.uniqueID = '${data.id}"-${widget.type}-section-${data.title}';
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SizedBox(

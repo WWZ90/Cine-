@@ -11,7 +11,7 @@ class TVShow {
   final String originalLanguage;
   final String overview;
   final double popularity;
-  final DateTime firstAirDate;
+  final DateTime? firstAirDate;
   final double voteAverage;
   final int voteCount;
 
