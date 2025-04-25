@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final airingTodayTVShowsProvider =
     StateNotifierProvider<TvShowNotifier, List<TVShow>>((ref) {
-      final fetchMore = ref.watch(tvShowRepositoryProvider).getOnTheAir;
+      final fetchMore = ref.watch(tvShowRepositoryProvider).getAiringToday;
       return TvShowNotifier(fetchMoreTVShows: fetchMore);
     });
 

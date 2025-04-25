@@ -10,6 +10,7 @@ class AppBarNetflix extends SliverPersistentHeaderDelegate {
   final double minExtend;
   final Size size;
   final dynamic data;
+  final String type;
   final List<Video>? videos;
 
   const AppBarNetflix({
@@ -17,6 +18,7 @@ class AppBarNetflix extends SliverPersistentHeaderDelegate {
     required this.minExtend,
     required this.size,
     required this.data,
+    required this.type,
     required this.videos,
   });
 
@@ -70,7 +72,7 @@ class AppBarNetflix extends SliverPersistentHeaderDelegate {
               video: videos!,
             )
             : SizedBox(),
-        FavoriteCircle(size: size, percent: percent, data: data),
+        FavoriteCircle(size: size, percent: percent, data: data, type: type),
         Positioned(
           top: 30,
           left: 10,

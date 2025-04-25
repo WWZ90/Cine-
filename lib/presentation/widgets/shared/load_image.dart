@@ -45,6 +45,7 @@ class LoadImage extends StatelessWidget {
         image: NetworkToFileImage(
           url: url,
           file: LocalImageFileManager.fileFromUrl(url),
+          debug: false,
         ),
         width: w, // ancho fijo igual que tu item
         height: h,

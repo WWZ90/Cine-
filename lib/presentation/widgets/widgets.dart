@@ -19,3 +19,4 @@ export 'sliver_detail/data_cut_rectangle.dart';
 export 'sliver_detail/favorit_circle.dart';
 export 'movies/genres_tab.dart';
 export 'sliver_detail/appbar_netflix.dart';
+export 'shared/fav_like_button_consumer.dart';

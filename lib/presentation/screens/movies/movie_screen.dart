@@ -85,6 +85,7 @@ class _CustomSliverAppBar extends StatelessWidget {
             maxExtend: size.height * 0.55, //0.35
             size: size,
             data: movie,
+            type: 'Movie',
             videos: videos,
           ),
         ),

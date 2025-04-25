@@ -1,0 +1,100 @@
+import 'dart:io';
+
+import 'package:cinemania/domain/datasources/local_storage_datasource.dart';
+import 'package:cinemania/domain/entities/movie.dart';
+import 'package:cinemania/domain/entities/tv_show.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
+
+class IsarDatasource extends LocalStorageDatasource {
+  late Future<Isar> db;
+
+  IsarDatasource() {
+    db = openDB();
+  }
+
+  Future<Isar> openDB() async {
+    final dir = await getApplicationCacheDirectory();
+    final path = dir.path;
+
+    try {
+      return Isar.openSync([MovieSchema, TVShowSchema], directory: path);
+    } on IsarError catch (e) {
+      // Si es error de versión, borra los archivos .isar
+      if (e.message.contains('version of the file')) {
+        final dbDir = Directory(path);
+        for (final file in dbDir.listSync()) {
+          if (file.path.endsWith('.isar') || file.path.endsWith('.lock')) {
+            try {
+              file.deleteSync();
+            } catch (_) {}
+          }
+        }
+        // Reintenta sobre una carpeta limpia
+        return Isar.openSync([MovieSchema, TVShowSchema], directory: path);
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> isFavorite(int id, String type) async {
+    final isar = await db;
+
+    if (type == 'Movie') {
+      final isFavorite = await isar.movies.filter().idEqualTo(id).findFirst();
+      return isFavorite != null;
+    } else if (type == 'TVShow') {
+      final isFavorite = await isar.tVShows.filter().idEqualTo(id).findFirst();
+      return isFavorite != null;
+    }
+
+    return false;
+  }
+
+  @override
+  Future<void> toggleFavorite(dynamic data, String type) async {
+    final isar = await db;
+
+    dynamic favorite;
+
+    if (type == 'Movie') {
+      favorite = await isar.movies.filter().idEqualTo(data.id).findFirst();
+      if (favorite != null) {
+        isar.writeTxnSync(() => isar.movies.deleteSync(favorite.isarMovieId!));
+        return;
+      }
+      isar.writeTxnSync(() => isar.movies.putSync(data));
+    } else if (type == 'TVShow') {
+      favorite = await isar.tVShows.filter().idEqualTo(data.id).findFirst();
+      if (favorite != null) {
+        isar.writeTxnSync(
+          () => isar.tVShows.deleteSync(favorite.isarTVShowId!),
+        );
+        return;
+      }
+      isar.writeTxnSync(() => isar.tVShows.putSync(data));
+    }
+  }
+
+  @override
+  Future<List<dynamic>> loadFavorites({
+    int limit = 10,
+    offset = 0,
+    String type = '',
+  }) async {
+    final isar = await db;
+
+    dynamic query;
+    if (type == 'Movie') {
+      query = isar.movies.where();
+    } else if (type == 'TVShow') {
+      query = isar.tVShows.where();
+    }
+
+    if (offset > 0) query.offset(offset);
+    if (limit > 0) query.limit(limit);
+
+    return query.findAll();
+  }
+}

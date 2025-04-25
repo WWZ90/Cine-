@@ -1,11 +1,14 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/movies/movie_screen.dart';
 import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:like_button/like_button.dart';
 
-class SliderHorizontalListview extends StatefulWidget {
+class SliderHorizontalListview extends ConsumerStatefulWidget {
   final List<dynamic> allData;
   final String? title;
   final String? subTitle;
@@ -23,12 +26,14 @@ class SliderHorizontalListview extends StatefulWidget {
   });
 
   @override
-  State<SliderHorizontalListview> createState() =>
+  ConsumerState<SliderHorizontalListview> createState() =>
       _SliderHorizontalListviewState();
 }
 
-class _SliderHorizontalListviewState extends State<SliderHorizontalListview> {
+class _SliderHorizontalListviewState
+    extends ConsumerState<SliderHorizontalListview> {
   final scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -64,10 +69,20 @@ class _SliderHorizontalListviewState extends State<SliderHorizontalListview> {
               scrollDirection: Axis.horizontal,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                widget.allData[index].uniqueID =
-                    '${widget.allData[index].id}-${widget.type}-section-${widget.title}';
+                final data = widget.allData[index];
+                data.uniqueID =
+                    '${data.id}-${widget.type}-section-${widget.title}';
                 return FadeInRight(
-                  child: _Slide(data: widget.allData[index], type: widget.type),
+                  child: Stack(
+                    children: [
+                      _Slide(data: data, type: widget.type),
+                      Positioned(
+                        bottom: 50,
+                        right: 10,
+                        child: FavLikeButtonConsumer(data: data, type: widget.type),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

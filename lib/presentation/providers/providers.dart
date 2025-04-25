@@ -16,3 +16,6 @@ export 'tv_shows/tv_shows_repository_provider.dart';
 export 'videos/video_provider.dart';
 export 'videos/video_repository_provider.dart';
 export 'tv_shows/tv_show_detail_provider.dart';
+export 'storage/local_storage_provider.dart';
+export 'movies/movie_datasource_provider.dart';
+export 'favorites/favorites_provider.dart';

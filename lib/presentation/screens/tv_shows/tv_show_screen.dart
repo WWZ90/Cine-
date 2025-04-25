@@ -49,7 +49,7 @@ class _TVShowScreenState extends ConsumerState<TVShowScreen> {
 
 class _CustomSliverAppBar extends StatelessWidget {
   final TVShow tvShow;
-  final TvShowDetails tvShowDetails; 
+  final TvShowDetails tvShowDetails;
   final List<Video> videos;
   const _CustomSliverAppBar({
     required this.tvShow,
@@ -68,6 +68,7 @@ class _CustomSliverAppBar extends StatelessWidget {
             maxExtend: size.height * 0.55,
             size: size,
             data: tvShow,
+            type: 'TVShow',
             videos: videos,
           ),
         ),

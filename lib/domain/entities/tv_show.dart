@@ -1,6 +1,13 @@
+import 'package:isar/isar.dart';
+
+part 'tv_show.g.dart';
+
+@collection
 class TVShow {
-  String? uniqueID;
+  Id? isarTVShowId;
+
   final int id;
+  String? uniqueID;
   final String title;
   final String originalTitle;
   final bool adult;

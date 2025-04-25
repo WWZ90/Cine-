@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
+import 'package:cinemania/presentation/widgets/shared/fav_like_button_consumer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart'
@@ -12,16 +15,16 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../screens/screens.dart';
 
-class TopSlideShow extends StatefulWidget {
+class TopSlideShow extends ConsumerStatefulWidget {
   final List<dynamic> allData;
   final String type; //Movie - TVShow - Person
   const TopSlideShow({super.key, required this.allData, required this.type});
 
   @override
-  State<TopSlideShow> createState() => _TopSlideShowState();
+  ConsumerState<TopSlideShow> createState() => _TopSlideShowState();
 }
 
-class _TopSlideShowState extends State<TopSlideShow> {
+class _TopSlideShowState extends ConsumerState<TopSlideShow> {
   int _currentIndex = 0;
   Timer? _autoPlayTimer;
   Timer? _resumeTimer;
@@ -96,7 +99,6 @@ class _TopSlideShowState extends State<TopSlideShow> {
                           file: LocalImageFileManager.fileFromUrl(
                             data.posterPath,
                           ),
-                          debug: true,
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -127,13 +129,7 @@ class _TopSlideShowState extends State<TopSlideShow> {
                               ),
                             ],
                           ),
-                          LikeButton(
-                            size: 30,
-                            animationDuration: const Duration(
-                              milliseconds: 500,
-                            ),
-                            onTap: (isLiked) async => !isLiked,
-                          ),
+                          FavLikeButtonConsumer(data: data, type: widget.type),
                         ],
                       ),
                     ),
