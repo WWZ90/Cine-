@@ -1,12 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/movies/movie_screen.dart';
 import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:like_button/like_button.dart';
 
 class SliderHorizontalListview extends ConsumerStatefulWidget {
   final List<dynamic> allData;

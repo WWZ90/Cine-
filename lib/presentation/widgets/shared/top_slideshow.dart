@@ -1,19 +1,16 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:network_to_file_image/network_to_file_image.dart';
+import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 import 'package:cinemania/presentation/widgets/shared/fav_like_button_consumer.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart'
     show GradientImageBackground, StarsRatingBarWithInfo;
-import 'package:like_button/like_button.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../../screens/screens.dart';
 
 class TopSlideShow extends ConsumerStatefulWidget {
   final List<dynamic> allData;
