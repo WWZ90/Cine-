@@ -1,4 +1,4 @@
-export 'favorites_views.dart';
+export 'favorites_view.dart';
 export 'movies_view.dart';
-export 'persons_views.dart';
-export 'tv_shows_views.dart';
+export 'persons_view.dart';
+export 'tv_shows_view.dart';

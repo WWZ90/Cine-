@@ -78,23 +78,20 @@ class IsarDatasource extends LocalStorageDatasource {
   }
 
   @override
-  Future<List<dynamic>> loadFavorites({
-    int limit = 10,
-    offset = 0,
-    String type = '',
-  }) async {
+  Future<List<dynamic>> loadFavorites({int limit = 10, int offset = 0}) async {
     final isar = await db;
 
-    dynamic query;
-    if (type == 'Movie') {
-      query = isar.movies.where();
-    } else if (type == 'TVShow') {
-      query = isar.tVShows.where();
-    }
+    var movies = await isar.movies.where()
+      .offset(offset)
+      .limit(limit)
+      .findAll();
 
-    if (offset > 0) query.offset(offset);
-    if (limit > 0) query.limit(limit);
+    var tvShows = await isar.tVShows.where()
+      .offset(offset)
+      .limit(limit)
+      .findAll();
 
-    return query.findAll();
+    // Combinamos ambas listas
+    return [...movies, ...tvShows];
   }
 }

@@ -12,6 +12,7 @@ final initialLoadingProvider = Provider<bool>((ref) {
   final step8 = ref.watch(popularTVShowsProvider).isEmpty;
   final step9 = ref.watch(topRatedTVShowsProvider).isEmpty;
   final step10 = ref.watch(genresTVShowProvider).isEmpty;
+  //final step11 = ref.watch(favoritesProvider).isEmpty;
 
   if (step1 || step2 || step3 || step4 || step5 || step6 || step7 || step8 || step9 || step10) return true;
 

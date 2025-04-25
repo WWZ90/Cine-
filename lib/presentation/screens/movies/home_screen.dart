@@ -16,22 +16,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
     ref.read(upcomingMoviesProvider.notifier).loadNextPage();
     ref.read(popularMoviesProvider.notifier).loadNextPage();
     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
     ref.read(genresMovieProvider.notifier).loadGenres();
+
     ref.read(genresTVShowProvider.notifier).loadGenres();
     ref.read(airingTodayTVShowsProvider.notifier).loadNextPage();
     ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
     ref.read(popularTVShowsProvider.notifier).loadNextPage();
     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: MoviesView(),
-    );
+    return Scaffold(body: MoviesView());
   }
 }

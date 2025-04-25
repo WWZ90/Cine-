@@ -7,6 +7,6 @@ final isFavoriteProvider = FutureProvider.family<bool, FavoriteKey>((
   ref,
   key,
 ) async {
-  final db = ref.read(localStorageDatasourceProvider);
+  final db = ref.read(localStorageRepositoryProvider);
   return db.isFavorite(key.id, key.type);
 });

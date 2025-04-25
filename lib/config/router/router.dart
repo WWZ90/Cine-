@@ -40,9 +40,9 @@ import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cinemania/domain/entities/movie.dart';
-import 'package:cinemania/presentation/views/favorites_views.dart';
-import 'package:cinemania/presentation/views/persons_views.dart';
-import 'package:cinemania/presentation/views/tv_shows_views.dart';
+import 'package:cinemania/presentation/views/favorites_view.dart';
+import 'package:cinemania/presentation/views/persons_view.dart';
+import 'package:cinemania/presentation/views/tv_shows_view.dart';
 
 // Llaves de navegadores para estado independiente
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

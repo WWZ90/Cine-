@@ -1,10 +1,10 @@
 import 'package:cinemania/domain/datasources/local_storage_datasource.dart';
 import 'package:cinemania/domain/repositories/local_storage_repository.dart';
 
-class LocalStorageRepositoryImp extends LocalStorageRepository {
+class LocalStorageRepositoryImpl extends LocalStorageRepository {
   final LocalStorageDatasource datasource;
 
-  LocalStorageRepositoryImp({required this.datasource});
+  LocalStorageRepositoryImpl({required this.datasource});
 
   @override
   Future<bool> isFavorite(int id, String type) {
@@ -13,7 +13,7 @@ class LocalStorageRepositoryImp extends LocalStorageRepository {
 
   @override
   Future<List<dynamic>> loadFavorites({int limit = 10, offset = 0, type = ''}) {
-    return datasource.loadFavorites(limit: limit, offset: offset, type: type);
+    return datasource.loadFavorites(limit: limit, offset: offset);
   }
 
   @override
