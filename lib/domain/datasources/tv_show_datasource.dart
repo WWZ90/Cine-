@@ -1,6 +1,4 @@
-import 'package:cinemania/domain/entities/tv_show.dart';
-import 'package:cinemania/domain/entities/tv_show_details.dart';
-import 'package:cinemania/domain/entities/video.dart';
+import 'package:cinemania/domain/entities/entities.dart';
 
 abstract class TvShowDatasource {
   Future<List<TVShow>> getAiringToday({int page = 1});

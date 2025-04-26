@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class FavoriteCircle extends ConsumerStatefulWidget {
@@ -36,7 +37,7 @@ class _FavoriteCircleState extends ConsumerState<FavoriteCircle> {
         builder: (_, value, __) {
           return Transform.scale(
             scale: 1 - value,
-            child: FavLikeButtonConsumer(data: widget.data, type: widget.type),
+            child: FavLikeButtonConsumer(data: widget.data, type: widget.type, iconSize: 40,),
           );
         },
       ),

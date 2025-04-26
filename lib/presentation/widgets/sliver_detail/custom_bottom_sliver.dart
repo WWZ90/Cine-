@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../widgets.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class CustomBottomSliver extends StatelessWidget {
   final Size size;

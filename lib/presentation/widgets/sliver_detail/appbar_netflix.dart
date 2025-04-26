@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:cinemania/domain/entities/video.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
-import 'package:go_router/go_router.dart';
 
 class AppBarNetflix extends SliverPersistentHeaderDelegate {
   final double maxExtend;
@@ -66,10 +66,7 @@ class AppBarNetflix extends SliverPersistentHeaderDelegate {
             ? VideoPlay(
               size: size,
               percent: percent,
-              id: data.id,
-              urlImage: data.posterPath,
-              image: data.posterPath,
-              video: videos!,
+              videos: videos!,
             )
             : SizedBox(),
         FavoriteCircle(size: size, percent: percent, data: data, type: type),

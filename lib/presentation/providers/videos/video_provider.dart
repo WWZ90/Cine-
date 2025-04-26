@@ -1,4 +1,4 @@
-import 'package:cinemania/domain/entities/video.dart';
+import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/videos/video_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

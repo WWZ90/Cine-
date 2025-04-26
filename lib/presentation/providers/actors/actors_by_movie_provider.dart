@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cinemania/domain/entities/actor.dart';
+import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/actors/actors_repository_provider.dart';
 
 final actorsByMovieProvider =

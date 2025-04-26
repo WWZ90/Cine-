@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:cinemania/config/helpers/date_format.dart';
 import 'package:cinemania/config/helpers/human_formats.dart';
-import 'package:cinemania/domain/entities/movie.dart';
-import 'package:cinemania/domain/entities/movie_detail.dart';
-import 'package:cinemania/domain/entities/video.dart';
-import 'package:cinemania/presentation/providers/movies/movie_detail_provider.dart';
+import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';

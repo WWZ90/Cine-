@@ -1,13 +1,12 @@
-import 'package:cinemania/domain/entities/movie.dart';
-import 'package:cinemania/domain/entities/search.dart';
-import 'package:cinemania/domain/entities/tv_show.dart';
-import 'package:cinemania/presentation/delegates/multi_search_delegate.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
-import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:cinemania/presentation/delegates/multi_search_delegate.dart';
+
 
 class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});

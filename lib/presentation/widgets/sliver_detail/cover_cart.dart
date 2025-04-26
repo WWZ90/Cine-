@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../widgets.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class CoverCard extends StatelessWidget {
   final Size size;

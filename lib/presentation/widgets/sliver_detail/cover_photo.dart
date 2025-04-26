@@ -1,5 +1,5 @@
-import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 
 class CoverPhoto extends StatelessWidget {

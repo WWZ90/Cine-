@@ -1,5 +1,5 @@
-import 'package:cinemania/presentation/providers/tv_shows/tv_shows_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemania/presentation/providers/tv_shows/tv_shows_provider.dart';
 
 final initialLoadingTVShowProvider = Provider((ref) {
   final step1 = ref.watch(onTheAirTVShowsProvider).isEmpty;

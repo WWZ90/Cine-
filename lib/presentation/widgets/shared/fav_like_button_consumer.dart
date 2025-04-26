@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:like_button/like_button.dart';
+
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/domain/value_objects/favorite_key.dart';
 

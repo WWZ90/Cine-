@@ -1,36 +1,6 @@
-import 'package:cinemania/domain/entities/search.dart';
-import 'package:cinemania/presentation/providers/searchs/searchs_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-/*
-final searchsProvider =
-    StateNotifierProvider<SearchNotifier, List<MultiSearch>>((ref) {
-      final getSearchs = ref.watch(searchsRepositoryProvider).multiSearch;
-      return SearchNotifier(getSearch: getSearchs);
-    });
-
-final searchQueryProvider = StateProvider<String>((ref) => '');
-
-// final searchedProvider = StateNotifierProvider<notifier, state>((ref) {
-
-// });
-
-class SearchedNotifier extends StateNotifier<List<MultiSearch>> {
-  SearchedNotifier() : super([]);
-
-  // Future<List<MultiSearch>> searchByQuery(String query) async{
-
-  // }
-}
-
-typedef GetSearchCallback = Future<List<MultiSearch>> Function(String query);
-
-class SearchNotifier extends StateNotifier<List<MultiSearch>> {
-  GetSearchCallback getSearch;
-
-  SearchNotifier({required this.getSearch}) : super([]);
-}
-*/
+import 'package:cinemania/domain/entities/entities.dart';
+import 'package:cinemania/presentation/providers/searchs/searchs_repository_provider.dart';
 
 final searchQueryProvider = StateProvider<String>((ref) => '');
 

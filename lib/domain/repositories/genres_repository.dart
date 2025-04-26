@@ -1,4 +1,4 @@
-import 'package:cinemania/domain/entities/genre.dart';
+import 'package:cinemania/domain/entities/entities.dart';
 
 abstract class GenresRepository {
   Future<List<Genre>> getGenresMovie();

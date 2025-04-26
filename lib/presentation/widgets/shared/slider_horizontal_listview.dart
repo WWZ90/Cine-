@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemania/presentation/screens/movies/movie_screen.dart';
-import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
+import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
 
 class SliderHorizontalListview extends ConsumerStatefulWidget {
   final List<dynamic> allData;

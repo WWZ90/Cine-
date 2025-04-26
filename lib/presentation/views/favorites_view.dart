@@ -1,13 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemania/domain/entities/movie.dart';
-import 'package:cinemania/domain/entities/tv_show.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:go_router/go_router.dart';
 
 class FavoritesView extends ConsumerStatefulWidget {
   static const name = 'favorites-view';

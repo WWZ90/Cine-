@@ -1,4 +1,4 @@
-import 'package:cinemania/domain/entities/actor.dart';
+import 'package:cinemania/domain/entities/entities.dart';
 
 abstract class ActorsRepository {
   Future<List<Actor>> getActorsByMovie(String movieId);

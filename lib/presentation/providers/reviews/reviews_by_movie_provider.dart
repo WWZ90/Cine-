@@ -1,6 +1,6 @@
-import 'package:cinemania/domain/entities/review.dart';
-import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemania/domain/entities/entities.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
 
 final reviewsByMovieProvider = StateNotifierProvider.family<ReviewsNotifier, List<Review>, String>((ref, movieId) {
   fetchMoreReviews({int page = 1}) => ref.read(reviewsRepositoryProvider).getReviewsByMovieId(movieId, page: page);

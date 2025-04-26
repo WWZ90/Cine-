@@ -1,8 +1,7 @@
-import 'package:cinemania/domain/entities/movie.dart';
-import 'package:cinemania/domain/entities/tv_show.dart';
-import 'package:cinemania/domain/repositories/local_storage_repository.dart';
-import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemania/domain/entities/entities.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:cinemania/domain/repositories/local_storage_repository.dart';
 
 final favoritesProvider =
     StateNotifierProvider<StorageNotifier, Map<int, dynamic>>((ref) {

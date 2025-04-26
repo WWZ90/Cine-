@@ -1,0 +1,11 @@
+export 'actor.dart';
+export 'author_details.dart';
+export 'genre.dart';
+export 'known_for.dart';
+export 'movie.dart';
+export 'movie_detail.dart';
+export 'review.dart';
+export 'search.dart';
+export 'tv_show.dart';
+export 'tv_show_details.dart';
+export 'video.dart';

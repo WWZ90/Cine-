@@ -1,5 +1,5 @@
-import 'package:cinemania/presentation/views/views.dart';
 import 'package:flutter/material.dart';
+import 'package:cinemania/presentation/views/views.dart';
 
 class HomeScreenTVShow extends StatelessWidget {
   static const name = 'home-screen-tv-show';

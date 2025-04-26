@@ -5,6 +5,6 @@ import 'package:cinemania/domain/datasources/movies_datasource.dart';
 /// Provee la implementación concreta de MoviesDatasource (TMDB + Isar si hiciese falta).
 final moviesDatasourceProvider = Provider<MoviesDatasource>((ref) {
   // Si tu MoviedbDatasource necesitase inyectarle algo, cabría leerlo aquí:
-  // final localDb = ref.read(localStorageRepositoryProvider);
   return MoviedbDatasource();
+  // final localDb = ref.read(localStorageRepositoryProvider);
 });

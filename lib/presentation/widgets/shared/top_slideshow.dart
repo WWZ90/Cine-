@@ -2,15 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
+
 import 'package:cinemania/presentation/screens/screens.dart';
-import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
-import 'package:cinemania/presentation/widgets/shared/fav_like_button_consumer.dart';
 import 'package:cinemania/config/helpers/file_storage.dart';
-import 'package:cinemania/presentation/widgets/widgets.dart'
-    show GradientImageBackground, StarsRatingBarWithInfo;
+import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class TopSlideShow extends ConsumerStatefulWidget {
   final List<dynamic> allData;
@@ -104,7 +101,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                     Positioned(
                       bottom: 10,
                       left: 10,
-                      right: 10,
+                      right: 20,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -126,7 +123,11 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                               ),
                             ],
                           ),
-                          FavLikeButtonConsumer(data: data, type: widget.type),
+                          FavLikeButtonConsumer(
+                            data: data,
+                            type: widget.type,
+                            iconSize: 40,
+                          ),
                         ],
                       ),
                     ),

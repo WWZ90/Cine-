@@ -1,10 +1,9 @@
-import 'package:cinemania/domain/entities/tv_show.dart';
-import 'package:cinemania/domain/entities/tv_show_details.dart';
-import 'package:cinemania/domain/entities/video.dart';
-import 'package:cinemania/presentation/providers/providers.dart';
-import 'package:cinemania/presentation/widgets/sliver_detail/appbar_netflix.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:cinemania/domain/entities/entities.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:cinemania/presentation/widgets/sliver_detail/appbar_netflix.dart';
 
 class TVShowScreen extends ConsumerStatefulWidget {
   static const name = 'tv-show-screen';

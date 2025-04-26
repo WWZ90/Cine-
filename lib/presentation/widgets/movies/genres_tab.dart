@@ -1,10 +1,9 @@
-import 'package:cinemania/domain/entities/genre.dart';
-import 'package:cinemania/presentation/providers/providers.dart';
-import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/movies/movies_providers.dart';
+import 'package:cinemania/domain/entities/entities.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class GenresTab extends ConsumerStatefulWidget {
   final String type;

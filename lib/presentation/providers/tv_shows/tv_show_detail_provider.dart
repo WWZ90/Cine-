@@ -1,6 +1,6 @@
-import 'package:cinemania/domain/entities/tv_show_details.dart';
-import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemania/domain/entities/entities.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
 
 final tvShowDetailsProvider =
     StateNotifierProvider<TvShowDetailNotifier, Map<String, TvShowDetails>>((

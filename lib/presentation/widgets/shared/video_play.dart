@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:cinemania/domain/entities/video.dart';
+import 'package:cinemania/presentation/screens/screens.dart';
 
 class VideoPlay extends StatelessWidget {
-  final int id;
   final Size size;
   final double percent;
-  final List<Video> video;
-  final String urlImage;
-  final String image;
+  final List<Video> videos;
 
   const VideoPlay({
     super.key,
     required this.size,
     required this.percent,
-    required this.video,
-    required this.id,
-    required this.urlImage,
-    required this.image,
+    required this.videos,
   });
 
   @override
@@ -37,11 +33,8 @@ class VideoPlay extends StatelessWidget {
                   return Transform.scale(
                     scale: 1.0 - value,
                     child: _buildVideoWidget(
-                      video,
+                      videos,
                       context,
-                      id,
-                      urlImage,
-                      image,
                     ),
                   );
                 },
@@ -51,17 +44,14 @@ class VideoPlay extends StatelessWidget {
   }
 
   Widget _buildVideoWidget(
-    List<dynamic> data,
+    List<dynamic> videos,
     BuildContext context,
-    int id,
-    String urlImage,
-    String image,
   ) {
     return FloatingActionButton(
       mini: true,
       backgroundColor: const Color.fromARGB(255, 219, 43, 43),
       onPressed: () {
-        context.pushNamed('video-screen');
+        context.pushNamed(VideosPage.name, extra: videos);
       },
       child: Icon(Icons.play_arrow, size: 25),
     );

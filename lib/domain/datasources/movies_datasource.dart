@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:cinemania/domain/entities/movie.dart';
-import 'package:cinemania/domain/entities/movie_detail.dart';
-import 'package:cinemania/domain/entities/video.dart';
+import 'package:cinemania/domain/entities/entities.dart';
 
 abstract class MoviesDatasource {
   Future<List<Movie>> getNowPlaying({int page = 1});

@@ -1,48 +1,10 @@
-/*
-import 'package:cinemania/domain/entities/movie.dart';
-import 'package:cinemania/presentation/screens/screens.dart';
-import 'package:cinemania/presentation/views/views.dart';
-import 'package:go_router/go_router.dart';
-
-final appRouter = GoRouter(
-  initialLocation: '/',
-  routes: [
-    GoRoute(
-      path: '/',
-      name: HomeScreen.name,
-      builder: (context, state) => HomeScreen(childView: MoviesView()),
-      routes: [
-        GoRoute(
-          path: 'movie-screen',
-          name: MovieScreen.name,
-          builder: (context, state) {
-            final movie = state.extra as Movie;
-            return MovieScreen(movie: movie);
-          },
-        ),
-        GoRoute(
-          path: 'video-screen',
-          name: VideosPage.name,
-          builder: (context, state) => VideosPage(),
-        ),
-      ],
-    ),
-  ],
-);
-*/
-
-// lib/config/router.dart
-
-import 'package:cinemania/domain/entities/tv_show.dart';
-import 'package:cinemania/presentation/screens/screens.dart';
-import 'package:cinemania/presentation/screens/tv_shows/tv_show_screen.dart';
-import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cinemania/domain/entities/movie.dart';
-import 'package:cinemania/presentation/views/favorites_view.dart';
-import 'package:cinemania/presentation/views/persons_view.dart';
-import 'package:cinemania/presentation/views/tv_shows_view.dart';
+
+import 'package:cinemania/domain/entities/entities.dart';
+import 'package:cinemania/presentation/screens/screens.dart';
+import 'package:cinemania/presentation/views/views.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
 
 // Llaves de navegadores para estado independiente
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -87,6 +49,15 @@ final GoRouter appRouter = GoRouter(
                     return MovieScreen(movie: movie);
                   },
                 ),
+                GoRoute(
+                  path: 'video-screen',
+                  name: VideosPage.name,
+                  builder:
+                      (context, state) {
+                    final videos = state.extra as List<Video>;
+                    return VideosPage(videos: videos,);
+                  }, 
+                ),
               ],
             ),
           ],
@@ -107,6 +78,15 @@ final GoRouter appRouter = GoRouter(
                     final tvShow = state.extra as TVShow;
                     return TVShowScreen(tvShow: tvShow);
                   },
+                ),
+                GoRoute(
+                  path: 'video-screen',
+                  name: VideosPage.name,
+                  builder:
+                      (context, state) {
+                    final videos = state.extra as List<Video>;
+                    return VideosPage(videos: videos,);
+                  }, 
                 ),
               ],
             ),

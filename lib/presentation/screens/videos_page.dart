@@ -1,18 +1,19 @@
 // lib/presentation/screens/video_page.dart
-import 'package:cinemania/domain/entities/video.dart';
-import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import 'package:cinemania/domain/entities/entities.dart';
+
 class VideosPage extends ConsumerWidget {
   static const name = 'video-screen';
+  final List<Video> videos;
 
-  const VideosPage({super.key});
+  const VideosPage({required this.videos, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<Video> videos = ref.watch(videosTVShowProvider);
+    //final List<Video> videos = ref.watch(videos);
 
     final typeIcons = {
       Type.TRAILER: Icons.movie_filter,
