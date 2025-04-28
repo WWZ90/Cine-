@@ -1,10 +1,10 @@
+import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/views/views.dart';
-import 'package:cinemania/presentation/widgets/widgets.dart';
 
 // Llaves de navegadores para estado independiente
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -21,15 +21,7 @@ final GoRouter appRouter = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return Scaffold(
-          body: navigationShell,
-          bottomNavigationBar: CustomBottomNavigation(
-            currentIndex: navigationShell.currentIndex,
-            onTap:
-                (idx, _) =>
-                    navigationShell.goBranch(idx, initialLocation: idx == 0),
-          ),
-        );
+        return InitialScreenLoader(navigationShell: navigationShell);
       },
       branches: [
         // Branch 0: Home / Movies
@@ -50,13 +42,20 @@ final GoRouter appRouter = GoRouter(
                   },
                 ),
                 GoRoute(
-                  path: 'video-screen',
-                  name: VideosPage.name,
-                  builder:
-                      (context, state) {
+                  path: 'movie-video-screen',
+                  name: 'movie-video-screen',
+                  builder: (context, state) {
                     final videos = state.extra as List<Video>;
-                    return VideosPage(videos: videos,);
-                  }, 
+                    return VideosPage(videos: videos);
+                  },
+                ),
+                GoRoute(
+                  path: 'masonry-all-view',
+                  name: 'masonry-all-view',
+                  builder: (context, state) {
+                    final type = state.extra as String?;
+                    return MasonryAllView(type: type ?? '');
+                  },
                 ),
               ],
             ),
@@ -80,13 +79,12 @@ final GoRouter appRouter = GoRouter(
                   },
                 ),
                 GoRoute(
-                  path: 'video-screen',
-                  name: VideosPage.name,
-                  builder:
-                      (context, state) {
+                  path: 'tv-show-video-screen',
+                  name: 'tv-show-video-screen',
+                  builder: (context, state) {
                     final videos = state.extra as List<Video>;
-                    return VideosPage(videos: videos,);
-                  }, 
+                    return VideosPage(videos: videos);
+                  },
                 ),
               ],
             ),

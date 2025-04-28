@@ -41,6 +41,6 @@ class TvShowRepositoryImpl extends TvShowRepository {
   
   @override
   Future<List<TVShow>> getTVShowByGenreId(String id, {int page = 1}) {
-    return datasource.getTVShowByGenreId(id);
+    return datasource.getTVShowByGenreId(id, page: page);
   }
 }

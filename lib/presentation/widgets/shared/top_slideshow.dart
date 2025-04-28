@@ -11,7 +11,7 @@ import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class TopSlideShow extends ConsumerStatefulWidget {
   final List<dynamic> allData;
-  final String type; //Movie - TVShow - Person
+  final String type; // Movie - TVShow - Person
   const TopSlideShow({super.key, required this.allData, required this.type});
 
   @override
@@ -22,19 +22,27 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
   int _currentIndex = 0;
   Timer? _autoPlayTimer;
   Timer? _resumeTimer;
+  late PageController _pageController; // Controlador para manejar el scroll
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: _currentIndex);
     _startAutoPlay();
   }
 
+  // Comenzar el auto-play
   void _startAutoPlay() {
     _autoPlayTimer?.cancel();
     _autoPlayTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      setState(() {
+      if (_pageController.hasClients) {
         _currentIndex = (_currentIndex + 1) % widget.allData.length;
-      });
+        _pageController.animateToPage(
+          _currentIndex,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
     });
   }
 
@@ -51,13 +59,12 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
   void dispose() {
     _autoPlayTimer?.cancel();
     _resumeTimer?.cancel();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final data = widget.allData[_currentIndex];
-    data.uniqueID = '${data.id}"-${widget.type}-section-${data.title}';
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SizedBox(
@@ -67,6 +74,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
           Expanded(
             child: GestureDetector(
               onTap: () {
+                final data = widget.allData[_currentIndex];
                 if (widget.type == 'Movie') {
                   context.pushNamed(MovieScreen.name, extra: data);
                 }
@@ -76,72 +84,93 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
               },
               onTapDown: (_) => _onUserInteractionStart(),
               onTapUp: (_) => _onUserInteractionEnd(),
-              child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 800),
-                transitionBuilder:
-                    (child, animation) =>
-                        FadeTransition(opacity: animation, child: child),
-                child: Stack(
-                  key: ValueKey(data.id), // Necesario para animación correcta
-                  fit: StackFit.expand,
-                  children: [
-                    Hero(
-                      tag: data.uniqueID,
-                      child: Image(
-                        image: NetworkToFileImage(
-                          url: data.posterPath,
-                          file: LocalImageFileManager.fileFromUrl(
-                            data.posterPath,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: widget.allData.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                itemBuilder: (context, index) {
+                  final data = widget.allData[index];
+                  data.uniqueID =
+                      '${data.id}"-${widget.type}-section-${data.title}';
+
+                  return AnimatedSwitcher(
+                    duration: Duration(milliseconds: 800),
+                    transitionBuilder:
+                        (child, animation) =>
+                            FadeTransition(opacity: animation, child: child),
+                    child: Stack(
+                      key: ValueKey(data.id),
+                      fit: StackFit.expand,
+                      children: [
+                        Hero(
+                          tag: data.uniqueID,
+                          child: Image(
+                            image: NetworkToFileImage(
+                              url: data.posterPath,
+                              file: LocalImageFileManager.fileFromUrl(
+                                data.posterPath,
+                              ),
+                            ),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    GradientImageBackground(),
-                    Positioned(
-                      bottom: 10,
-                      left: 10,
-                      right: 20,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        GradientImageBackground(),
+                        Positioned(
+                          bottom: 10,
+                          left: 10,
+                          right: 20,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                data.title,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Ajustar el texto para que se recorte antes del corazón
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width *
+                                        0.80, // Ajuste aquí el ancho
+                                    child: Text(
+                                      data.title,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  StarsRatingBarWithInfo(
+                                    rating: data.voteAverage,
+                                    voteCount: data.voteCount,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 5),
-                              StarsRatingBarWithInfo(
-                                rating: data.voteAverage,
-                                voteCount: data.voteCount,
+                              FavLikeButtonConsumer(
+                                data: data,
+                                type: widget.type,
+                                iconSize: 40,
                               ),
                             ],
                           ),
-                          FavLikeButtonConsumer(
-                            data: data,
-                            type: widget.type,
-                            iconSize: 40,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ),
           const SizedBox(height: 10),
           // Indicador
           SmoothPageIndicator(
-            controller: PageController(
-              initialPage: _currentIndex,
-            ), // dummy controller
+            controller: _pageController,
             count: widget.allData.length,
             effect: const WormEffect(
               dotHeight: 6,

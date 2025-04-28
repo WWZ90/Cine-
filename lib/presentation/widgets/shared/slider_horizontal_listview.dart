@@ -55,11 +55,15 @@ class _SliderHorizontalListviewState
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 306,
+      height: 311,
       child: Column(
         children: [
           if (widget.title != null || widget.subTitle != null)
-            _Title(title: widget.title, subTitle: widget.subTitle),
+            _Title(
+              title: widget.title,
+              subTitle: widget.subTitle,
+              type: widget.type,
+            ),
           SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
@@ -76,9 +80,12 @@ class _SliderHorizontalListviewState
                     children: [
                       _Slide(data: data, type: widget.type),
                       Positioned(
-                        bottom: 50,
+                        bottom: 55,
                         right: 10,
-                        child: FavLikeButtonConsumer(data: data, type: widget.type),
+                        child: FavLikeButtonConsumer(
+                          data: data,
+                          type: widget.type,
+                        ),
                       ),
                     ],
                   ),
@@ -95,8 +102,9 @@ class _SliderHorizontalListviewState
 class _Title extends StatelessWidget {
   final String? title;
   final String? subTitle;
+  final String? type;
 
-  const _Title({this.title, this.subTitle});
+  const _Title({this.title, this.subTitle, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +120,12 @@ class _Title extends StatelessWidget {
 
           if (subTitle != null)
             FilledButton.tonal(
-              onPressed: () {},
+              onPressed: () {
+                final String t = '$title-$type';
+                context.pushNamed('masonry-all-view', extra: t);
+              },
               style: ButtonStyle(visualDensity: VisualDensity.compact),
-              child: Text(subTitle!),
+              child: Text('Ver Todo'),
             ),
         ],
       ),
@@ -150,20 +161,6 @@ class _Slide extends StatelessWidget {
               child: Hero(
                 tag: data.uniqueID.toString(),
                 child: LoadImage(url: data.posterPath, h: 200, w: 150),
-
-                /*ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image(
-                    image: NetworkToFileImage(
-                      url: movie.posterPath,
-                      file: LocalImageFileManager.fileFromUrl(
-                        movie.posterPath,
-                      ),
-                      debug: true,
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),*/
               ),
             ),
           ),

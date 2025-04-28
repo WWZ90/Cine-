@@ -14,9 +14,11 @@ class MoviesView extends ConsumerStatefulWidget {
 class HomeViewState extends ConsumerState<MoviesView> {
   @override
   Widget build(BuildContext context) {
-    final initialLoading = ref.watch(initialLoadingProvider);
+    // final initialLoading = ref.watch(initialLoadingProvider);
 
-    if (initialLoading) return FullScreenLoader();
+    // if (initialLoading) {
+    //   return Scaffold(body: FullScreenLoader());
+    // }
 
     final nowPlaying = ref.watch(nowPlayingMoviesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
@@ -34,8 +36,8 @@ class HomeViewState extends ConsumerState<MoviesView> {
                 TopSlideShow(allData: nowPlaying, type: 'Movie'),
                 SliderHorizontalListview(
                   allData: upcomingMovies,
-                  title: 'Upcoming',
-                  subTitle: 'Soon',
+                  title: 'Próximamente',
+                  subTitle: 'Pronto',
                   type: 'Movie',
                   loadNextPage: () {
                     ref.read(upcomingMoviesProvider.notifier).loadNextPage();
@@ -44,7 +46,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                 SliderHorizontalListview(
                   allData: popularMovies,
                   title: 'Populares',
-                  subTitle: 'This month',
+                  subTitle: 'Populares',
                   type: 'Movie',
                   loadNextPage: () {
                     ref.read(popularMoviesProvider.notifier).loadNextPage();
@@ -54,14 +56,14 @@ class HomeViewState extends ConsumerState<MoviesView> {
                 GenresTab(genres: genres, type: 'Movie'),
                 SliderHorizontalListview(
                   allData: topRatedMovies,
-                  title: 'Top Rated',
-                  subTitle: 'All time',
+                  title: 'Mejores valoradas',
+                  subTitle: 'Mejores valoradas',
                   type: 'Movie',
                   loadNextPage: () {
                     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
                   },
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
               ],
             );
           }, childCount: 1),

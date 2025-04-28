@@ -29,13 +29,45 @@ class StarsRatingBarWithInfo extends StatelessWidget {
           filledColor: color!,
         ),
         SizedBox(width: 3),
-        Text('${rating.toStringAsFixed(1)}/10', style: TextStyle(color: color)),
-        SizedBox(width: 5),
-        if (voteCount != 0)
-          Text(
-            '(${HumanFormats.number(voteCount.toDouble())})',
-            style: textSyle.bodyMedium,
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Baseline(
+              baseline:
+                  20, // La altura en la que quieres que se alinee el texto
+              baselineType: TextBaseline.alphabetic,
+              child: Text(
+                rating.toStringAsFixed(1), // Rating
+                style: TextStyle(
+                  fontSize: 20, // Tamaño de fuente más grande para el rating
+                  color: color,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            Baseline(
+              baseline: 18, // El mismo valor para que se alinee con el número
+              baselineType: TextBaseline.alphabetic,
+              child: Text(
+                '/10', // "/10" más pequeño
+                style: TextStyle(
+                  fontSize: 13, // Tamaño de fuente más pequeño para "/10"
+                  color: color,
+                ),
+              ),
+            ),
+            SizedBox(width: 5),
+            if (voteCount != 0)
+              Baseline(
+                baseline: 15, // El mismo valor para que se alinee con el número
+                baselineType: TextBaseline.alphabetic,
+                child: Text(
+                  '(${HumanFormats.number(voteCount.toDouble())})',
+                  style: TextStyle(fontSize: 12),
+                ),
+              ),
+          ],
+        ),
       ],
     );
   }

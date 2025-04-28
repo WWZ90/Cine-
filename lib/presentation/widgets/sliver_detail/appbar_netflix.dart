@@ -1,8 +1,8 @@
 import 'dart:math';
+import 'package:cinemania/domain/entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:cinemania/domain/entities/video.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class AppBarNetflix extends SliverPersistentHeaderDelegate {
@@ -11,7 +11,6 @@ class AppBarNetflix extends SliverPersistentHeaderDelegate {
   final Size size;
   final dynamic data;
   final String type;
-  final List<Video>? videos;
 
   const AppBarNetflix({
     required this.maxExtend,
@@ -19,7 +18,6 @@ class AppBarNetflix extends SliverPersistentHeaderDelegate {
     required this.size,
     required this.data,
     required this.type,
-    required this.videos,
   });
 
   @override
@@ -62,24 +60,28 @@ class AppBarNetflix extends SliverPersistentHeaderDelegate {
           bottomsSliverBar,
           card,
         ],
-        videos!.isNotEmpty
-            ? VideoPlay(
-              size: size,
-              percent: percent,
-              videos: videos!,
-            )
-            : SizedBox(),
+
+        VideoPlayIcon(
+          size: size,
+          percent: percent,
+          type: data is Movie ? 'Movie' : 'TVShow',
+          data: data,
+        ),
         FavoriteCircle(size: size, percent: percent, data: data, type: type),
         Positioned(
           top: 30,
           left: 10,
-          child: IconButton.filled(
-            color: Colors.black45,
-            focusColor: Colors.black38,
-            onPressed: () {
-              context.pop();
-            },
-            icon: Icon(Icons.arrow_back_ios_outlined),
+          child: Material(
+            color: const Color.fromARGB(255, 99, 99, 99).withOpacity(0.6),
+            shape: CircleBorder(), // Si quieres que el fondo sea circular
+            child: IconButton(
+              color: const Color.fromARGB(255, 255, 255, 255), // Color del icono
+              focusColor: Colors.black38,
+              onPressed: () {
+                context.pop();
+              },
+              icon: Icon(Icons.arrow_back_ios_outlined),
+            ),
           ),
         ),
       ],

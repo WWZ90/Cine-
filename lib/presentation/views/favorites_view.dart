@@ -53,7 +53,7 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
               style: TextStyle(fontSize: 25, color: Colors.white),
             ),
             Text(
-              'No favorites at the moment',
+              'No tienes favoritos actualmente...',
               style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 141, 141, 141)),
             ),
           ],
@@ -62,104 +62,7 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
     }
 
     return Scaffold(
-      body: FavoritesMasonry(loadNextPage: loadNextPage, favorites: favorites),
-    );
-  }
-}
-
-class FavoritesMasonry extends StatefulWidget {
-  final List<dynamic> favorites;
-  final VoidCallback? loadNextPage;
-  const FavoritesMasonry({
-    required this.favorites,
-    this.loadNextPage,
-    super.key,
-  });
-
-  @override
-  State<FavoritesMasonry> createState() => _FavoritesMasonryState();
-}
-
-class _FavoritesMasonryState extends State<FavoritesMasonry> {
-  final scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    scrollController.addListener(() {
-      if (widget.loadNextPage == null) return;
-
-      if ((scrollController.position.pixels + 200) >
-          scrollController.position.maxScrollExtent) {
-        widget.loadNextPage!();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: MasonryGridView.count(
-        controller: scrollController,
-        itemCount: widget.favorites.length,
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        itemBuilder: (context, index) {
-          if (index == 1) {
-            return Column(
-              children: [
-                SizedBox(height: 15),
-                FavoritePosterLink(favorite: widget.favorites[index]),
-              ],
-            );
-          }
-          return FavoritePosterLink(favorite: widget.favorites[index]);
-        },
-      ),
-    );
-  }
-}
-
-class FavoritePosterLink extends StatelessWidget {
-  final dynamic favorite;
-  const FavoritePosterLink({required this.favorite, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    String type = '';
-    if (favorite is Movie) {
-      type = 'Movie';
-    } else if (favorite is TVShow) {
-      type = 'TVShow';
-    }
-    return GestureDetector(
-      onTap: () {
-        if (favorite is Movie) {
-          context.pushNamed(MovieScreen.name, extra: favorite as Movie);
-        } else if (favorite is TVShow) {
-          context.pushNamed(TVShowScreen.name, extra: favorite as TVShow);
-        }
-      },
-      child: FadeInUp(
-        child: Stack(
-          children: [
-            LoadImage(url: favorite.posterPath, h: 200, w: 150),
-            Positioned(
-              bottom: 4,
-              right: 4,
-              child: FavLikeButtonConsumer(data: favorite, type: type),
-            ),
-          ],
-        ),
-      ),
+      body: MasonryView(loadNextPage: loadNextPage, data: favorites),
     );
   }
 }

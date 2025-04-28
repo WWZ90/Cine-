@@ -12,7 +12,6 @@ import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';
-  //final String movieId;
   final Movie movie;
   const MovieScreen({super.key, required this.movie});
 
@@ -30,9 +29,8 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     ref
         .read(actorsByMovieProvider.notifier)
         .loadActors(widget.movie.id.toString());
-    ref
-        .read(videosMovieProvider.notifier)
-        .loadVideosMovie(widget.movie.id.toString());
+
+    ref.read(videosMovieProvider(widget.movie.id.toString()));
     ref
         .read(similarMoviesProvider(widget.movie.id.toString()).notifier)
         .loadNextPage();
@@ -43,37 +41,26 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final MovieDetail? movieDetails =
-        ref.watch(movieDetailProvider)[widget.movie.id.toString()];
-
-    final List<Video> videos = ref.watch(videosMovieProvider);
-
-    return Scaffold(
-      body:
-          movieDetails != null
-              ? _CustomSliverAppBar(
-                movie: widget.movie,
-                videos: videos,
-                movieDetails: movieDetails,
-              )
-              : Center(child: CircularProgressIndicator()),
-    );
+    return Scaffold(body: _CustomSliverAppBar(movie: widget.movie));
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+class _CustomSliverAppBar extends ConsumerStatefulWidget {
   final Movie movie;
-  final List<Video> videos;
-  final MovieDetail movieDetails;
-  const _CustomSliverAppBar({
-    required this.movie,
-    required this.videos,
-    required this.movieDetails,
-  });
+  const _CustomSliverAppBar({required this.movie});
 
+  @override
+  ConsumerState<_CustomSliverAppBar> createState() =>
+      _CustomSliverAppBarState();
+}
+
+class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final MovieDetail? movieDetails =
+        ref.watch(movieDetailProvider)[widget.movie.id.toString()];
+
     return CustomScrollView(
       slivers: [
         SliverPersistentHeader(
@@ -81,99 +68,109 @@ class _CustomSliverAppBar extends StatelessWidget {
             minExtend: kToolbarHeight,
             maxExtend: size.height * 0.55, //0.35
             size: size,
-            data: movie,
+            data: widget.movie,
             type: 'Movie',
-            videos: videos,
           ),
         ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Column(
-              children: [
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        movieDetails != null
+            ? SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
                   children: [
+                    SizedBox(height: 10),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Icon(Icons.calendar_month_outlined),
-                        SizedBox(width: 4),
-                        Text(formatDate(movieDetails.releaseDate)),
-                      ],
-                    ),
-                    Text(' | '),
-                    Row(
-                      children: [
-                        Icon(Icons.money_off_outlined),
-                        SizedBox(width: 4),
-                        Text(
-                          HumanFormats.number(movieDetails.budget.toDouble()),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.calendar_month_outlined),
+                            SizedBox(width: 4),
+                            Text(formatDate(movieDetails.releaseDate)),
+                          ],
+                        ),
+                        Text(' | '),
+                        Row(
+                          children: [
+                            Icon(Icons.money_off_outlined),
+                            SizedBox(width: 4),
+                            Text(
+                              HumanFormats.number(
+                                movieDetails.budget.toDouble(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(' | '),
+                        Row(
+                          children: [
+                            Icon(Icons.monetization_on_outlined),
+                            SizedBox(width: 4),
+                            Text(
+                              HumanFormats.number(
+                                movieDetails.revenue.toDouble(),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    Text(' | '),
-                    Row(
+                    SizedBox(height: 10),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 2,
+                      runSpacing: 0,
                       children: [
-                        Icon(Icons.monetization_on_outlined),
-                        SizedBox(width: 4),
-                        Text(
-                          HumanFormats.number(movieDetails.revenue.toDouble()),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 2,
-                  runSpacing: 0,
-                  children: [
-                    ...movieDetails.genres.map(
-                      (genre) => Container(
-                        padding: const EdgeInsets.all(1),
-                        child: Chip(
-                          label: Text(genre.name),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        ...movieDetails.genres.map(
+                          (genre) => Container(
+                            padding: const EdgeInsets.all(1),
+                            child: Chip(
+                              label: Text(genre.name),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
+                    movieDetails.overview.isNotEmpty
+                        ? Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(
+                                movieDetails.overview,
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                          ],
+                        )
+                        : SizedBox(height: 15),
+                    VideoTrailer(data: widget.movie),
+                    SizedBox(height: 10),
+                    _ReviewsByMovie(movieId: widget.movie.id.toString()),
+                    SizedBox(height: 15),
+                    _ActosByMovie(movieId: widget.movie.id.toString()),
+                    _SimilarMovies(movieId: widget.movie.id.toString()),
                   ],
                 ),
-                movieDetails.overview.isNotEmpty
-                    ? Column(
-                      children: [
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                            movieDetails.overview,
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                      ],
-                    )
-                    : SizedBox(height: 15),
-                _ReviewsByMovie(movieId: movie.id.toString()),
-                SizedBox(height: 20),
-                _ActosByMovie(movieId: movie.id.toString()),
-                _SimilarMovies(movieId: movie.id.toString()),
-              ],
+              ),
+            )
+            : SliverToBoxAdapter(
+              child: SizedBox(
+                height: 100,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              ),
             ),
-          ),
-        ),
       ],
     );
   }
 }
-
-
 
 class _ActosByMovie extends ConsumerWidget {
   final String movieId;

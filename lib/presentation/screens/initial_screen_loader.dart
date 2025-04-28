@@ -1,0 +1,53 @@
+import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+class InitialScreenLoader extends ConsumerStatefulWidget {
+  final StatefulNavigationShell navigationShell;
+
+  const InitialScreenLoader({super.key, required this.navigationShell});
+
+  @override
+  ConsumerState<InitialScreenLoader> createState() => InitialScreenLoaderState();
+}
+
+class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    ref.read(genresMovieProvider.notifier).loadGenres();
+
+    ref.read(genresTVShowProvider.notifier).loadGenres();
+    ref.read(airingTodayTVShowsProvider.notifier).loadNextPage();
+    ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
+    ref.read(popularTVShowsProvider.notifier).loadNextPage();
+    ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    final initialLoading = ref.watch(initialLoadingProvider);
+
+    if (initialLoading) {
+      return Scaffold(body: FullScreenLoader());
+    }
+    
+    return Scaffold(
+      body: widget.navigationShell,
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: widget.navigationShell.currentIndex,
+        onTap:
+            (idx, _) =>
+                widget.navigationShell.goBranch(idx, initialLocation: true),
+      ),
+    );
+  }
+}

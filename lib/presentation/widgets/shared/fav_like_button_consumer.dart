@@ -42,7 +42,7 @@ class _FavLikeButtonConsumerState extends ConsumerState<FavLikeButtonConsumer> {
                 likeBuilder:
                     (liked) => Icon(
                       Icons.favorite,
-                      color: liked ? Colors.red : Colors.white,
+                      color: liked ? Colors.red : Colors.white38,
                       size: widget.iconSize,
                     ),
                 bubblesColor: const BubblesColor(

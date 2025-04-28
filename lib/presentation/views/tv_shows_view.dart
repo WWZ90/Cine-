@@ -32,7 +32,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                 SliderHorizontalListview(
                   allData: onTheAir,
                   type: 'TVShow',
-                  title: 'On the air',
+                  title: 'En esta semana',
                   subTitle: 'This week',
                   loadNextPage: () {
                     ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
@@ -41,7 +41,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                 SliderHorizontalListview(
                   allData: popular,
                   type: 'TVShow',
-                  title: 'Popular',
+                  title: 'Populares',
                   subTitle: 'All time',
                   loadNextPage: () {
                     ref.read(popularTVShowsProvider.notifier).loadNextPage();
@@ -51,7 +51,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                 SliderHorizontalListview(
                   allData: topRated,
                   type: 'TVShow',
-                  title: 'Top Rated',
+                  title: 'Mejores valoradas',
                   subTitle: 'All time',
                   loadNextPage: () {
                     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();

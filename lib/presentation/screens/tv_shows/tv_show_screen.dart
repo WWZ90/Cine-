@@ -1,3 +1,4 @@
+import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,7 +8,6 @@ import 'package:cinemania/presentation/widgets/sliver_detail/appbar_netflix.dart
 
 class TVShowScreen extends ConsumerStatefulWidget {
   static const name = 'tv-show-screen';
-
   final TVShow tvShow;
   const TVShowScreen({required this.tvShow, super.key});
 
@@ -23,42 +23,30 @@ class _TVShowScreenState extends ConsumerState<TVShowScreen> {
         .read(tvShowDetailsProvider.notifier)
         .loadTVShow(widget.tvShow.id.toString());
 
-    ref
-        .read(videosTVShowProvider.notifier)
-        .loadVideosTVShow(widget.tvShow.id.toString());
+    ref.read(videosMovieProvider(widget.tvShow.id.toString()));
   }
 
   @override
   Widget build(BuildContext context) {
-    final TvShowDetails? tvShowDetails =
-        ref.watch(tvShowDetailsProvider)[widget.tvShow.id.toString()];
-    final List<Video> videos = ref.watch(videosTVShowProvider);
-    return Scaffold(
-      body:
-          tvShowDetails != null
-              ? _CustomSliverAppBar(
-                tvShow: widget.tvShow,
-                tvShowDetails: tvShowDetails,
-                videos: videos,
-              )
-              : Center(child: CircularProgressIndicator()),
-    );
+    return Scaffold(body: _CustomSliverAppBar(tvShow: widget.tvShow));
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+class _CustomSliverAppBar extends ConsumerStatefulWidget {
   final TVShow tvShow;
-  final TvShowDetails tvShowDetails;
-  final List<Video> videos;
-  const _CustomSliverAppBar({
-    required this.tvShow,
-    required this.tvShowDetails,
-    required this.videos,
-  });
+  const _CustomSliverAppBar({required this.tvShow});
 
+  @override
+  ConsumerState<_CustomSliverAppBar> createState() =>
+      _CustomSliverAppBarState();
+}
+
+class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final TvShowDetails? tvShowDetails =
+        ref.watch(tvShowDetailsProvider)[widget.tvShow.id.toString()];
     return CustomScrollView(
       slivers: [
         SliverPersistentHeader(
@@ -66,19 +54,43 @@ class _CustomSliverAppBar extends StatelessWidget {
             minExtend: kToolbarHeight,
             maxExtend: size.height * 0.55,
             size: size,
-            data: tvShow,
+            data: widget.tvShow,
             type: 'TVShow',
-            videos: videos,
           ),
         ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Column(
-              children: [SizedBox(height: 10), Text(tvShowDetails.overview)],
+        tvShowDetails != null
+            ? SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    tvShowDetails.overview.isNotEmpty
+                        ? Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(
+                                tvShowDetails.overview,
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                          ],
+                        )
+                        : SizedBox(height: 15),
+                    VideoTrailer(data: widget.tvShow),
+                  ],
+                ),
+              ),
+            )
+            : SliverToBoxAdapter(
+              child: SizedBox(
+                height: 100,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              ),
             ),
-          ),
-        ),
       ],
     );
   }

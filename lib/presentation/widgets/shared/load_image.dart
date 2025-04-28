@@ -61,8 +61,9 @@ class LoadImage extends StatelessWidget {
             return Container(
               width: w,
               height: h,
+              color: Colors.grey[850],
               alignment: Alignment.center,
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white38,),
             );
           }
           return child;
