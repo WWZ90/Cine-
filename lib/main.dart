@@ -1,11 +1,10 @@
-import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:cinemania/config/router/router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:cinemania/config/router/router.dart';
+import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/config/theme/app_theme.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future main() async {
   await dotenv.load(fileName: '.env');
