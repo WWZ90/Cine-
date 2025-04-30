@@ -7,7 +7,6 @@ import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/delegates/multi_search_delegate.dart';
 
-
 class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
 
@@ -21,16 +20,18 @@ class CustomAppbar extends ConsumerWidget {
       centerTitle: true,
       title: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.only(left: 10, right: 0),
           child: SizedBox(
             width: double.infinity,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.movie_outlined),
+                //Icon(Icons.movie_outlined),
+                Image.asset('assets/images/app_icon.png', width: 23),
                 //SizedBox(width: 5),
-                Text('CINE+', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                //Text('CINE+', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                Image.asset('assets/images/cine.png', width: 50),
                 //Spacer(),
                 IconButton(
                   icon: Icon(Icons.search),
