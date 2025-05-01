@@ -42,10 +42,21 @@ class _VideosList extends StatelessWidget {
     if (videos.isEmpty) {
       return const SizedBox();
     }
+    
+    // Filtrar solo los videos que sean trailers
+    final trailers = videos
+        .where((video) => video.type == Type.TRAILER)
+        .toList();
+
+    // Ordenar por fecha de publicación descendente (más reciente primero)
+    trailers.sort((a, b) => b.publishedAt.compareTo(a.publishedAt));
+
+    // Seleccionar el trailer más reciente, o el primer video si no hay trailers
+    final selectedVideo = trailers.isNotEmpty ? trailers.first : videos.first;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [_YouTubeVideoPlayer(youtubeId: videos.first.key)],
+      children: [_YouTubeVideoPlayer(youtubeId: selectedVideo.key)],
     );
   }
 }

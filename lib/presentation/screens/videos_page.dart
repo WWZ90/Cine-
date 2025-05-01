@@ -133,9 +133,16 @@ class VideosPage extends ConsumerWidget {
                                       controller: YoutubePlayerController(
                                         initialVideoId: video.key,
                                         flags: const YoutubePlayerFlags(
+                                          hideThumbnail: true,
+                                          showLiveFullscreenButton: false,
+                                          mute: false,
                                           autoPlay: false,
-                                          forceHD: true,
+                                          disableDragSeek: true,
+                                          loop: false,
+                                          isLive: false,
+                                          forceHD: false,
                                           enableCaption: false,
+                                          useHybridComposition: false,
                                         ),
                                       ),
                                       showVideoProgressIndicator: true,
