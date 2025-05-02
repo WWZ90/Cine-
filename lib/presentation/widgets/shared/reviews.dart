@@ -87,12 +87,17 @@ class _ReviewsByMovieState extends ConsumerState<Reviews> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       if (review.authorDetails.name.isNotEmpty)
-                                        Text(
-                                          review.authorDetails.name,
-                                          style:
-                                              Theme.of(
-                                                context,
-                                              ).textTheme.titleMedium,
+                                        SizedBox(
+                                          width: 140,
+                                          child: Text(
+                                            review.authorDetails.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.titleMedium,
+                                          ),
                                         ),
                                       Text(
                                         '@${review.authorDetails.username}',
