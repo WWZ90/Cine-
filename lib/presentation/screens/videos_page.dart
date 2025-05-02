@@ -1,4 +1,5 @@
 // lib/presentation/screens/video_page.dart
+import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -129,29 +130,7 @@ class VideosPage extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    YoutubePlayer(
-                                      controller: YoutubePlayerController(
-                                        initialVideoId: video.key,
-                                        flags: const YoutubePlayerFlags(
-                                          hideThumbnail: true,
-                                          showLiveFullscreenButton: false,
-                                          mute: false,
-                                          autoPlay: false,
-                                          disableDragSeek: true,
-                                          loop: false,
-                                          isLive: false,
-                                          forceHD: false,
-                                          enableCaption: false,
-                                          useHybridComposition: false,
-                                        ),
-                                      ),
-                                      showVideoProgressIndicator: true,
-                                      progressIndicatorColor: color,
-                                      progressColors: ProgressBarColors(
-                                        playedColor: color,
-                                        handleColor: color.withOpacity(0.8),
-                                      ),
-                                    ),
+                                    YouTubeVideoPlayer(youtubeId: video.key),
                                     const SizedBox(height: 4),
                                     Text(
                                       'Publicado el ${_formatDate(video.publishedAt)}',

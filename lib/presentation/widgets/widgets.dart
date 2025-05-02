@@ -28,3 +28,4 @@ export 'sliver_detail/cut_rectangle.dart';
 export 'sliver_detail/data_cut_rectangle.dart';
 export 'sliver_detail/favorit_circle.dart';
 export 'tv_shows/tv_show_detail_card.dart';
+export 'shared/youtube_video_player.dart';

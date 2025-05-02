@@ -1,3 +1,4 @@
+import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -56,69 +57,8 @@ class _VideosList extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [_YouTubeVideoPlayer(youtubeId: selectedVideo.key)],
+      children: [YouTubeVideoPlayer(youtubeId: selectedVideo.key)],
     );
   }
 }
 
-class _YouTubeVideoPlayer extends StatefulWidget {
-  final String youtubeId;
-
-  const _YouTubeVideoPlayer({required this.youtubeId});
-
-  @override
-  State<_YouTubeVideoPlayer> createState() => _YouTubeVideoPlayerState();
-}
-
-class _YouTubeVideoPlayerState extends State<_YouTubeVideoPlayer> {
-  late YoutubePlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.youtubeId,
-      flags: const YoutubePlayerFlags(
-        hideThumbnail: true,
-        showLiveFullscreenButton: false,
-        mute: false,
-        autoPlay: false,
-        disableDragSeek: true,
-        loop: false,
-        isLive: false,
-        forceHD: false,
-        enableCaption: false,
-        useHybridComposition: false,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    //_controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) {
-        _controller.pause();
-        _controller.dispose();
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: YoutubePlayer(controller: _controller),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
