@@ -1,4 +1,4 @@
-export 'actors/actors_by_movie_provider.dart';
+export 'actors/actors_provider.dart';
 export 'actors/actors_repository_provider.dart';
 export 'genres/genres_provider.dart';
 export 'genres/genres_repository_provider.dart';
@@ -8,7 +8,7 @@ export 'movies/movie_detail_provider.dart';
 export 'movies/movies_providers.dart';
 export 'movies/movies_repository_provider.dart';
 export 'movies/movies_slideshow_provider.dart';
-export 'reviews/reviews_by_movie_provider.dart';
+export 'reviews/reviews_provider.dart';
 export 'reviews/reviews_repository_provider.dart';
 export 'searchs/searchs_multi_provider.dart';
 export 'searchs/searchs_repository_provider.dart';

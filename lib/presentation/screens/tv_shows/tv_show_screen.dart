@@ -1,10 +1,9 @@
-import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
-import 'package:cinemania/presentation/widgets/sliver_detail/appbar_netflix.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class TVShowScreen extends ConsumerStatefulWidget {
   static const name = 'tv-show-screen';
@@ -19,11 +18,15 @@ class _TVShowScreenState extends ConsumerState<TVShowScreen> {
   @override
   void initState() {
     super.initState();
-    ref
-        .read(tvShowDetailsProvider.notifier)
-        .loadTVShow(widget.tvShow.id.toString());
+    final id = widget.tvShow.id.toString();
+    ref.read(tvShowDetailsProvider.notifier).loadTVShow(id);
 
-    ref.read(videosMovieProvider(widget.tvShow.id.toString()));
+    ref.read(videosTVShowProvider(id));
+
+    ref.read(reviewsByTVShowProvider(id));
+    ref.read(actorsByTVShowProvider.notifier).loadActors(id);
+
+    ref.read(similarTVShowsProvider(id).notifier).loadNextPage();
   }
 
   @override
@@ -62,32 +65,12 @@ class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
             ? SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Column(
-                  children: [
-                    SizedBox(height: 10),
-                    tvShowDetails.overview.isNotEmpty
-                        ? Column(
-                          children: [
-                            SizedBox(height: 20),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                tvShowDetails.overview,
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                          ],
-                        )
-                        : SizedBox(height: 15),
-                    VideoTrailer(data: widget.tvShow),
-                  ],
-                ),
+                child: TvShowDetailCard(tvShowDetails: tvShowDetails),
               ),
             )
             : SliverToBoxAdapter(
               child: SizedBox(
-                height: 100,
+                height: 200,
                 child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
               ),
             ),

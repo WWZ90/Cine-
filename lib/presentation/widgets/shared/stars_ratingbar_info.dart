@@ -20,7 +20,6 @@ class StarsRatingBarWithInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textSyle = Theme.of(context).textTheme;
     return Row(
       children: [
         PreciseRatingBar(

@@ -1,9 +1,9 @@
+import 'package:dio/dio.dart';
+import 'package:cinemania/domain/entities/review.dart';
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/reviews_datasource.dart';
-import 'package:cinemania/domain/entities/review.dart';
 import 'package:cinemania/infrastructure/mappers/review_mapper.dart';
 import 'package:cinemania/infrastructure/models/moviedb/reviews_response.dart';
-import 'package:dio/dio.dart';
 
 class ReviewMovieDbDatasource extends ReviewsDatasource {
   final dio = Dio(
@@ -26,6 +26,24 @@ class ReviewMovieDbDatasource extends ReviewsDatasource {
         reviewResponse.results
             .map((review) => ReviewMapper.reviewToEntity(review))
             .toList();
+    return reviews;
+  }
+
+  @override
+  Future<List<Review>> getReviewsByTVShowId(String id, {int page = 1}) async {
+    final response = await dio.get('/tv/$id/reviews');
+
+    if (response.statusCode != 200) {
+      throw Exception('Reviews for tvShowId $id not found');
+    }
+
+    final reviewsResponse = ReviewsResponse.fromJson(response.data);
+
+    List<Review> reviews =
+        reviewsResponse.results
+            .map((review) => ReviewMapper.reviewToEntity(review))
+            .toList();
+
     return reviews;
   }
 }

@@ -11,4 +11,9 @@ class ReviewRepositoryImpl extends ReviewsRepository {
   Future<List<Review>> getReviewsByMovieId(String id, {int page = 1}) {
     return datasource.getReviewsByMovieId(id, page: page);
   }
+
+  @override
+  Future<List<Review>> getReviewsByTVShowId(String id, {int page = 1}) {
+    return datasource.getReviewsByTVShowId(id, page: page);
+  }
 }

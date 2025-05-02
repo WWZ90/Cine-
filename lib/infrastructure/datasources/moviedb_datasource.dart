@@ -52,32 +52,44 @@ class MoviedbDatasource extends MoviesDatasource {
 
   @override
   Future<List<Movie>> getUpcoming({int page = 1}) async {
-    final response = await dio.get(
-      '/movie/upcoming',
-      queryParameters: {'page': page},
-    );
+    try {
+      final response = await dio.get(
+        '/movie/upcoming',
+        queryParameters: {'page': page},
+      );
 
-    return _jsonToMovie(response.data);
+      return _jsonToMovie(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
   Future<List<Movie>> getPopular({int page = 1}) async {
-    final response = await dio.get(
-      '/movie/popular',
-      queryParameters: {'page': page},
-    );
+    try {
+      final response = await dio.get(
+        '/movie/popular',
+        queryParameters: {'page': page},
+      );
 
-    return _jsonToMovie(response.data);
+      return _jsonToMovie(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
   Future<List<Movie>> getTopRated({int page = 1}) async {
-    final response = await dio.get(
-      '/movie/top_rated',
-      queryParameters: {'page': page},
-    );
+    try {
+      final response = await dio.get(
+        '/movie/top_rated',
+        queryParameters: {'page': page},
+      );
 
-    return _jsonToMovie(response.data);
+      return _jsonToMovie(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
@@ -132,20 +144,28 @@ class MoviedbDatasource extends MoviesDatasource {
 
   @override
   Future<List<Movie>> getSimilar(String id, {int page = 1}) async {
-    final response = await dio.get(
-      '/movie/$id/similar',
-      queryParameters: {'page': page},
-    );
+    try {
+      final response = await dio.get(
+        '/movie/$id/similar',
+        queryParameters: {'page': page},
+      );
 
-    return _jsonToMovie(response.data);
+      return _jsonToMovie(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
   Future<List<Movie>> getMoviesByGenreId(String id, {int page = 1}) async {
-    final response = await dio.get(
-      '/discover/movie',
-      queryParameters: {'with_genres': id, 'page': page},
-    );
-    return _jsonToMovie(response.data);
+    try {
+      final response = await dio.get(
+        '/discover/movie',
+        queryParameters: {'with_genres': id, 'page': page},
+      );
+      return _jsonToMovie(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 }

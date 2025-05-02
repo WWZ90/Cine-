@@ -53,8 +53,15 @@ final GoRouter appRouter = GoRouter(
                   path: 'masonry-all-view',
                   name: 'masonry-all-view',
                   builder: (context, state) {
-                    final type = state.extra as String?;
-                    return MasonryAllView(type: type ?? '');
+                    //final type = state.extra as String?;
+                    //return MasonryAllView(type: type ?? '');
+
+                    final extras = state.extra as Map<String, dynamic>?;
+
+                    final type = extras?['type'] as String? ?? '';
+                    final id = extras?['id'] as String? ?? '';
+
+                    return MasonryAllView(type: type, id: id);
                   },
                 ),
               ],

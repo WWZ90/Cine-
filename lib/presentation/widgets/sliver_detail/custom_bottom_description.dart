@@ -13,15 +13,15 @@ class CustomBottomDescription extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          data.originalTitle,
-          style: TextStyle(
-            //color: Colors.white,
-            fontSize: 16,
-          ),
-          textAlign: TextAlign.start,
-          overflow: TextOverflow.ellipsis,
-        ),
+        // Text(
+        //   data.originalTitle,
+        //   style: TextStyle(
+        //     //color: Colors.white,
+        //     fontSize: 16,
+        //   ),
+        //   textAlign: TextAlign.start,
+        //   overflow: TextOverflow.ellipsis,
+        // ),
         (data.voteAverage > 0)
             ? Row(
               children: <Widget>[

@@ -12,6 +12,7 @@ class SliderHorizontalListview extends ConsumerStatefulWidget {
   final String? title;
   final String? subTitle;
   final String type;
+  final String? id; // For movie or tv show id - to get Similars.
 
   final VoidCallback? loadNextPage;
 
@@ -22,6 +23,7 @@ class SliderHorizontalListview extends ConsumerStatefulWidget {
     this.subTitle,
     required this.type,
     this.loadNextPage,
+    this.id = '',
   });
 
   @override
@@ -63,6 +65,7 @@ class _SliderHorizontalListviewState
               title: widget.title,
               subTitle: widget.subTitle,
               type: widget.type,
+              id: widget.id,
             ),
           SizedBox(height: 5),
           Expanded(
@@ -103,8 +106,9 @@ class _Title extends StatelessWidget {
   final String? title;
   final String? subTitle;
   final String? type;
+  final String? id;
 
-  const _Title({this.title, this.subTitle, required this.type});
+  const _Title({this.title, this.subTitle, required this.type, this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +126,10 @@ class _Title extends StatelessWidget {
             FilledButton.tonal(
               onPressed: () {
                 final String t = '$title-$type';
-                context.pushNamed('masonry-all-view', extra: t);
+                context.pushNamed(
+                  'masonry-all-view',
+                  extra: {'type': t, 'id': id},
+                );
               },
               style: ButtonStyle(visualDensity: VisualDensity.compact),
               child: Text('Ver Todo'),

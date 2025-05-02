@@ -6,8 +6,9 @@ import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoTrailer extends ConsumerStatefulWidget {
-  final dynamic data;
-  const VideoTrailer({required this.data, super.key});
+  final String id;
+  final String type;
+  const VideoTrailer({required this.id, required this.type, super.key});
 
   @override
   ConsumerState<VideoTrailer> createState() => _VideoTrailerState();
@@ -17,10 +18,10 @@ class _VideoTrailerState extends ConsumerState<VideoTrailer> {
   @override
   Widget build(BuildContext context) {
     AsyncValue<List<Video>> videosAsync;
-    if (widget.data is Movie) {
-      videosAsync = ref.watch(videosMovieProvider(widget.data.id.toString()));
+    if (widget.type == 'Movie') {
+      videosAsync = ref.watch(videosMovieProvider(widget.id));
     } else {
-      videosAsync = ref.watch(videosTVShowProvider(widget.data.id.toString()));
+      videosAsync = ref.watch(videosTVShowProvider(widget.id));
     }
     return videosAsync.when(
       data: (videos) => _VideosList(videos: videos),
@@ -42,11 +43,10 @@ class _VideosList extends StatelessWidget {
     if (videos.isEmpty) {
       return const SizedBox();
     }
-    
+
     // Filtrar solo los videos que sean trailers
-    final trailers = videos
-        .where((video) => video.type == Type.TRAILER)
-        .toList();
+    final trailers =
+        videos.where((video) => video.type == Type.TRAILER).toList();
 
     // Ordenar por fecha de publicación descendente (más reciente primero)
     trailers.sort((a, b) => b.publishedAt.compareTo(a.publishedAt));

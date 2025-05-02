@@ -34,8 +34,8 @@ class DataCutRentangle extends StatelessWidget {
               data.title,
               style: TextStyle(
                 //color: Colors.white,
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
               ),
               textAlign: TextAlign.start,
               overflow: TextOverflow.ellipsis,

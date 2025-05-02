@@ -40,42 +40,58 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
 
   @override
   Future<List<TVShow>> getAiringToday({int page = 1}) async {
-    final response = await dio.get(
-      '/tv/airing_today',
-      queryParameters: {'page': page},
-    );
+    try {
+      final response = await dio.get(
+        '/tv/airing_today',
+        queryParameters: {'page': page},
+      );
 
-    return _jsonToTVShow(response.data);
+      return _jsonToTVShow(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
   Future<List<TVShow>> getOnTheAir({int page = 1}) async {
-    final response = await dio.get(
-      '/tv/on_the_air',
-      queryParameters: {'page': page},
-    );
+    try {
+      final response = await dio.get(
+        '/tv/on_the_air',
+        queryParameters: {'page': page},
+      );
 
-    return _jsonToTVShow(response.data);
+      return _jsonToTVShow(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
   Future<List<TVShow>> getPopular({int page = 1}) async {
-    final response = await dio.get(
-      '/tv/popular',
-      queryParameters: {'page': page},
-    );
+    try {
+      final response = await dio.get(
+        '/tv/popular',
+        queryParameters: {'page': page},
+      );
 
-    return _jsonToTVShow(response.data);
+      return _jsonToTVShow(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
   Future<List<TVShow>> getTopRated({int page = 1}) async {
-    final response = await dio.get(
-      '/tv/top_rated',
-      queryParameters: {'page': page},
-    );
+    try {
+      final response = await dio.get(
+        '/tv/top_rated',
+        queryParameters: {'page': page},
+      );
 
-    return _jsonToTVShow(response.data);
+      return _jsonToTVShow(response.data);
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
@@ -127,6 +143,15 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
     final response = await dio.get(
       '/discover/tv',
       queryParameters: {'with_genres': id, 'page': page},
+    );
+    return _jsonToTVShow(response.data);
+  }
+
+  @override
+  Future<List<TVShow>> getSimilar(String id, {int page = 1}) async {
+    final response = await dio.get(
+      '/tv/$id/similar',
+      queryParameters: {'page': page},
     );
     return _jsonToTVShow(response.data);
   }

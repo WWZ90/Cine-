@@ -1,9 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:cinemania/domain/datasources/movies_datasource.dart';
 import 'package:cinemania/domain/entities/movie.dart';
 import 'package:cinemania/domain/entities/movie_detail.dart';
 import 'package:cinemania/domain/entities/video.dart';
 import 'package:cinemania/domain/repositories/movies_repository.dart';
-import 'package:dio/dio.dart';
 
 class MovieRepositoryImpl extends MoviesRepository {
   final MoviesDatasource datasource;

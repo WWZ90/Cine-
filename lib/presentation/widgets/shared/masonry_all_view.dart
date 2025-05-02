@@ -6,7 +6,8 @@ import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class MasonryAllView extends ConsumerStatefulWidget {
   final String? type;
-  const MasonryAllView({required this.type, super.key});
+  final String id;
+  const MasonryAllView({required this.type, this.id = '', super.key});
 
   @override
   ConsumerState<MasonryAllView> createState() => _MasonryAllViewState();
@@ -14,7 +15,7 @@ class MasonryAllView extends ConsumerStatefulWidget {
 
 class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
   final scrollController = ScrollController();
-  
+
   bool isLoading = false;
 
   void loadNextPage() async {
@@ -27,12 +28,16 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
       await ref.read(popularMoviesProvider.notifier).loadNextPage();
     } else if (widget.type == 'Mejores Valoradas-Movie') {
       await ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    } else if (widget.type == 'Similar movies-Movie') {
+      await ref.read(similarMoviesProvider(widget.id).notifier).loadNextPage();
     } else if (widget.type == 'En esta semana-TVShow') {
       await ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
     } else if (widget.type == 'Populares-TVShow') {
       await ref.read(popularTVShowsProvider.notifier).loadNextPage();
     } else if (widget.type == 'Mejores valoradas-TVShow') {
       await ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
+    } else if (widget.type == 'Similar TVShow-TVShow') {
+      await ref.read(similarTVShowsProvider(widget.id).notifier).loadNextPage();
     }
 
     isLoading = false;
@@ -50,15 +55,19 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
     if (widget.type == 'Próximamente-Movie') {
       allData = ref.watch(upcomingMoviesProvider);
     } else if (widget.type == 'Populares-Movie') {
-      allData =  ref.watch(popularMoviesProvider);
+      allData = ref.watch(popularMoviesProvider);
     } else if (widget.type == 'Mejores valoradas-Movie') {
-      allData =  ref.watch(topRatedMoviesProvider);
+      allData = ref.watch(topRatedMoviesProvider);
+    } else if (widget.type == 'Similar movies-Movie') {
+      allData = ref.watch(similarMoviesProvider(widget.id));
     } else if (widget.type == 'En esta semana-TVShow') {
       allData = ref.watch(onTheAirTVShowsProvider);
     } else if (widget.type == 'Populares-TVShow') {
       allData = ref.watch(popularTVShowsProvider);
     } else if (widget.type == 'Mejores valoradas-TVShow') {
       allData = ref.watch(topRatedTVShowsProvider);
+    } else if (widget.type == 'Similar TVShow-TVShow') {
+      allData = ref.watch(similarTVShowsProvider(widget.id));
     }
 
     if (allData.isEmpty) {

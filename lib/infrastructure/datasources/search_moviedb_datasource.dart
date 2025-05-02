@@ -1,9 +1,9 @@
-import 'package:cinemania/config/constants/environment.dart';
-import 'package:cinemania/domain/datasources/searchs_datasource.dart';
-import 'package:cinemania/domain/entities/search.dart';
-import 'package:cinemania/infrastructure/mappers/search_mapper.dart';
-import 'package:cinemania/infrastructure/models/moviedb/searchs_response.dart';
 import 'package:dio/dio.dart';
+import 'package:cinemania/domain/entities/search.dart';
+import 'package:cinemania/infrastructure/models/moviedb/searchs_response.dart';
+import 'package:cinemania/domain/datasources/searchs_datasource.dart';
+import 'package:cinemania/infrastructure/mappers/search_mapper.dart';
+import 'package:cinemania/config/constants/environment.dart';
 
 class SearchMoviedbDatasource extends SearchsDatasource {
   final dio = Dio(
@@ -25,8 +25,6 @@ class SearchMoviedbDatasource extends SearchsDatasource {
     if (response.statusCode != 200) {
       throw Exception('An error occours');
     }
-
-    print('BUSCANDOOOOOOOOOOOO');
 
     final searchResponse = SearchResponse.fromJson(response.data);
 
