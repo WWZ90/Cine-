@@ -10,11 +10,11 @@ class InitialScreenLoader extends ConsumerStatefulWidget {
   const InitialScreenLoader({super.key, required this.navigationShell});
 
   @override
-  ConsumerState<InitialScreenLoader> createState() => InitialScreenLoaderState();
+  ConsumerState<InitialScreenLoader> createState() =>
+      InitialScreenLoaderState();
 }
 
 class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
-
   @override
   void initState() {
     super.initState();
@@ -31,23 +31,29 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
     ref.read(popularTVShowsProvider.notifier).loadNextPage();
     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final initialLoading = ref.watch(initialLoadingProvider);
+    final isFullScreen = ref.watch(isFullscreenProvider);
 
     if (initialLoading) {
       return Scaffold(body: FullScreenLoader());
     }
-    
+
     return Scaffold(
       body: widget.navigationShell,
-      bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: widget.navigationShell.currentIndex,
-        onTap:
-            (idx, _) =>
-                widget.navigationShell.goBranch(idx, initialLocation: true),
-      ),
+      bottomNavigationBar:
+          isFullScreen
+              ? null
+              : CustomBottomNavigation(
+                currentIndex: widget.navigationShell.currentIndex,
+                onTap:
+                    (idx, _) => widget.navigationShell.goBranch(
+                      idx,
+                      initialLocation: true,
+                    ),
+              ),
     );
   }
 }

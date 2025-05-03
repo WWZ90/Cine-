@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoTrailer extends ConsumerStatefulWidget {
   final String id;
@@ -57,7 +56,7 @@ class _VideosList extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [YouTubeVideoPlayer(youtubeId: selectedVideo.key)],
+      children: [YouTubeVideoPlayer(youtubeId: selectedVideo.key, videoTitle: selectedVideo.name,)],
     );
   }
 }

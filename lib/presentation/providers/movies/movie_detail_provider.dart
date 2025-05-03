@@ -22,14 +22,18 @@ class MovieMapNotifier extends StateNotifier<Map<String, MovieDetail>> {
   MovieMapNotifier({required this.getMovie}) : super({});
 
   Future<void> loadMovie(String movieId) async {
-    if (state[movieId] != null) return;
+    try {
+      if (state[movieId] != null) return;
 
-    _cancelToken?.cancel();
-    _cancelToken = CancelToken();
+      _cancelToken?.cancel();
+      _cancelToken = CancelToken();
 
-    final movie = await getMovie(movieId, cancelToken: _cancelToken!);
+      final movie = await getMovie(movieId, cancelToken: _cancelToken!);
 
-    state = {...state, movieId: movie};
+      state = {...state, movieId: movie};
+    } catch (e) {
+      throw Exception('Movie with id $movieId not found');
+    }
   }
 
   @override

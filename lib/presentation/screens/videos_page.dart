@@ -2,7 +2,6 @@
 import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'package:cinemania/domain/entities/entities.dart';
 
@@ -130,7 +129,7 @@ class VideosPage extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    YouTubeVideoPlayer(youtubeId: video.key),
+                                    YouTubeVideoPlayer(youtubeId: video.key, videoTitle: video.name),
                                     const SizedBox(height: 4),
                                     Text(
                                       'Publicado el ${_formatDate(video.publishedAt)}',

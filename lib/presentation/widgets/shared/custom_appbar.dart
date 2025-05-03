@@ -12,85 +12,93 @@ class CustomAppbar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    //final titleStyle = Theme.of(context).textTheme.titleLarge;
     return SliverAppBar(
       floating: true,
-      backgroundColor: Colors.black54,
+      backgroundColor: const Color.fromARGB(135, 17, 17, 17),
       toolbarHeight: 50,
       centerTitle: true,
       title: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(left: 10, right: 0),
+          padding: EdgeInsets.only(left: 0, right: 0),
           child: SizedBox(
             width: double.infinity,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                //Icon(Icons.movie_outlined),
-                Image.asset('assets/images/app_icon.png', width: 23),
-                //SizedBox(width: 5),
-                //Text('CINE+', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                SizedBox(
+                  width: 50, // igual al ancho máximo del botón derecho
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Image.asset('assets/images/app_icon.png', width: 23),
+                  ),
+                ),
                 Image.asset('assets/images/cine.png', width: 50),
-                //Spacer(),
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () async {
-                    final searchedMulti = ref.read(searchedProvider);
-                    final searchQuery = ref.read(searchQueryProvider);
-                    final response = await showSearch<MultiSearch?>(
-                      query: searchQuery,
-                      context: context,
-                      delegate: MultiSearchDelegate(
-                        initialSearchs: searchedMulti,
-                        search:
-                            ref.read(searchedProvider.notifier).searchByQuery,
-                      ),
-                    );
-                    if (!context.mounted || response == null) return;
-
-                    if (response.mediaType == 'movie') {
-                      Movie movie = Movie(
-                        adult: response.adult,
-                        backdropPath: response.backdropPath!,
-                        genreIds: response.genreIds!,
-                        id: response.id,
-                        originalLanguage: response.originalLanguage!,
-                        originalTitle: response.originalTitle!,
-                        overview: response.overview!,
-                        popularity: response.popularity,
-                        posterPath: response.posterPath!,
-                        releaseDate: response.releaseDate!,
-                        title: response.title!,
-                        video: response.video!,
-                        voteAverage: response.voteAverage!,
-                        voteCount: response.voteCount!,
-                      );
-
-                      context.pushNamed(MovieScreen.name, extra: movie);
-                    }
-
-                    if (response.mediaType == 'tv') {
-                      TVShow tvShow = TVShow(
-                        id: response.id,
-                        title: response.name!,
-                        originalTitle: response.originalName!,
-                        adult: response.adult,
-                        backdropPath: response.backdropPath!,
-                        genreIds: response.genreIds!,
-                        originCountry: response.originCountry!,
-                        originalLanguage: response.originalLanguage!,
-                        overview: response.overview!,
-                        popularity: response.popularity,
-                        posterPath: response.posterPath!,
-                        firstAirDate: response.firstAirDate!,
-                        voteAverage: response.voteAverage!,
-                        voteCount: response.voteCount!,
-                      );
-
-                      context.pushNamed(TVShowScreen.name, extra: tvShow);
-                    }
-                  },
+                SizedBox(
+                  width: 50, // igual que el izquierdo
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () async {
+                        final searchedMulti = ref.read(searchedProvider);
+                        final searchQuery = ref.read(searchQueryProvider);
+                        final response = await showSearch<MultiSearch?>(
+                          query: searchQuery,
+                          context: context,
+                          delegate: MultiSearchDelegate(
+                            initialSearchs: searchedMulti,
+                            search:
+                                ref
+                                    .read(searchedProvider.notifier)
+                                    .searchByQuery,
+                          ),
+                        );
+                        if (!context.mounted || response == null) return;
+                                        
+                        if (response.mediaType == 'movie') {
+                          Movie movie = Movie(
+                            adult: response.adult,
+                            backdropPath: response.backdropPath!,
+                            genreIds: response.genreIds!,
+                            id: response.id,
+                            originalLanguage: response.originalLanguage!,
+                            originalTitle: response.originalTitle!,
+                            overview: response.overview!,
+                            popularity: response.popularity,
+                            posterPath: response.posterPath!,
+                            releaseDate: response.releaseDate!,
+                            title: response.title!,
+                            video: response.video!,
+                            voteAverage: response.voteAverage!,
+                            voteCount: response.voteCount!,
+                          );
+                                        
+                          context.pushNamed(MovieScreen.name, extra: movie);
+                        }
+                                        
+                        if (response.mediaType == 'tv') {
+                          TVShow tvShow = TVShow(
+                            id: response.id,
+                            title: response.name!,
+                            originalTitle: response.originalName!,
+                            adult: response.adult,
+                            backdropPath: response.backdropPath!,
+                            genreIds: response.genreIds!,
+                            originCountry: response.originCountry!,
+                            originalLanguage: response.originalLanguage!,
+                            overview: response.overview!,
+                            popularity: response.popularity,
+                            posterPath: response.posterPath!,
+                            firstAirDate: response.firstAirDate!,
+                            voteAverage: response.voteAverage!,
+                            voteCount: response.voteCount!,
+                          );
+                                        
+                          context.pushNamed(TVShowScreen.name, extra: tvShow);
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
