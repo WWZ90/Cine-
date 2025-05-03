@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class YouTubeVideoPlayer extends ConsumerStatefulWidget {
   final String youtubeId;
@@ -49,6 +50,12 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
     }
   }
 
+  void _handleVisibilityChanged(VisibilityInfo info) {
+    if (info.visibleFraction == 0) {
+      controller.pause(); // pausa cuando ya no es visible
+    }
+  }
+
   @override
   void dispose() {
     controller.dispose();
@@ -62,45 +69,49 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
     final thumbnailUrl =
         'https://img.youtube.com/vi/${widget.youtubeId}/hqdefault.jpg';
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: Stack(
-        children: [
-          PodVideoPlayer(
-            controller: controller,
-            onToggleFullScreen: _handleFullScreenToggle,
-            videoThumbnail: DecorationImage(
-              image: NetworkImage(thumbnailUrl),
-              fit: BoxFit.cover,
+    return VisibilityDetector(
+      key: Key('youtube-player-${widget.youtubeId}'),
+      onVisibilityChanged: _handleVisibilityChanged,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: Stack(
+          children: [
+            PodVideoPlayer(
+              controller: controller,
+              onToggleFullScreen: _handleFullScreenToggle,
+              videoThumbnail: DecorationImage(
+                image: NetworkImage(thumbnailUrl),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Positioned(
-            top: 10,
-            left: 10,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 280),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  widget.videoTitle,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+            Positioned(
+              top: 10,
+              left: 10,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 280),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    widget.videoTitle,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
