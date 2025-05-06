@@ -1,3 +1,4 @@
+/*
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,7 +117,88 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
     );
   }
 }
+*/
 
+//FUNCIONAL CON IFRAME
+import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:visibility_detector/visibility_detector.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
+class YouTubeVideoPlayer extends ConsumerStatefulWidget {
+  final String youtubeId;
+  final String videoTitle;
+
+  const YouTubeVideoPlayer({
+    required this.youtubeId,
+    required this.videoTitle,
+    super.key,
+  });
+
+  @override
+  ConsumerState<YouTubeVideoPlayer> createState() => _YouTubeVideoPlayerState();
+}
+
+class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
+  late final YoutubePlayerController controller;
+
+  void _handleVisibilityChanged(VisibilityInfo info) {
+    if (info.visibleFraction == 0) {
+      controller.pauseVideo(); // pausa cuando ya no es visible
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = YoutubePlayerController.fromVideoId(
+      videoId: widget.youtubeId,
+      autoPlay: false,
+      params: const YoutubePlayerParams(showFullscreenButton: true),
+    );
+    controller.setFullScreenListener((isFullScreen) async {
+      final videoData = await controller.videoData;
+      final startSeconds = await controller.currentTime;
+
+      if (!mounted) return;
+
+      ref.read(isFullscreenProvider.notifier).state = isFullScreen;
+
+      final currentTime = await FullscreenYoutubePlayer.launch(
+        context,
+        videoId: videoData.videoId,
+        startSeconds: startSeconds,
+      );
+
+      if (currentTime != null) {
+        controller.seekTo(seconds: currentTime);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return VisibilityDetector(
+      key: Key('youtube-player-${widget.youtubeId}'),
+      onVisibilityChanged: _handleVisibilityChanged,
+      child: YoutubePlayer(
+        key: ObjectKey(controller),
+        aspectRatio: 16 / 9,
+        enableFullScreenOnVerticalDrag: false,
+        controller: controller,
+        keepAlive: true,
+      ),
+    );
+  }
+}
 
 /*
 import 'package:flutter/material.dart';
