@@ -14,8 +14,8 @@ class Actors extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     dynamic actorsAll;
     type == 'Movie'
-        ? actorsAll = ref.watch(actorsByMovieProvider)
-        : actorsAll = ref.watch(actorsByTVShowProvider);
+        ? actorsAll = ref.watch(castByMovieProvider)
+        : actorsAll = ref.watch(castByTVShowProvider);
     if (actorsAll[id] == null) {
       return SizedBox(
         height: 200,
@@ -25,7 +25,7 @@ class Actors extends ConsumerWidget {
 
     final actors = actorsAll[id]!;
     return SizedBox(
-      height: 248,
+      height: 175,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: actors.length,
@@ -33,12 +33,15 @@ class Actors extends ConsumerWidget {
           final actor = actors[index];
           return Container(
             padding: EdgeInsets.all(8.0),
-            width: 165,
+            width: 115,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FadeInRight(
-                  child: LoadImage(url: actor.profilePath, w: 170, h: 183),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: LoadImage(url: actor.profilePath, w: 100, h: 100),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Text(actor.name, maxLines: 1, overflow: TextOverflow.ellipsis),

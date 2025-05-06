@@ -20,7 +20,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     super.initState();
     final id = widget.movie.id.toString();
     ref.read(movieDetailProvider.notifier).loadMovie(id);
-    ref.read(actorsByMovieProvider.notifier).loadActors(id);
+    ref.read(castByMovieProvider.notifier).loadActors(id);
 
     ref.read(videosMovieProvider(id));
     ref.read(similarMoviesProvider(id).notifier).loadNextPage();

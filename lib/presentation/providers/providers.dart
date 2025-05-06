@@ -1,5 +1,5 @@
-export 'actors/actors_provider.dart';
-export 'actors/actors_repository_provider.dart';
+export 'persons/cast_provider.dart';
+export 'persons/persons_repository_provider.dart';
 export 'genres/genres_provider.dart';
 export 'genres/genres_repository_provider.dart';
 export 'initial_loading_provider.dart';

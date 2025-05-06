@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cinemania/domain/entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,9 +78,10 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                 final data = widget.allData[_currentIndex];
                 if (widget.type == 'Movie') {
                   context.pushNamed(MovieScreen.name, extra: data);
-                }
-                if (widget.type == 'TVShow') {
+                } else if (widget.type == 'TVShow') {
                   context.pushNamed(TVShowScreen.name, extra: data);
+                } else {
+                  context.pushNamed(PersonScreen.name, extra: data);
                 }
               },
               onTapDown: (_) => _onUserInteractionStart(),
@@ -95,7 +97,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                 itemBuilder: (context, index) {
                   final data = widget.allData[index];
                   data.uniqueID =
-                      '${data.id}"-${widget.type}-section-${data.title}';
+                      '${data.id}"-${widget.type}-section-${widget.type == 'Person' ? data.name : data.title}';
 
                   return AnimatedSwitcher(
                     duration: Duration(milliseconds: 800),
@@ -110,9 +112,14 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                           tag: data.uniqueID,
                           child: Image(
                             image: NetworkToFileImage(
-                              url: data.posterPath,
+                              url:
+                                  widget.type == 'Person'
+                                      ? data.profilePath
+                                      : data.posterPath,
                               file: LocalImageFileManager.fileFromUrl(
-                                data.posterPath,
+                                widget.type == 'Person'
+                                    ? data.profilePath
+                                    : data.posterPath,
                               ),
                             ),
                             fit: BoxFit.cover,
@@ -135,7 +142,9 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                                         MediaQuery.of(context).size.width *
                                         0.80, // Ajuste aquí el ancho
                                     child: Text(
-                                      data.title,
+                                      widget.type == 'Person'
+                                          ? data.name
+                                          : data.title,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: const TextStyle(
@@ -146,10 +155,12 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  StarsRatingBarWithInfo(
-                                    rating: data.voteAverage,
-                                    voteCount: data.voteCount,
-                                  ),
+                                  widget.type != 'Person'
+                                      ? StarsRatingBarWithInfo(
+                                        rating: data.voteAverage,
+                                        voteCount: data.voteCount,
+                                      )
+                                      : Text('Popularidad: ${data.popularity}'),
                                 ],
                               ),
                               FavLikeButtonConsumer(

@@ -1,3 +1,4 @@
+import 'package:cinemania/presentation/providers/persons/persons_provider.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,9 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
     ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
     ref.read(popularTVShowsProvider.notifier).loadNextPage();
     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
+
+    ref.read(personPopularProvider.notifier).loadNextPage();
+    ref.read(personTrendingProvider.notifier).loadNextPage();
   }
 
   @override

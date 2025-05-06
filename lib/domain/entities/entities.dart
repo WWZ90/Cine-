@@ -1,11 +1,13 @@
-export 'actor.dart';
 export 'author_details.dart';
+export 'cast_person.dart';
 export 'genre.dart';
 export 'known_for.dart';
-export 'movie.dart';
 export 'movie_detail.dart';
+export 'movie.dart';
+export 'person_details.dart';
+export 'person.dart';
 export 'review.dart';
 export 'search.dart';
-export 'tv_show.dart';
 export 'tv_show_details.dart';
+export 'tv_show.dart';
 export 'video.dart';

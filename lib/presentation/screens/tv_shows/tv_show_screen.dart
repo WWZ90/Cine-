@@ -24,7 +24,7 @@ class _TVShowScreenState extends ConsumerState<TVShowScreen> {
     ref.read(videosTVShowProvider(id));
 
     ref.read(reviewsByTVShowProvider(id));
-    ref.read(actorsByTVShowProvider.notifier).loadActors(id);
+    ref.read(castByTVShowProvider.notifier).loadActors(id);
 
     ref.read(similarTVShowsProvider(id).notifier).loadNextPage();
   }

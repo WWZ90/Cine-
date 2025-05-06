@@ -1,8 +1,8 @@
-import 'package:cinemania/domain/entities/actor.dart';
+import 'package:cinemania/domain/entities/cast_person.dart';
 import 'package:cinemania/infrastructure/models/moviedb/credits_response.dart';
 
-class ActorMapper {
-  static Actor castToEntity(Cast cast) => Actor(
+class CastMapper {
+  static CastPerson castToEntity(Cast cast) => CastPerson(
     id: cast.id,
     name: cast.name,
     character: cast.character,
