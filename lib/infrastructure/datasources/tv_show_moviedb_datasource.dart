@@ -1,5 +1,6 @@
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/tv_show_datasource.dart';
+import 'package:cinemania/domain/entities/movie.dart';
 import 'package:cinemania/domain/entities/tv_show.dart';
 import 'package:cinemania/domain/entities/tv_show_details.dart';
 import 'package:cinemania/domain/entities/video.dart';
@@ -7,6 +8,7 @@ import 'package:cinemania/infrastructure/mappers/tv_show_detail_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/tv_show_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/video_mapper.dart';
 import 'package:cinemania/infrastructure/models/moviedb/tvshow_details.dart';
+import 'package:cinemania/infrastructure/models/moviedb/tvshow_moviedb.dart';
 import 'package:cinemania/infrastructure/models/moviedb/tvshow_response.dart';
 import 'package:cinemania/infrastructure/models/video/video_response.dart';
 import 'package:dio/dio.dart';
@@ -19,12 +21,29 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
     ),
   );
 
-  List<TVShow> _jsonToTVShow(Map<String, dynamic> json) {
-    final tvShowResponse = TvShowResponse.fromJson(json);
-    final List<TVShow> tvShows =
-        tvShowResponse.results
-            .map((tvShow) => TvShowMapper.tvShowToEntity(tvShow))
-            .toList();
+  List<TVShow> _jsonToTVShow(
+    Map<String, dynamic> json, {
+    String type = 'TVShow',
+  }) {
+    List<TVShow> tvShows;
+    if (type == 'TVShow') {
+      final tvShowResponse = TvShowResponse.fromJson(json);
+      tvShows =
+          tvShowResponse.results
+              .where((tvShow) => tvShow.posterPath != '')
+              .map((tvShow) => TvShowMapper.tvShowToEntity(tvShow))
+              .toList();
+    } else {
+      final tvShowResponse = List<TVShowDB>.from(
+        json["cast"].map((x) => TVShowDB.fromJson(x)),
+      );
+      tvShows =
+          tvShowResponse
+              .cast()
+              .where((tvShow) => tvShow.posterPath != '')
+              .map((tvShow) => TvShowMapper.tvShowToEntity(tvShow))
+              .toList();
+    }
 
     return tvShows;
   }
@@ -154,5 +173,11 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
       queryParameters: {'page': page},
     );
     return _jsonToTVShow(response.data);
+  }
+
+  @override
+  Future<List<TVShow>> getTVShowByPersonId(String id) async {
+    final response = await dio.get('/person/$id/tv_credits');
+    return _jsonToTVShow(response.data, type: 'Cast');
   }
 }

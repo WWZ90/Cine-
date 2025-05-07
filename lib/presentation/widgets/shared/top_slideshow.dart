@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cinemania/domain/entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

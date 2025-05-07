@@ -15,14 +15,31 @@ class Similar extends ConsumerWidget {
         ? similar = ref.watch(similarMoviesProvider(id))
         : similar = ref.watch(similarTVShowsProvider(id));
 
-    if (similar.isEmpty) {
-      return SizedBox(
-        height: 200,
-        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-      );
+    if (type == 'Movie') {
+      if (similar.isLoading && similar.movies.isEmpty) {
+        return const SizedBox(
+          height: 200,
+          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        );
+      }
+
+      if (!similar.isLoading && similar.movies.isEmpty) {
+        return const Center(child: Text('No similars movies'));
+      }
+    } else {
+      if (similar.isLoading && similar.shows.isEmpty) {
+        return const SizedBox(
+          height: 200,
+          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        );
+      }
+
+      if (!similar.isLoading && similar.shows.isEmpty) {
+        return const Center(child: Text('No similars tv shows'));
+      }
     }
     return SliderHorizontalListview(
-      allData: similar,
+      allData: type == 'Movie' ? similar.movies : similar.shows,
       title: type == 'Movie' ? 'Similar movies' : 'Similar TVShow',
       subTitle: 'All time',
       type: type,

@@ -9,4 +9,5 @@ abstract class TvShowRepository {
   Future<List<Video>> getVideosByTVShowId(String id);
   Future<List<TVShow>> getTVShowByGenreId(String id, {int page = 1});
   Future<List<TVShow>> getSimilar(String id, {int page = 1});
+  Future<List<TVShow>> getTVShowByPersonId(String id);
 }

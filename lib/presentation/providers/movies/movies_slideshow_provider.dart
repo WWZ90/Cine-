@@ -5,9 +5,9 @@ import 'package:cinemania/presentation/providers/movies/movies_providers.dart';
 final moviesSlideShowProvider = Provider<List<Movie>>((ref) {
   final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
 
-  if (nowPlayingMovies.isEmpty) {
+  if (nowPlayingMovies.movies.isEmpty) {
     return [];
   }
 
-  return nowPlayingMovies.sublist(0, 6);
+  return nowPlayingMovies.movies.sublist(0, 6);
 });

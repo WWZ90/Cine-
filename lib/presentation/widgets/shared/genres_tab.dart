@@ -111,11 +111,11 @@ class _GenreTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (type == 'Movie') {
       final movies = ref.watch(moviesByGenreProvider(genreId.toString()));
-      if (movies.isEmpty) {
-        return const Center(child: CircularProgressIndicator());
+      if (movies.isLoading && movies.movies.isEmpty) {
+        return const Center(child: CircularProgressIndicator(strokeWidth: 2,));
       }
       return SliderHorizontalListview(
-        allData: movies,
+        allData: movies.movies,
         type: 'Movie',
         loadNextPage: () {
           ref
@@ -125,11 +125,11 @@ class _GenreTab extends ConsumerWidget {
       );
     } else {
       final tvShows = ref.watch(tvShowsByGenreProvider(genreId.toString()));
-      if (tvShows.isEmpty) {
-        return const Center(child: CircularProgressIndicator());
+      if (tvShows.isLoading && tvShows.shows.isEmpty) {
+        return const Center(child: CircularProgressIndicator(strokeWidth: 2,));
       }
       return SliderHorizontalListview(
-        allData: tvShows,
+        allData: tvShows.shows,
         type: 'TVShow',
         loadNextPage: () {
           ref

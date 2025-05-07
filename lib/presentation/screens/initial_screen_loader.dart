@@ -33,7 +33,7 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
 
     ref.read(personPopularProvider.notifier).loadNextPage();
-    ref.read(personTrendingProvider.notifier).loadNextPage();
+    //ref.read(personTrendingProvider.notifier).loadNextPage();
   }
 
   @override

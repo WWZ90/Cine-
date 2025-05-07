@@ -57,7 +57,7 @@ class _SliderHorizontalListviewState
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 311,
+      height: 313,
       child: Column(
         children: [
           if (widget.title != null || widget.subTitle != null)
@@ -163,7 +163,7 @@ class _Slide extends StatelessWidget {
               }
             },
             child: SizedBox(
-              height: 195,
+              height: 193,
               width: 150,
               child: Hero(
                 tag: data.uniqueID.toString(),

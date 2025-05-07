@@ -15,16 +15,21 @@ class _PersonsViewsState extends ConsumerState<PersonsViews> {
   @override
   Widget build(BuildContext context) {
     final populars = ref.watch(personPopularProvider);
+    //final trending = ref.watch(personTrendingProvider);
     return CustomScrollView(
       slivers: [
         CustomAppbar(),
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             return Column(
-              children: [TopSlideShow(allData: populars, type: 'Person')],
+              children: [
+                TopSlideShow(allData: populars, type: 'Person'),
+                SizedBox(height: 20),
+                PersonTab(),
+              ],
             );
           }, childCount: 1),
-        )
+        ),
       ],
     );
   }

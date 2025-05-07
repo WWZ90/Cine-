@@ -38,7 +38,7 @@ class TvShowRepositoryImpl extends TvShowRepository {
   Future<List<Video>> getVideosByTVShowId(String id) {
     return datasource.getVideosByTVShowId(id);
   }
-  
+
   @override
   Future<List<TVShow>> getTVShowByGenreId(String id, {int page = 1}) {
     return datasource.getTVShowByGenreId(id, page: page);
@@ -47,5 +47,10 @@ class TvShowRepositoryImpl extends TvShowRepository {
   @override
   Future<List<TVShow>> getSimilar(String id, {int page = 1}) {
     return datasource.getSimilar(id, page: page);
+  }
+
+  @override
+  Future<List<TVShow>> getTVShowByPersonId(String id) {
+    return datasource.getTVShowByPersonId(id);
   }
 }

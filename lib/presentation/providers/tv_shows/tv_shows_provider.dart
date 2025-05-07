@@ -2,32 +2,74 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 
+typedef TvShowCallBack = Future<List<TVShow>> Function({int page});
+
+// Estado compuesto: lista + estado de carga
+class TVShowState {
+  final List<TVShow> shows;
+  final bool isLoading;
+
+  TVShowState({required this.shows, required this.isLoading});
+
+  TVShowState copyWith({List<TVShow>? shows, bool? isLoading}) {
+    return TVShowState(
+      shows: shows ?? this.shows,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
+}
+
+// Notifier que maneja estado y paginación
+class TvShowNotifier extends StateNotifier<TVShowState> {
+  int currentPage = 0;
+  final TvShowCallBack fetchMoreTVShows;
+
+  TvShowNotifier({required this.fetchMoreTVShows})
+    : super(TVShowState(shows: [], isLoading: false)) {
+    loadNextPage(); // carga inicial
+  }
+
+  Future<void> loadNextPage() async {
+    if (state.isLoading) return;
+
+    state = state.copyWith(isLoading: true);
+    currentPage++;
+
+    final List<TVShow> tvShows = await fetchMoreTVShows(page: currentPage);
+    state = TVShowState(shows: [...state.shows, ...tvShows], isLoading: false);
+  }
+}
+
+// Providers
+
 final airingTodayTVShowsProvider =
-    StateNotifierProvider<TvShowNotifier, List<TVShow>>((ref) {
+    StateNotifierProvider<TvShowNotifier, TVShowState>((ref) {
       final fetchMore = ref.watch(tvShowRepositoryProvider).getAiringToday;
       return TvShowNotifier(fetchMoreTVShows: fetchMore);
     });
 
 final onTheAirTVShowsProvider =
-    StateNotifierProvider<TvShowNotifier, List<TVShow>>((ref) {
+    StateNotifierProvider<TvShowNotifier, TVShowState>((ref) {
       final fetchMore = ref.watch(tvShowRepositoryProvider).getOnTheAir;
       return TvShowNotifier(fetchMoreTVShows: fetchMore);
     });
 
 final popularTVShowsProvider =
-    StateNotifierProvider<TvShowNotifier, List<TVShow>>((ref) {
+    StateNotifierProvider<TvShowNotifier, TVShowState>((ref) {
       final fetchMore = ref.watch(tvShowRepositoryProvider).getPopular;
       return TvShowNotifier(fetchMoreTVShows: fetchMore);
     });
 
 final topRatedTVShowsProvider =
-    StateNotifierProvider<TvShowNotifier, List<TVShow>>((ref) {
+    StateNotifierProvider<TvShowNotifier, TVShowState>((ref) {
       final fetchMore = ref.watch(tvShowRepositoryProvider).getTopRated;
       return TvShowNotifier(fetchMoreTVShows: fetchMore);
     });
 
+// Providers familiares
+
 final similarTVShowsProvider =
-    StateNotifierProvider.family<TvShowNotifier, List<TVShow>, String>((
+    StateNotifierProvider.family<TvShowNotifier, TVShowState, String>((
       ref,
       id,
     ) {
@@ -38,7 +80,7 @@ final similarTVShowsProvider =
     });
 
 final tvShowsByGenreProvider =
-    StateNotifierProvider.family<TvShowNotifier, List<TVShow>, String>((
+    StateNotifierProvider.family<TvShowNotifier, TVShowState, String>((
       ref,
       genreId,
     ) {
@@ -49,26 +91,13 @@ final tvShowsByGenreProvider =
       return TvShowNotifier(fetchMoreTVShows: fetchMoreTVShows);
     });
 
-typedef TvShowCallBack = Future<List<TVShow>> Function({int page});
+final tvShowsByPersonProvider =
+    StateNotifierProvider.family<TvShowNotifier, TVShowState, String>((
+      ref,
+      personId,
+    ) {
+      fetchMoreTVShows({int page = 1}) =>
+          ref.read(tvShowRepositoryProvider).getTVShowByPersonId(personId);
 
-class TvShowNotifier extends StateNotifier<List<TVShow>> {
-  int currentPage = 0;
-  bool isLoading = false;
-
-  TvShowCallBack fetchMoreTVShows;
-
-  TvShowNotifier({required this.fetchMoreTVShows}) : super([]);
-
-  Future<void> loadNextPage() async {
-    if (isLoading) return;
-    isLoading = true;
-    currentPage++;
-    print('Loading new tv shows');
-
-    final List<TVShow> tvShows = await fetchMoreTVShows(page: currentPage);
-
-    state = [...state, ...tvShows];
-    await Future.delayed(Duration(milliseconds: 400));
-    isLoading = false;
-  }
-}
+      return TvShowNotifier(fetchMoreTVShows: fetchMoreTVShows);
+    });

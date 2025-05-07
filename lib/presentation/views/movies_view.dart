@@ -33,9 +33,9 @@ class HomeViewState extends ConsumerState<MoviesView> {
           delegate: SliverChildBuilderDelegate((context, index) {
             return Column(
               children: [
-                TopSlideShow(allData: nowPlaying, type: 'Movie'),
+                TopSlideShow(allData: nowPlaying.movies, type: 'Movie'),
                 SliderHorizontalListview(
-                  allData: upcomingMovies,
+                  allData: upcomingMovies.movies,
                   title: 'Próximamente',
                   subTitle: 'Pronto',
                   type: 'Movie',
@@ -44,7 +44,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                   },
                 ),
                 SliderHorizontalListview(
-                  allData: popularMovies,
+                  allData: popularMovies.movies,
                   title: 'Populares',
                   subTitle: 'Populares',
                   type: 'Movie',
@@ -55,7 +55,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                 SizedBox(height: 20),
                 GenresTab(genres: genres, type: 'Movie'),
                 SliderHorizontalListview(
-                  allData: topRatedMovies,
+                  allData: topRatedMovies.movies,
                   title: 'Mejores valoradas',
                   subTitle: 'Mejores valoradas',
                   type: 'Movie',

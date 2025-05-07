@@ -1,3 +1,4 @@
+import 'package:cinemania/infrastructure/models/moviedb/movie_moviedb.dart';
 import 'package:dio/dio.dart';
 import 'package:cinemania/domain/entities/movie_detail.dart';
 import 'package:cinemania/domain/entities/video.dart';
@@ -19,13 +20,29 @@ class MoviedbDatasource extends MoviesDatasource {
     ),
   );
 
-  List<Movie> _jsonToMovie(Map<String, dynamic> json) {
-    final movieDBResponse = MovieDbResponse.fromJson(json);
-    final List<Movie> movies =
-        movieDBResponse.results
-            .where((moviedb) => moviedb.posterPath != 'no-poster')
-            .map((moviedb) => MovieMapper.movieDBToEntity(moviedb))
-            .toList();
+  List<Movie> _jsonToMovie(
+    Map<String, dynamic> json, {
+    String type = 'Movie',
+  }) {
+    List<Movie> movies;
+    if (type == 'Movie') {
+      final movieDBResponse = MovieDbResponse.fromJson(json);
+      movies =
+          movieDBResponse.results
+              .where((moviedb) => moviedb.posterPath != '')
+              .map((moviedb) => MovieMapper.movieDBToEntity(moviedb))
+              .toList();
+    } else {
+      final movieDBResponse = List<MovieMovieDB>.from(
+        json["cast"].map((x) => MovieMovieDB.fromJson(x)),
+      );
+      movies =
+          movieDBResponse
+              .cast()
+              .where((moviedb) => moviedb.posterPath != '')
+              .map((moviedb) => MovieMapper.movieDBToEntity(moviedb))
+              .toList();
+    }
 
     movies.sort((a, b) => b.voteAverage.compareTo(a.voteAverage));
     return movies;
@@ -168,6 +185,17 @@ class MoviedbDatasource extends MoviesDatasource {
         queryParameters: {'with_genres': id, 'page': page},
       );
       return _jsonToMovie(response.data);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  @override
+  Future<List<Movie>> getMoviesByPersonId(String id) async {
+    try {
+      final response = await dio.get('/person/$id/movie_credits');
+
+      return _jsonToMovie(response.data, type: 'Cast');
     } catch (e) {
       return [];
     }

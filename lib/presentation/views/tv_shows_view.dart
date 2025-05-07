@@ -28,9 +28,9 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
           delegate: SliverChildBuilderDelegate((context, index) {
             return Column(
               children: [
-                TopSlideShow(allData: airingToday, type: 'TVShow'),
+                TopSlideShow(allData: airingToday.shows, type: 'TVShow'),
                 SliderHorizontalListview(
-                  allData: onTheAir,
+                  allData: onTheAir.shows,
                   type: 'TVShow',
                   title: 'En esta semana',
                   subTitle: 'This week',
@@ -39,7 +39,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                   },
                 ),
                 SliderHorizontalListview(
-                  allData: popular,
+                  allData: popular.shows,
                   type: 'TVShow',
                   title: 'Populares',
                   subTitle: 'All time',
@@ -49,7 +49,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                 ),
                 GenresTab(genres: genres, type: 'TVShow'),
                 SliderHorizontalListview(
-                  allData: topRated,
+                  allData: topRated.shows,
                   type: 'TVShow',
                   title: 'Mejores valoradas',
                   subTitle: 'All time',

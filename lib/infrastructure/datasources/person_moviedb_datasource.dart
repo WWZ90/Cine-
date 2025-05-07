@@ -8,6 +8,7 @@ import 'package:cinemania/infrastructure/mappers/cast_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/person_mapper.dart';
 import 'package:cinemania/infrastructure/models/moviedb/credits_response.dart';
 import 'package:cinemania/infrastructure/models/moviedb/person_details_response.dart';
+import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:cinemania/infrastructure/models/moviedb/person_response.dart';
 import 'package:dio/dio.dart';
 
@@ -96,6 +97,10 @@ class PersonMovieDbDatasource extends PersonDatasource {
       List<Person> persons =
           personResponse.results
               .where((p) => p.profilePath != '')
+              .where(
+                (person) =>
+                    person.knownForDepartment == KnownForDepartment.ACTING,
+              )
               .map((p) => PersonMapper.personToEntity(p))
               .toList();
 
@@ -108,13 +113,17 @@ class PersonMovieDbDatasource extends PersonDatasource {
   @override
   Future<List<Person>> getPersonPopular({int page = 1}) async {
     try {
-      final response = await dio.get('/person/popular');
+      final response = await dio.get('/person/popular', queryParameters: {'page': page},);
 
       final personResponse = PersonResponse.fromJson(response.data);
 
       List<Person> persons =
           personResponse.results
               .where((person) => person.profilePath != '')
+              .where(
+                (person) =>
+                    person.knownForDepartment == KnownForDepartment.ACTING,
+              )
               .map((person) => PersonMapper.personToEntity(person))
               .toList();
       return persons;
