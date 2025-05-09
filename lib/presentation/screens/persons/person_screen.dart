@@ -49,6 +49,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme;
     final personState = ref.watch(personDetailsProvider(widget.id));
     final size = MediaQuery.of(context).size;
 
@@ -192,22 +193,50 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         if (person.birthday != null)
-                                          Text(
-                                            'Fecha de nacimiento: ${formatDate(person.birthday!)}',
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.bodyMedium,
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Fecha de nacimiento: ',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey[500],
+                                                ),
+                                              ),
+                                              Text(
+                                                formatDate(person.birthday!),
+                                                style: textStyle.bodyMedium
+                                                    ?.copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ],
                                           ),
+
                                         if (person.placeOfBirth.isNotEmpty)
-                                          Text(
-                                            'Lugar de nacimiento: ${person.placeOfBirth}',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.bodyMedium,
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Lugar de nacimiento: ',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey[500],
+                                                ),
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  person.placeOfBirth,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: textStyle.bodyMedium
+                                                      ?.copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                       ],
                                     ),

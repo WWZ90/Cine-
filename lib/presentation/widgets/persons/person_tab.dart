@@ -111,7 +111,7 @@ class _TabState extends ConsumerState<_PersonTabContent>
                 indicatorWeight: 1.0,
                 indicatorAnimation: TabIndicatorAnimation.elastic,
                 labelColor: Colors.white,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 12),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 8),
                 tabs:
                     persons.map((person) {
                       return _circleProfileImg(context, person);
