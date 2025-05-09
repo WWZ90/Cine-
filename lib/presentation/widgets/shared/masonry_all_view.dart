@@ -53,21 +53,21 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
   Widget build(BuildContext context) {
     dynamic allData;
     if (widget.type == 'Próximamente-Movie') {
-      allData = ref.watch(upcomingMoviesProvider);
+      allData = ref.watch(upcomingMoviesProvider).movies;
     } else if (widget.type == 'Populares-Movie') {
-      allData = ref.watch(popularMoviesProvider);
+      allData = ref.watch(popularMoviesProvider).movies;
     } else if (widget.type == 'Mejores valoradas-Movie') {
-      allData = ref.watch(topRatedMoviesProvider);
+      allData = ref.watch(topRatedMoviesProvider).movies;
     } else if (widget.type == 'Similar movies-Movie') {
-      allData = ref.watch(similarMoviesProvider(widget.id));
+      allData = ref.watch(similarMoviesProvider(widget.id)).movies;
     } else if (widget.type == 'En esta semana-TVShow') {
-      allData = ref.watch(onTheAirTVShowsProvider);
+      allData = ref.watch(onTheAirTVShowsProvider).shows;
     } else if (widget.type == 'Populares-TVShow') {
-      allData = ref.watch(popularTVShowsProvider);
+      allData = ref.watch(popularTVShowsProvider).shows;
     } else if (widget.type == 'Mejores valoradas-TVShow') {
-      allData = ref.watch(topRatedTVShowsProvider);
+      allData = ref.watch(topRatedTVShowsProvider).shows;
     } else if (widget.type == 'Similar TVShow-TVShow') {
-      allData = ref.watch(similarTVShowsProvider(widget.id));
+      allData = ref.watch(similarTVShowsProvider(widget.id)).shows;
     }
 
     if (allData.isEmpty) {
