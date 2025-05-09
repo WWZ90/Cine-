@@ -39,14 +39,18 @@ class _TabState extends ConsumerState<_PersonTabContent>
     if (_tabController!.indexIsChanging) return;
 
     final index = _tabController!.index;
-    final personId = persons[index].id;
+    final personId = persons[index].id.toString();
 
-    ref
-        .read(moviesByPersonProvider(personId.toString()).notifier)
-        .loadNextPage();
-    ref
-        .read(tvShowsByPersonProvider(personId.toString()).notifier)
-        .loadNextPage();
+    final moviesState = ref.read(moviesByPersonProvider(personId));
+    final tvState = ref.read(tvShowsByPersonProvider(personId));
+
+    if (moviesState.movies.isEmpty) {
+      ref.read(moviesByPersonProvider(personId).notifier).loadNextPage();
+    }
+
+    if (tvState.shows.isEmpty) {
+      ref.read(tvShowsByPersonProvider(personId).notifier).loadNextPage();
+    }
   }
 
   @override
