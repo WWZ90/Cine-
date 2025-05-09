@@ -165,14 +165,11 @@ Widget _circleProfileImg(BuildContext context, Person person) {
             children: [
               Hero(
                 tag: person.id,
-                child: FadeInRight(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(60),
-                    child: LoadImage(url: person.profilePath!, w: 100, h: 100),
-                  ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: LoadImage(url: person.profilePath!, w: 100, h: 100),
                 ),
               ),
-
               Positioned(
                 bottom: 5,
                 right: 10,
