@@ -80,7 +80,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                     top: MediaQuery.of(context).padding.top + 10,
                     left: 10,
                     child: Material(
-                      color: Colors.black.withOpacity(0.5),
+                      color: const Color.fromRGBO(0, 0, 0, 0.5),
                       shape: const CircleBorder(),
                       child: IconButton(
                         icon: const Icon(
@@ -169,8 +169,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if ((person.birthday != null) ||
-                            (person.placeOfBirth != null &&
-                                person.placeOfBirth!.isNotEmpty))
+                            (person.placeOfBirth.isNotEmpty))
                           Card(
                             color: const Color(0xFF1C1F26),
                             shape: RoundedRectangleBorder(
@@ -199,10 +198,9 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                                   context,
                                                 ).textTheme.bodyMedium,
                                           ),
-                                        if (person.placeOfBirth != null &&
-                                            person.placeOfBirth!.isNotEmpty)
+                                        if (person.placeOfBirth.isNotEmpty)
                                           Text(
-                                            'Lugar de nacimiento: ${person.placeOfBirth!}',
+                                            'Lugar de nacimiento: ${person.placeOfBirth}',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style:
@@ -219,11 +217,9 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                           ),
 
                         if ((person.birthday != null) ||
-                            (person.placeOfBirth != null &&
-                                person.placeOfBirth!.isNotEmpty))
+                            (person.placeOfBirth.isNotEmpty))
                           SizedBox(height: 10),
-                        if (person.biography != null &&
-                            person.biography!.isNotEmpty)
+                        if (person.biography.isNotEmpty)
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -234,14 +230,14 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                         ? CrossFadeState.showSecond
                                         : CrossFadeState.showFirst,
                                 firstChild: Text(
-                                  person.biography!,
+                                  person.biography,
                                   maxLines: 5,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                   textAlign: TextAlign.justify,
                                 ),
                                 secondChild: Text(
-                                  person.biography!,
+                                  person.biography,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                   textAlign: TextAlign.justify,
                                 ),
