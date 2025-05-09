@@ -1,6 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/tv_show_datasource.dart';
-import 'package:cinemania/domain/entities/movie.dart';
 import 'package:cinemania/domain/entities/tv_show.dart';
 import 'package:cinemania/domain/entities/tv_show_details.dart';
 import 'package:cinemania/domain/entities/video.dart';
@@ -11,7 +11,6 @@ import 'package:cinemania/infrastructure/models/moviedb/tvshow_details.dart';
 import 'package:cinemania/infrastructure/models/moviedb/tvshow_moviedb.dart';
 import 'package:cinemania/infrastructure/models/moviedb/tvshow_response.dart';
 import 'package:cinemania/infrastructure/models/video/video_response.dart';
-import 'package:dio/dio.dart';
 
 class TvShowMoviedbDatasource extends TvShowDatasource {
   final dio = Dio(

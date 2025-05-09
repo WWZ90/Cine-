@@ -1,8 +1,7 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemania/domain/entities/entities.dart';
-import 'package:cinemania/infrastructure/mappers/person_mapper.dart';
 import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final personTrendingProvider =
     StateNotifierProvider<PersonNotifier, List<Person>>((ref) {

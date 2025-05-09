@@ -1,7 +1,7 @@
-import 'package:cinemania/presentation/providers/providers.dart';
-import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class Similar extends ConsumerWidget {
   final String id;
