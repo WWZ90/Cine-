@@ -26,7 +26,9 @@ class _TVShowScreenState extends ConsumerState<TVShowScreen> {
     ref.read(reviewsByTVShowProvider(id));
     ref.read(castByTVShowProvider.notifier).loadActors(id);
 
-    ref.read(similarTVShowsProvider(id).notifier).loadNextPage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(similarTVShowsProvider(id).notifier).loadNextPage();
+    });
   }
 
   @override

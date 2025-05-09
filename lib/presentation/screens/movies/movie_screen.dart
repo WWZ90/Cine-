@@ -23,7 +23,9 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     ref.read(castByMovieProvider.notifier).loadActors(id);
 
     ref.read(videosMovieProvider(id));
-    ref.read(similarMoviesProvider(id).notifier).loadNextPage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(similarMoviesProvider(id).notifier).loadNextPage();
+    });
     ref.read(reviewsByMovieProvider(id));
   }
 
