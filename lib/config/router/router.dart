@@ -52,7 +52,7 @@ final GoRouter appRouter = GoRouter(
                 GoRoute(
                   path: 'masonry-all-view',
                   name: 'masonry-all-view',
-                  builder: (context, state) {
+                  pageBuilder: (context, state) {
                     //final type = state.extra as String?;
                     //return MasonryAllView(type: type ?? '');
 
@@ -61,7 +61,20 @@ final GoRouter appRouter = GoRouter(
                     final type = extras?['type'] as String? ?? '';
                     final id = extras?['id'] as String? ?? '';
 
-                    return MasonryAllView(type: type, id: id);
+                    return CustomTransitionPage(
+                      child: MasonryAllView(type: type, id: id),
+                      transitionsBuilder: (
+                        context,
+                        animation,
+                        secondaryAnimation,
+                        child,
+                      ) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                    );
+                    // return NoTransitionPage(
+                    //   child: MasonryAllView(type: type, id: id),
+                    // );
                   },
                 ),
               ],
@@ -116,7 +129,12 @@ final GoRouter appRouter = GoRouter(
                     final name = extras?['name'] as String? ?? '';
                     final profilePath = extras?['profilePath'] as String? ?? '';
                     final popularity = extras?['popularity'] as double? ?? 0;
-                    return PersonScreen(id: id, personName: name, popularity: popularity, profilePath: profilePath,);
+                    return PersonScreen(
+                      id: id,
+                      personName: name,
+                      popularity: popularity,
+                      profilePath: profilePath,
+                    );
                   },
                 ),
               ],

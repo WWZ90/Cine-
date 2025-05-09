@@ -40,28 +40,31 @@ class _MasonryViewState extends State<MasonryView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: MasonryGridView.count(
-        controller: scrollController,
-        itemCount: widget.data.length,
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        shrinkWrap: true,
-        physics:
-            const ClampingScrollPhysics(), // o ClampingScrollPhysics() si prefieres Android
-        itemBuilder: (context, index) {
-          if (index == 1) {
-            return Column(
-              children: [
-                SizedBox(height: 15),
-                FavoritePosterLink(favorite: widget.data[index]),
-              ],
-            );
-          }
-          return FavoritePosterLink(favorite: widget.data[index]);
-        },
+    return Container(
+      color: Color.fromARGB(255, 19, 19, 19),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: MasonryGridView.count(
+          controller: scrollController,
+          itemCount: widget.data.length,
+          crossAxisCount: 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          shrinkWrap: true,
+          physics:
+              const ClampingScrollPhysics(), // o ClampingScrollPhysics() si prefieres Android
+          itemBuilder: (context, index) {
+            if (index == 1) {
+              return Column(
+                children: [
+                  SizedBox(height: 15),
+                  FavoritePosterLink(favorite: widget.data[index]),
+                ],
+              );
+            }
+            return FavoritePosterLink(favorite: widget.data[index]);
+          },
+        ),
       ),
     );
   }
@@ -97,24 +100,22 @@ class FavoritePosterLink extends StatelessWidget {
           );
         }
       },
-      child: FadeInUp(
-        child: Stack(
-          children: [
-            LoadImage(
-              url:
-                  favorite is Person
-                      ? favorite.profilePath
-                      : favorite.posterPath,
-              h: 200,
-              w: 150,
-            ),
-            Positioned(
-              bottom: 4,
-              right: 4,
-              child: FavLikeButtonConsumer(data: favorite, type: type),
-            ),
-          ],
-        ),
+      child: Stack(
+        children: [
+          LoadImage(
+            url:
+                favorite is Person
+                    ? favorite.profilePath
+                    : favorite.posterPath,
+            h: 200,
+            w: 150,
+          ),
+          Positioned(
+            bottom: 4,
+            right: 4,
+            child: FavLikeButtonConsumer(data: favorite, type: type),
+          ),
+        ],
       ),
     );
   }
