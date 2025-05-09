@@ -124,8 +124,10 @@ class _Title extends StatelessWidget {
 
           if (subTitle != null)
             FilledButton.tonal(
-              onPressed: () {
+              onPressed: () async {
+                await Future.delayed(Duration(milliseconds: 100));
                 final String t = '$title-$type';
+                // ignore: use_build_context_synchronously
                 context.pushNamed(
                   'masonry-all-view',
                   extra: {'type': t, 'id': id},

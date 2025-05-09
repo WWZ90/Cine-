@@ -48,6 +48,9 @@ class _MasonryViewState extends State<MasonryView> {
         crossAxisCount: 3,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
+        shrinkWrap: true,
+        physics:
+            const ClampingScrollPhysics(), // o ClampingScrollPhysics() si prefieres Android
         itemBuilder: (context, index) {
           if (index == 1) {
             return Column(

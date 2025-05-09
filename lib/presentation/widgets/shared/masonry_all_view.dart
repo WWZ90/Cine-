@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,7 +27,7 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
       await ref.read(upcomingMoviesProvider.notifier).loadNextPage();
     } else if (widget.type == 'Populares-Movie') {
       await ref.read(popularMoviesProvider.notifier).loadNextPage();
-    } else if (widget.type == 'Mejores Valoradas-Movie') {
+    } else if (widget.type == 'Mejores valoradas-Movie') {
       await ref.read(topRatedMoviesProvider.notifier).loadNextPage();
     } else if (widget.type == 'Similar movies-Movie') {
       await ref.read(similarMoviesProvider(widget.id).notifier).loadNextPage();
@@ -71,11 +72,16 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
     }
 
     if (allData.isEmpty) {
-      return SizedBox();
+      return const Center(child: CircularProgressIndicator());
     }
 
-    return Scaffold(
-      body: MasonryView(loadNextPage: loadNextPage, data: allData),
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      child: MasonryView(
+        key: ValueKey(widget.type), // evita reanimar si no cambió el tipo
+        loadNextPage: loadNextPage,
+        data: allData,
+      ),
     );
   }
 }
