@@ -24,7 +24,8 @@ class Similar extends ConsumerWidget {
       }
 
       if (!similar.isLoading && similar.movies.isEmpty) {
-        return const Center(child: Text('No similars movies'));
+        //return const Center(child: Text('No similars movies'));
+        return SizedBox();
       }
     } else {
       if (similar.isLoading && similar.shows.isEmpty) {
@@ -35,7 +36,8 @@ class Similar extends ConsumerWidget {
       }
 
       if (!similar.isLoading && similar.shows.isEmpty) {
-        return const Center(child: Text('No similars tv shows'));
+        //return const Center(child: Text('No similars tv shows'));
+        return SizedBox();
       }
     }
     return SliderHorizontalListview(

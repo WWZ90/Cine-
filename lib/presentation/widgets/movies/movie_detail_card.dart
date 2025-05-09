@@ -136,7 +136,7 @@ class MovieDetailCard extends StatelessWidget {
         VideoTrailer(id: movieDetails.id.toString(), type: 'Movie'),
         SizedBox(height: 10),
         Reviews(id: movieDetails.id.toString(), type: 'Movie'),
-        SizedBox(height: 15),
+        SizedBox(height: 10),
         Actors(id: movieDetails.id.toString(), type: 'Movie'),
         Similar(id: movieDetails.id.toString(), type: 'Movie'),
         SizedBox(height: 20),

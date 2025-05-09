@@ -116,7 +116,7 @@ class _TabState extends ConsumerState<_PersonTabContent>
             ),
             const SizedBox(height: 10),
             SizedBox(
-              height: 313,
+              height: 295,
               child: TabBarView(
                 controller: _tabController!,
                 children:
@@ -126,7 +126,7 @@ class _TabState extends ConsumerState<_PersonTabContent>
               ),
             ),
             SizedBox(
-              height: 313,
+              height: 295,
               child: TabBarView(
                 controller: _tabController!,
                 children:
@@ -161,16 +161,26 @@ Widget _circleProfileImg(BuildContext context, Person person) {
       width: 100,
       child: Column(
         children: <Widget>[
-          Hero(
-            tag: person.id,
-            child: FadeInRight(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(60),
-                child: LoadImage(url: person.profilePath!, w: 100, h: 100),
+          Stack(
+            children: [
+              Hero(
+                tag: person.id,
+                child: FadeInRight(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: LoadImage(url: person.profilePath!, w: 100, h: 100),
+                  ),
+                ),
               ),
-            ),
+
+              Positioned(
+                bottom: 5,
+                right: 10,
+                child: FavLikeButtonConsumer(data: person, type: 'Person'),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Text(person.name, maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       ),

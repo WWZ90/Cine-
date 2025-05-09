@@ -165,11 +165,16 @@ class _SearchsItems extends StatelessWidget {
                   },
                 );
               } else if (response.mediaType == "person") {
-                return _ListItems(
-                  type: 'Persona',
-                  imgUrl: response.profilePath ?? '',
-                  title: response.name ?? '',
-                  knownForDepartment: response.knownForDepartment ?? '',
+                return GestureDetector(
+                  child: _ListItems(
+                    type: 'Persona',
+                    imgUrl: response.profilePath ?? '',
+                    title: response.name ?? '',
+                    knownForDepartment: response.knownForDepartment ?? '',
+                  ),
+                  onTap: (){
+                    onSelected(context, response);
+                  },
                 );
               } else if (response.mediaType == "tv") {
                 return GestureDetector(

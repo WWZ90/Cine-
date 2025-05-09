@@ -1,3 +1,4 @@
+import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +55,7 @@ class CustomAppbar extends ConsumerWidget {
                           ),
                         );
                         if (!context.mounted || response == null) return;
-                                        
+
                         if (response.mediaType == 'movie') {
                           Movie movie = Movie(
                             adult: response.adult,
@@ -72,10 +73,10 @@ class CustomAppbar extends ConsumerWidget {
                             voteAverage: response.voteAverage!,
                             voteCount: response.voteCount!,
                           );
-                                        
+
                           context.pushNamed(MovieScreen.name, extra: movie);
                         }
-                                        
+
                         if (response.mediaType == 'tv') {
                           TVShow tvShow = TVShow(
                             id: response.id,
@@ -93,8 +94,20 @@ class CustomAppbar extends ConsumerWidget {
                             voteAverage: response.voteAverage!,
                             voteCount: response.voteCount!,
                           );
-                                        
+
                           context.pushNamed(TVShowScreen.name, extra: tvShow);
+                        }
+
+                        if (response.mediaType == 'person') {
+                          context.pushNamed(
+                            PersonScreen.name,
+                            extra: {
+                              'id': response.id,
+                              'name': response.name,
+                              'profilePath': response.profilePath,
+                              'popularity': response.popularity,
+                            },
+                          );
                         }
                       },
                     ),

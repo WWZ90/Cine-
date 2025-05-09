@@ -1,6 +1,6 @@
 class FavoriteKey {
   final int id;
-  final String type; // 'Movie' o 'TVShow'
+  final String type; // 'Movie' - 'TVShow' - 'Person'
   const FavoriteKey(this.id, this.type);
 
   @override

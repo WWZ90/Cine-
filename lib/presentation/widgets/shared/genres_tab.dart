@@ -85,7 +85,7 @@ class _GenresTabState extends ConsumerState<GenresTab>
           ),
         ),
         SizedBox(
-          height: 250,
+          height: 253,
           child: TabBarView(
             controller: _tabController,
             children:

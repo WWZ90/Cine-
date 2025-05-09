@@ -83,7 +83,7 @@ class _SliderHorizontalListviewState
                     children: [
                       _Slide(data: data, type: widget.type),
                       Positioned(
-                        bottom: 55,
+                        bottom: 60,
                         right: 10,
                         child: FavLikeButtonConsumer(
                           data: data,
