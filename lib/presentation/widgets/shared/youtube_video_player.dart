@@ -164,13 +164,26 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
 
       if (!mounted) return;
 
-      ref.read(isFullscreenProvider.notifier).state = isFullScreen;
+      // Marcar que entraste a fullscreen
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ref.read(isFullscreenProvider.notifier).state = true;
+        }
+      });
 
       final currentTime = await FullscreenYoutubePlayer.launch(
         context,
         videoId: videoData.videoId,
         startSeconds: startSeconds,
       );
+
+      // Al volver, restaurar estado de fullscreen a falso
+      if (!mounted) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ref.read(isFullscreenProvider.notifier).state = false;
+        }
+      });
 
       if (currentTime != null) {
         controller.seekTo(seconds: currentTime);

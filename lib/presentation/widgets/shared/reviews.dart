@@ -99,12 +99,17 @@ class _ReviewsByMovieState extends ConsumerState<Reviews> {
                                                 ).textTheme.titleMedium,
                                           ),
                                         ),
-                                      Text(
-                                        '@${review.authorDetails.username}',
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.titleSmall,
+                                      SizedBox(
+                                        width: 140,
+                                        child: Text(
+                                          '@${review.authorDetails.username}',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.titleSmall,
+                                        ),
                                       ),
                                     ],
                                   ),

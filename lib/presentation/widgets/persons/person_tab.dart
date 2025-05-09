@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
