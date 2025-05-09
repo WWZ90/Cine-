@@ -57,7 +57,7 @@ class _SliderHorizontalListviewState
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 313,
+      height: 290,
       child: Column(
         children: [
           if (widget.title != null || widget.subTitle != null)
@@ -82,14 +82,6 @@ class _SliderHorizontalListviewState
                   child: Stack(
                     children: [
                       _Slide(data: data, type: widget.type),
-                      Positioned(
-                        bottom: 60,
-                        right: 10,
-                        child: FavLikeButtonConsumer(
-                          data: data,
-                          type: widget.type,
-                        ),
-                      ),
                     ],
                   ),
                 );
@@ -114,7 +106,7 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.titleMedium;
     return Container(
-      padding: EdgeInsets.only(top: 20),
+      //padding: EdgeInsets.only(top: 20),
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
@@ -167,9 +159,18 @@ class _Slide extends StatelessWidget {
             child: SizedBox(
               height: 193,
               width: 150,
-              child: Hero(
-                tag: data.uniqueID.toString(),
-                child: LoadImage(url: data.posterPath, h: 193, w: 150),
+              child: Stack(
+                children: [
+                  Hero(
+                    tag: data.uniqueID.toString(),
+                    child: LoadImage(url: data.posterPath, h: 193, w: 150),
+                  ),
+                  Positioned(
+                    bottom: 5,
+                    right: 5,
+                    child: FavLikeButtonConsumer(data: data, type: type),
+                  ),
+                ],
               ),
             ),
           ),

@@ -34,6 +34,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
             return Column(
               children: [
                 TopSlideShow(allData: nowPlaying.movies, type: 'Movie'),
+                SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: upcomingMovies.movies,
                   title: 'Próximamente',
@@ -43,6 +44,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                     ref.read(upcomingMoviesProvider.notifier).loadNextPage();
                   },
                 ),
+                SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: popularMovies.movies,
                   title: 'Populares',
@@ -52,8 +54,9 @@ class HomeViewState extends ConsumerState<MoviesView> {
                     ref.read(popularMoviesProvider.notifier).loadNextPage();
                   },
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 GenresTab(genres: genres, type: 'Movie'),
+                SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: topRatedMovies.movies,
                   title: 'Mejores valoradas',
@@ -63,7 +66,6 @@ class HomeViewState extends ConsumerState<MoviesView> {
                     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
                   },
                 ),
-                SizedBox(height: 20),
               ],
             );
           }, childCount: 1),

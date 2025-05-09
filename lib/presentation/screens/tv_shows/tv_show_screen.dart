@@ -66,7 +66,7 @@ class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
         tvShowDetails != null
             ? SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
+                padding: EdgeInsets.symmetric(horizontal: 0),
                 child: TvShowDetailCard(tvShowDetails: tvShowDetails),
               ),
             )

@@ -132,14 +132,13 @@ class MovieDetailCard extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         VideoTrailer(id: movieDetails.id.toString(), type: 'Movie'),
         SizedBox(height: 10),
         Reviews(id: movieDetails.id.toString(), type: 'Movie'),
         SizedBox(height: 10),
         Actors(id: movieDetails.id.toString(), type: 'Movie'),
         Similar(id: movieDetails.id.toString(), type: 'Movie'),
-        SizedBox(height: 20),
       ],
     );
   }

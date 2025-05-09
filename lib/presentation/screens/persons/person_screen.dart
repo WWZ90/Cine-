@@ -154,119 +154,123 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
         ),
         SliverList(
           delegate: SliverChildListDelegate([
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              child: personState.when(
-                loading:
-                    () => SizedBox(
-                      height: 300,
-                      child: const Center(child: CircularProgressIndicator()),
+            personState.when(
+              loading:
+                  () => SizedBox(
+                    height: 300,
+                    child: const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     ),
-                error:
-                    (e, _) => Center(child: Text('Error loading details: $e')),
-                data:
-                    (person) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if ((person.birthday != null) ||
-                            (person.placeOfBirth.isNotEmpty))
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Card(
-                              color: const Color(0xFF1C1F26),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                side: const BorderSide(
-                                  color: Colors.blueGrey,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          if (person.birthday != null)
-                                            Text(
-                                              'Fecha de nacimiento: ${formatDate(person.birthday!)}',
-                                              style:
-                                                  Theme.of(
-                                                    context,
-                                                  ).textTheme.bodyMedium,
-                                            ),
-                                          if (person.placeOfBirth.isNotEmpty)
-                                            Text(
-                                              'Lugar de nacimiento: ${person.placeOfBirth}',
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style:
-                                                  Theme.of(
-                                                    context,
-                                                  ).textTheme.bodyMedium,
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                  ),
+              error: (e, _) => Center(child: Text('Error loading details: $e')),
+              data:
+                  (person) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if ((person.birthday != null) ||
+                          (person.placeOfBirth.isNotEmpty))
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          child: Card(
+                            color: const Color(0xFF1C1F26),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              side: const BorderSide(
+                                color: Colors.blueGrey,
+                                width: 1,
                               ),
                             ),
-                          ),
-
-                        if ((person.birthday != null) ||
-                            (person.placeOfBirth.isNotEmpty))
-                          SizedBox(height: 10),
-                        if (person.biography.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                AnimatedCrossFade(
-                                  duration: const Duration(milliseconds: 300),
-                                  crossFadeState:
-                                      _isExpanded
-                                          ? CrossFadeState.showSecond
-                                          : CrossFadeState.showFirst,
-                                  firstChild: Text(
-                                    person.biography,
-                                    maxLines: 5,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context).textTheme.bodyLarge,
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                  secondChild: Text(
-                                    person.biography,
-                                    style: Theme.of(context).textTheme.bodyLarge,
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: TextButton(
-                                    onPressed:
-                                        () => setState(
-                                          () => _isExpanded = !_isExpanded,
-                                        ),
-                                    child: Text(
-                                      _isExpanded ? 'Ver menos' : 'Ver más',
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (person.birthday != null)
+                                          Text(
+                                            'Fecha de nacimiento: ${formatDate(person.birthday!)}',
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.bodyMedium,
+                                          ),
+                                        if (person.placeOfBirth.isNotEmpty)
+                                          Text(
+                                            'Lugar de nacimiento: ${person.placeOfBirth}',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.bodyMedium,
+                                          ),
+                                      ],
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        _PersonMoviesSection(personId: person.id),
-                        _PersonTVShowsSection(personId: person.id),
-                      ],
-                    ),
-              ),
+                        ),
+
+                      if ((person.birthday != null) ||
+                          (person.placeOfBirth.isNotEmpty))
+                        SizedBox(height: 10),
+                      if (person.biography.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AnimatedCrossFade(
+                                duration: const Duration(milliseconds: 300),
+                                crossFadeState:
+                                    _isExpanded
+                                        ? CrossFadeState.showSecond
+                                        : CrossFadeState.showFirst,
+                                firstChild: Text(
+                                  person.biography,
+                                  maxLines: 5,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  textAlign: TextAlign.justify,
+                                ),
+                                secondChild: Text(
+                                  person.biography,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed:
+                                      () => setState(
+                                        () => _isExpanded = !_isExpanded,
+                                      ),
+                                  child: Text(
+                                    _isExpanded ? 'Ver menos' : 'Ver más',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      SizedBox(
+                        height: 290,
+                        child: _PersonMoviesSection(personId: person.id),
+                      ),
+                      SizedBox(
+                        height: 270,
+                        child: _PersonTVShowsSection(personId: person.id),
+                      ),
+                    ],
+                  ),
             ),
           ]),
         ),
@@ -285,7 +289,7 @@ class _PersonMoviesSection extends ConsumerWidget {
 
     if (moviesState.isLoading && moviesState.movies.isEmpty) {
       return SizedBox(
-        height: 300,
+        height: 200,
         child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
       );
     }
@@ -312,7 +316,7 @@ class _PersonTVShowsSection extends ConsumerWidget {
 
     if (tvState.isLoading && tvState.shows.isEmpty) {
       return SizedBox(
-        height: 300,
+        height: 200,
         child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
       );
     }

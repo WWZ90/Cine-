@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -99,22 +100,24 @@ class FavoritePosterLink extends StatelessWidget {
           );
         }
       },
-      child: Stack(
-        children: [
-          LoadImage(
-            url:
-                favorite is Person
-                    ? favorite.profilePath
-                    : favorite.posterPath,
-            h: 200,
-            w: 150,
-          ),
-          Positioned(
-            bottom: 4,
-            right: 4,
-            child: FavLikeButtonConsumer(data: favorite, type: type),
-          ),
-        ],
+      child: FadeInUp(
+        child: Stack(
+          children: [
+            LoadImage(
+              url:
+                  favorite is Person
+                      ? favorite.profilePath
+                      : favorite.posterPath,
+              h: 200,
+              w: 150,
+            ),
+            Positioned(
+              bottom: 4,
+              right: 4,
+              child: FavLikeButtonConsumer(data: favorite, type: type),
+            ),
+          ],
+        ),
       ),
     );
   }

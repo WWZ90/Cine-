@@ -152,14 +152,13 @@ class TvShowDetailCard extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         VideoTrailer(id: tvShowDetails.id.toString(), type: 'TVShow'),
         SizedBox(height: 10),
         Reviews(id: tvShowDetails.id.toString(), type: 'TVShow'),
-        SizedBox(height: 15),
+        SizedBox(height: 10),
         Actors(id: tvShowDetails.id.toString(), type: 'TVShow'),
         Similar(id: tvShowDetails.id.toString(), type: 'TVShow'),
-        SizedBox(height: 20),
       ],
     );
   }

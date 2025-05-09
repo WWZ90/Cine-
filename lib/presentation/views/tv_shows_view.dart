@@ -29,6 +29,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
             return Column(
               children: [
                 TopSlideShow(allData: airingToday.shows, type: 'TVShow'),
+                SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: onTheAir.shows,
                   type: 'TVShow',
@@ -38,6 +39,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                     ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
                   },
                 ),
+                SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: popular.shows,
                   type: 'TVShow',
@@ -47,7 +49,9 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                     ref.read(popularTVShowsProvider.notifier).loadNextPage();
                   },
                 ),
+                SizedBox(height: 15),
                 GenresTab(genres: genres, type: 'TVShow'),
+                SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: topRated.shows,
                   type: 'TVShow',

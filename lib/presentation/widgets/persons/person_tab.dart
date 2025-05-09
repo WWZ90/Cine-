@@ -120,7 +120,7 @@ class _TabState extends ConsumerState<_PersonTabContent>
             ),
             const SizedBox(height: 10),
             SizedBox(
-              height: 295,
+              height: 290,
               child: TabBarView(
                 controller: _tabController!,
                 children:
@@ -130,7 +130,7 @@ class _TabState extends ConsumerState<_PersonTabContent>
               ),
             ),
             SizedBox(
-              height: 295,
+              height: 272,
               child: TabBarView(
                 controller: _tabController!,
                 children:

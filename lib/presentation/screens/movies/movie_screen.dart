@@ -65,7 +65,7 @@ class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
         movieDetails != null
             ? SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: Column(
                   children: [MovieDetailCard(movieDetails: movieDetails)],
                 ),
