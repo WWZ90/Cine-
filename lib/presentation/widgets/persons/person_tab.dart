@@ -213,7 +213,7 @@ class _InfoTab extends ConsumerWidget {
       return SliderHorizontalListview(
         allData: moviesState.movies,
         type: 'Movie',
-        title: 'Sus Películas',
+        title: 'Películas',
       );
     } else {
       final tvState = ref.watch(tvShowsByPersonProvider(personId.toString()));
@@ -229,7 +229,7 @@ class _InfoTab extends ConsumerWidget {
       return SliderHorizontalListview(
         allData: tvState.shows,
         type: 'TVShow',
-        title: 'Sus Series',
+        title: 'Series',
       );
     }
   }

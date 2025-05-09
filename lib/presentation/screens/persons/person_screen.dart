@@ -155,7 +155,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
         SliverList(
           delegate: SliverChildListDelegate([
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               child: personState.when(
                 loading:
                     () => SizedBox(
@@ -170,49 +170,52 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                       children: [
                         if ((person.birthday != null) ||
                             (person.placeOfBirth.isNotEmpty))
-                          Card(
-                            color: const Color(0xFF1C1F26),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              side: const BorderSide(
-                                color: Colors.blueGrey,
-                                width: 1,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Card(
+                              color: const Color(0xFF1C1F26),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                side: const BorderSide(
+                                  color: Colors.blueGrey,
+                                  width: 1,
+                                ),
                               ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (person.birthday != null)
-                                          Text(
-                                            'Fecha de nacimiento: ${formatDate(person.birthday!)}',
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.bodyMedium,
-                                          ),
-                                        if (person.placeOfBirth.isNotEmpty)
-                                          Text(
-                                            'Lugar de nacimiento: ${person.placeOfBirth}',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.bodyMedium,
-                                          ),
-                                      ],
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (person.birthday != null)
+                                            Text(
+                                              'Fecha de nacimiento: ${formatDate(person.birthday!)}',
+                                              style:
+                                                  Theme.of(
+                                                    context,
+                                                  ).textTheme.bodyMedium,
+                                            ),
+                                          if (person.placeOfBirth.isNotEmpty)
+                                            Text(
+                                              'Lugar de nacimiento: ${person.placeOfBirth}',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style:
+                                                  Theme.of(
+                                                    context,
+                                                  ).textTheme.bodyMedium,
+                                            ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
 
@@ -220,41 +223,44 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                             (person.placeOfBirth.isNotEmpty))
                           SizedBox(height: 10),
                         if (person.biography.isNotEmpty)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AnimatedCrossFade(
-                                duration: const Duration(milliseconds: 300),
-                                crossFadeState:
-                                    _isExpanded
-                                        ? CrossFadeState.showSecond
-                                        : CrossFadeState.showFirst,
-                                firstChild: Text(
-                                  person.biography,
-                                  maxLines: 5,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                  textAlign: TextAlign.justify,
-                                ),
-                                secondChild: Text(
-                                  person.biography,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                  textAlign: TextAlign.justify,
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  onPressed:
-                                      () => setState(
-                                        () => _isExpanded = !_isExpanded,
-                                      ),
-                                  child: Text(
-                                    _isExpanded ? 'Ver menos' : 'Ver más',
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AnimatedCrossFade(
+                                  duration: const Duration(milliseconds: 300),
+                                  crossFadeState:
+                                      _isExpanded
+                                          ? CrossFadeState.showSecond
+                                          : CrossFadeState.showFirst,
+                                  firstChild: Text(
+                                    person.biography,
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.bodyLarge,
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                  secondChild: Text(
+                                    person.biography,
+                                    style: Theme.of(context).textTheme.bodyLarge,
+                                    textAlign: TextAlign.justify,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: TextButton(
+                                    onPressed:
+                                        () => setState(
+                                          () => _isExpanded = !_isExpanded,
+                                        ),
+                                    child: Text(
+                                      _isExpanded ? 'Ver menos' : 'Ver más',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         _PersonMoviesSection(personId: person.id),
                         _PersonTVShowsSection(personId: person.id),
