@@ -6,10 +6,11 @@ class PersonMapper {
     id: person.id,
     name: person.name,
     originalName: person.originalName,
-    mediaType: person.mediaType,
+    mediaType: person.mediaType ?? MediaType.PERSON,
     adult: person.adult,
     popularity: person.popularity,
     gender: person.gender,
+    knownForDepartment: person.knownForDepartment ?? KnownForDepartment.ACTING,
     profilePath:
         person.profilePath != ''
             ? 'https://image.tmdb.org/t/p/w500${person.profilePath}'

@@ -10,11 +10,7 @@ import 'package:cinemania/presentation/widgets/widgets.dart';
 class MasonryView extends StatefulWidget {
   final List<dynamic> data;
   final VoidCallback? loadNextPage;
-  const MasonryView({
-    required this.data,
-    this.loadNextPage,
-    super.key,
-  });
+  const MasonryView({required this.data, this.loadNextPage, super.key});
 
   @override
   State<MasonryView> createState() => _MasonryViewState();
@@ -86,12 +82,29 @@ class FavoritePosterLink extends StatelessWidget {
           context.pushNamed(MovieScreen.name, extra: favorite as Movie);
         } else if (favorite is TVShow) {
           context.pushNamed(TVShowScreen.name, extra: favorite as TVShow);
+        } else {
+          context.pushNamed(
+            PersonScreen.name,
+            extra: {
+              'id': favorite.id,
+              'name': favorite.name,
+              'profilePath': favorite.profilePath,
+              'popularity': favorite.popularity,
+            },
+          );
         }
       },
       child: FadeInUp(
         child: Stack(
           children: [
-            LoadImage(url: favorite.posterPath, h: 200, w: 150),
+            LoadImage(
+              url:
+                  favorite is Person
+                      ? favorite.profilePath
+                      : favorite.posterPath,
+              h: 200,
+              w: 150,
+            ),
             Positioned(
               bottom: 4,
               right: 4,

@@ -77,7 +77,7 @@ class _SliderHorizontalListviewState
               itemBuilder: (context, index) {
                 final data = widget.allData[index];
                 data.uniqueID =
-                    '${data.id}-${widget.type}-section-${widget.title}';
+                    '${data.id}-${widget.type}-section-${widget.title}-$index';
                 return FadeInRight(
                   child: Stack(
                     children: [
@@ -167,7 +167,7 @@ class _Slide extends StatelessWidget {
               width: 150,
               child: Hero(
                 tag: data.uniqueID.toString(),
-                child: LoadImage(url: data.posterPath, h: 200, w: 150),
+                child: LoadImage(url: data.posterPath, h: 193, w: 150),
               ),
             ),
           ),

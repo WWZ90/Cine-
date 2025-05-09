@@ -1,4 +1,3 @@
-import 'package:cinemania/presentation/providers/persons/persons_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 
@@ -17,6 +16,13 @@ final initialLoadingProvider = Provider<bool>((ref) {
   //final step12 = ref.watch(personTrendingProvider).isEmpty;
   //final step11 = ref.watch(favoritesProvider).isEmpty;
 
+  final curatedActors = ref.watch(curatedActorsProvider);
+
+  final step12 = curatedActors.maybeWhen(
+    data: (actors) => actors.isEmpty,
+    orElse: () => true,
+  );
+
   if (step1 ||
       step2 ||
       step3 ||
@@ -27,7 +33,8 @@ final initialLoadingProvider = Provider<bool>((ref) {
       step8 ||
       step9 ||
       step10 ||
-      step11) {
+      step11 ||
+      step12) {
     return true;
   }
 

@@ -2,10 +2,9 @@ class PersonDetails {
   final bool adult;
   final List<String> alsoKnownAs;
   final String biography;
-  final DateTime birthday;
+  final DateTime? birthday;
   final dynamic deathday;
   final int gender;
-  final String homepage;
   final int id;
   final String imdbId;
   final String knownForDepartment;
@@ -21,7 +20,6 @@ class PersonDetails {
     required this.birthday,
     required this.deathday,
     required this.gender,
-    required this.homepage,
     required this.id,
     required this.imdbId,
     required this.knownForDepartment,

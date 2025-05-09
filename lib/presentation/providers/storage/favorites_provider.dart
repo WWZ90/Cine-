@@ -36,6 +36,8 @@ class StorageNotifier extends StateNotifier<Map<int, dynamic>> {
       await localStorageRepository.toggleFavorite(data, 'Movie');
     } else if (data is TVShow) {
       await localStorageRepository.toggleFavorite(data, 'TVShow');
+    } else{
+      await localStorageRepository.toggleFavorite(data, 'Person');
     }
 
     final bool isInFavorites = state[data.id] != null;

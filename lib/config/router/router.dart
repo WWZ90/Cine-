@@ -105,6 +105,21 @@ final GoRouter appRouter = GoRouter(
               path: '/persons',
               name: PersonsViews.name,
               builder: (context, state) => const PersonsViews(),
+              routes: [
+                GoRoute(
+                  path: 'person-screen',
+                  name: PersonScreen.name,
+                  builder: (context, state) {
+                    final extras = state.extra as Map<String, dynamic>?;
+
+                    final id = extras?['id'] as int? ?? 0;
+                    final name = extras?['name'] as String? ?? '';
+                    final profilePath = extras?['profilePath'] as String? ?? '';
+                    final popularity = extras?['popularity'] as double? ?? 0;
+                    return PersonScreen(id: id, personName: name, popularity: popularity, profilePath: profilePath,);
+                  },
+                ),
+              ],
             ),
           ],
         ),

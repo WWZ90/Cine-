@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cinemania/domain/datasources/local_storage_datasource.dart';
 import 'package:cinemania/domain/entities/movie.dart';
+import 'package:cinemania/domain/entities/person.dart';
 import 'package:cinemania/domain/entities/tv_show.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,7 +19,7 @@ class IsarDatasource extends LocalStorageDatasource {
     final path = dir.path;
 
     try {
-      return Isar.openSync([MovieSchema, TVShowSchema], directory: path);
+      return Isar.openSync([MovieSchema, TVShowSchema, PersonSchema], directory: path);
     } on IsarError catch (e) {
       // Si es error de versión, borra los archivos .isar
       if (e.message.contains('version of the file')) {
@@ -31,7 +32,7 @@ class IsarDatasource extends LocalStorageDatasource {
           }
         }
         // Reintenta sobre una carpeta limpia
-        return Isar.openSync([MovieSchema, TVShowSchema], directory: path);
+        return Isar.openSync([MovieSchema, TVShowSchema, PersonSchema], directory: path);
       }
       rethrow;
     }
@@ -47,9 +48,10 @@ class IsarDatasource extends LocalStorageDatasource {
     } else if (type == 'TVShow') {
       final isFavorite = await isar.tVShows.filter().idEqualTo(id).findFirst();
       return isFavorite != null;
+    } else {
+      final isFavorite = await isar.persons.filter().idEqualTo(id).findFirst();
+      return isFavorite != null;
     }
-
-    return false;
   }
 
   @override
@@ -74,6 +76,15 @@ class IsarDatasource extends LocalStorageDatasource {
         return;
       }
       isar.writeTxnSync(() => isar.tVShows.putSync(data));
+    } else {
+      favorite = await isar.persons.filter().idEqualTo(data.id).findFirst();
+      if (favorite != null) {
+        isar.writeTxnSync(
+          () => isar.persons.deleteSync(favorite.isarPersonId!),
+        );
+        return;
+      }
+      isar.writeTxnSync(() => isar.persons.putSync(data));
     }
   }
 
@@ -91,7 +102,12 @@ class IsarDatasource extends LocalStorageDatasource {
       .limit(limit)
       .findAll();
 
+    var persons = await isar.persons.where()
+      .offset(offset)
+      .limit(limit)
+      .findAll();
+
     // Combinamos ambas listas
-    return [...movies, ...tvShows];
+    return [...movies, ...tvShows, ...persons];
   }
 }

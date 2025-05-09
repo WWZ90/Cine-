@@ -80,7 +80,15 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                 } else if (widget.type == 'TVShow') {
                   context.pushNamed(TVShowScreen.name, extra: data);
                 } else {
-                  context.pushNamed(PersonScreen.name, extra: data);
+                  context.pushNamed(
+                    PersonScreen.name,
+                    extra: {
+                      'id': data.id,
+                      'name': data.name,
+                      'profilePath': data.profilePath,
+                      'popularity': data.popularity,
+                    },
+                  );
                 }
               },
               onTapDown: (_) => _onUserInteractionStart(),
@@ -95,8 +103,10 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                 },
                 itemBuilder: (context, index) {
                   final data = widget.allData[index];
+                  String name =
+                      widget.type == 'Person' ? data.name : data.title;
                   data.uniqueID =
-                      '${data.id}"-${widget.type}-section-${widget.type == 'Person' ? data.name : data.title}';
+                      '${data.id}"-${widget.type}-section-top-slideshow-$name';
 
                   return AnimatedSwitcher(
                     duration: Duration(milliseconds: 800),
@@ -154,12 +164,17 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  widget.type != 'Person'
-                                      ? StarsRatingBarWithInfo(
-                                        rating: data.voteAverage,
-                                        voteCount: data.voteCount,
-                                      )
-                                      : Text('Popularidad: ${data.popularity}'),
+                                  StarsRatingBarWithInfo(
+                                    rating:
+                                        widget.type != 'Person'
+                                            ? data.voteAverage
+                                            : data.popularity,
+                                    voteCount:
+                                        widget.type != 'Person'
+                                            ? data.voteCount
+                                            : 0,
+                                    type: widget.type,
+                                  ),
                                 ],
                               ),
                               FavLikeButtonConsumer(

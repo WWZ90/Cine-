@@ -23,3 +23,4 @@ export 'videos/video_provider.dart';
 export 'videos/video_repository_provider.dart';
 export 'videos/is_fullscreen.dart';
 export 'persons/persons_provider.dart';
+export 'persons/person_detail_provider.dart';

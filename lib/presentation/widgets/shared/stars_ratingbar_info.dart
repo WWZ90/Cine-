@@ -5,6 +5,7 @@ import 'package:cinemania/presentation/widgets/shared/precise_ratingbar.dart';
 class StarsRatingBarWithInfo extends StatelessWidget {
   final double rating;
   final int voteCount;
+  final String? type;
   final double? iconSize;
   final Color? color;
   final Color? colorVotesText;
@@ -13,6 +14,7 @@ class StarsRatingBarWithInfo extends StatelessWidget {
     super.key,
     required this.rating,
     this.voteCount = 0,
+    this.type = 'MovieTVShow',
     this.iconSize = 20,
     this.color = Colors.yellow,
     this.colorVotesText = Colors.white,
@@ -23,7 +25,7 @@ class StarsRatingBarWithInfo extends StatelessWidget {
     return Row(
       children: [
         PreciseRatingBar(
-          rating: rating * 5 / 10,
+          rating: (type != "Person") ? rating * 5 / 10 : rating * 5 / 100,
           iconSize: iconSize!,
           filledColor: color!,
         ),
@@ -48,7 +50,7 @@ class StarsRatingBarWithInfo extends StatelessWidget {
               baseline: 18, // El mismo valor para que se alinee con el número
               baselineType: TextBaseline.alphabetic,
               child: Text(
-                '/10', // "/10" más pequeño
+                 (type != "Person") ? '/10' : '/100', // "/10" más pequeño
                 style: TextStyle(
                   fontSize: 13, // Tamaño de fuente más pequeño para "/10"
                   color: color,
@@ -56,7 +58,7 @@ class StarsRatingBarWithInfo extends StatelessWidget {
               ),
             ),
             SizedBox(width: 5),
-            if (voteCount != 0)
+            if (voteCount != 0 && type != 'Person')
               Baseline(
                 baseline: 15, // El mismo valor para que se alinee con el número
                 baselineType: TextBaseline.alphabetic,
