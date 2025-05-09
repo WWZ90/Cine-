@@ -138,7 +138,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                         Positioned(
                           bottom: 10,
                           left: 10,
-                          right: 20,
+                          right: 10,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

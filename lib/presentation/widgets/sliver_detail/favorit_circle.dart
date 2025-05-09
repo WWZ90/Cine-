@@ -27,7 +27,7 @@ class _FavoriteCircleState extends ConsumerState<FavoriteCircle> {
 
     return Positioned(
       bottom: widget.size.height * 0.105,
-      right: 20,
+      right: 10,
       child: TweenAnimationBuilder<double>(
         tween:
             widget.percent < 0.17
