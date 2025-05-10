@@ -6,10 +6,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/config/theme/app_theme.dart';
+import 'package:y_player/y_player.dart';
 
 Future main() async {
   await dotenv.load(fileName: '.env');
   await LocalImageFileManager.init();
+  YPlayerInitializer.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const ProviderScope(child: MainApp()));
 }

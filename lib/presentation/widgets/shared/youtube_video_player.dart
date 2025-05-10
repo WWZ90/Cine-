@@ -119,6 +119,7 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
 }
 */
 
+/*
 //FUNCIONAL CON IFRAME
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
@@ -159,31 +160,23 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
       params: const YoutubePlayerParams(showFullscreenButton: true),
     );
     controller.setFullScreenListener((isFullScreen) async {
-      final videoData = await controller.videoData;
-      final startSeconds = await controller.currentTime;
-
       if (!mounted) return;
 
-      // Marcar que entraste a fullscreen
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 200), () {
         if (mounted) {
-          ref.read(isFullscreenProvider.notifier).state = true;
+          ref.read(isFullscreenProvider.notifier).state = isFullScreen;
         }
       });
 
+      final videoData = await controller.videoData;
+      final startSeconds = await controller.currentTime;
+
       final currentTime = await FullscreenYoutubePlayer.launch(
+        // ignore: use_build_context_synchronously
         context,
         videoId: videoData.videoId,
         startSeconds: startSeconds,
       );
-
-      // Al volver, restaurar estado de fullscreen a falso
-      if (!mounted) return;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          ref.read(isFullscreenProvider.notifier).state = false;
-        }
-      });
 
       if (currentTime != null) {
         controller.seekTo(seconds: currentTime);
@@ -208,6 +201,106 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
         enableFullScreenOnVerticalDrag: false,
         controller: controller,
         keepAlive: true,
+      ),
+    );
+  }
+}
+*/
+
+import 'package:flutter/material.dart';
+import 'package:visibility_detector/visibility_detector.dart';
+import 'package:y_player/y_player.dart';
+
+class YouTubeVideoPlayer extends StatefulWidget {
+  final String youtubeId;
+  final String videoTitle;
+
+  const YouTubeVideoPlayer({
+    required this.youtubeId,
+    required this.videoTitle,
+    super.key,
+  });
+
+  @override
+  State<YouTubeVideoPlayer> createState() => _YouTubeVideoPlayerState();
+}
+
+class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
+  YPlayerController? _controller;
+  bool _wasPlayingBeforeHidden = false;
+  bool _controllerReady = false;
+  bool _playRequested = false;
+
+  void _handleVisibilityChanged(VisibilityInfo info) {
+    if (_controller == null) return;
+
+    final status = _controller!.status;
+    if (info.visibleFraction == 0 && status == YPlayerStatus.playing) {
+      _controller!.pause();
+      _wasPlayingBeforeHidden = true;
+    } else if (info.visibleFraction > 0 && _wasPlayingBeforeHidden) {
+      _controller!.play();
+      _wasPlayingBeforeHidden = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final thumbnailUrl =
+        'https://img.youtube.com/vi/${widget.youtubeId}/hqdefault.jpg';
+
+    return VisibilityDetector(
+      key: Key('youtube-player-${widget.youtubeId}'),
+      onVisibilityChanged: _handleVisibilityChanged,
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Offstage(
+              offstage: !_playRequested,
+              child: YPlayer(
+                youtubeUrl:
+                    'https://www.youtube.com/watch?v=${widget.youtubeId}',
+                autoPlay: true,
+                onControllerReady: (controller) {
+                  _controller = controller;
+                  setState(() {
+                    _controllerReady = true;
+                  });
+                },
+              ),
+            ),
+
+            if (!_playRequested) ...[
+              Image.network(thumbnailUrl, fit: BoxFit.cover),
+              const ColoredBox(color: Colors.black38),
+              Center(
+                child:
+                    !_controllerReady
+                        ? const CircularProgressIndicator()
+                        : IconButton(
+                          iconSize: 64,
+                          icon: const Icon(
+                            Icons.play_circle_fill,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _playRequested = true;
+                            });
+                          },
+                        ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

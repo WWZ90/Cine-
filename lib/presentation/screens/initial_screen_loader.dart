@@ -1,4 +1,3 @@
-import 'package:cinemania/presentation/providers/persons/persons_provider.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,8 @@ class InitialScreenLoader extends ConsumerStatefulWidget {
 }
 
 class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
+  final ValueNotifier<bool> showNav = ValueNotifier(true);
+
   @override
   void initState() {
     super.initState();
@@ -42,23 +43,35 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
     final initialLoading = ref.watch(initialLoadingProvider);
     final isFullScreen = ref.watch(isFullscreenProvider);
 
+    if (isFullScreen) {
+      showNav.value = false;
+    } else {
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (mounted) showNav.value = true;
+      });
+    }
+
     if (initialLoading) {
-      return Scaffold(body: FullScreenLoader());
+      return const Scaffold(body: FullScreenLoader());
     }
 
     return Scaffold(
       body: widget.navigationShell,
-      bottomNavigationBar:
-          isFullScreen
-              ? null
-              : CustomBottomNavigation(
+      bottomNavigationBar: ValueListenableBuilder<bool>(
+        valueListenable: showNav,
+        builder: (_, visible, __) {
+          return visible
+              ? CustomBottomNavigation(
                 currentIndex: widget.navigationShell.currentIndex,
                 onTap:
                     (idx, _) => widget.navigationShell.goBranch(
                       idx,
                       initialLocation: true,
                     ),
-              ),
+              )
+              : const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

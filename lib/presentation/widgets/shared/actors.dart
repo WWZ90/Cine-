@@ -49,16 +49,16 @@ class Actors extends ConsumerWidget {
                   },
                 );
               },
-              child: Container(
-                padding: EdgeInsets.all(8.0),
-                width: 115,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        FadeInRight(
-                          child: ClipRRect(
+              child: FadeInRight(
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  width: 115,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          ClipRRect(
                             borderRadius: BorderRadius.circular(60),
                             child: LoadImage(
                               url: actor.profilePath,
@@ -66,30 +66,30 @@ class Actors extends ConsumerWidget {
                               h: 100,
                             ),
                           ),
-                        ),
-                        Positioned(
-                          bottom: 5,
-                          right: 10,
-                          child: FavLikeButtonConsumer(
-                            data: actor.toPerson(),
-                            type: 'Person',
+                          Positioned(
+                            bottom: 5,
+                            right: 10,
+                            child: FavLikeButtonConsumer(
+                              data: actor.toPerson(),
+                              type: 'Person',
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      actor.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      actor.character ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                  ],
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        actor.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        actor.character ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
