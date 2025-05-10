@@ -19,18 +19,25 @@ final personPopularProvider =
 
 final curatedActorsProvider = FutureProvider<List<Person>>((ref) async {
   final personsRepo = ref.read(personsRepositoryProvider);
-  final popularMoviesState = ref.watch(popularMoviesProvider);
+
+  // Espera activa hasta que popularMoviesProvider tenga datos
+  List<Movie> popularMovies = [];
+
+  while (popularMovies.isEmpty) {
+    await Future.delayed(const Duration(milliseconds: 100));
+    final state = ref.read(popularMoviesProvider);
+    popularMovies = state.movies;
+  }
 
   final Set<int> addedPersonIds = {};
   final List<Person> curatedActors = [];
 
-  for (final movie in popularMoviesState.movies.take(10)) {
+  for (final movie in popularMovies.take(10)) {
     final credits = await personsRepo.getCastByMovie(movie.id.toString());
 
     for (final castPerson in credits.cast().take(5)) {
       if (castPerson.profilePath != null &&
           !addedPersonIds.contains(castPerson.id)) {
-        //final person = PersonMapper.personToEntity(castPerson);
         final person = Person(
           id: castPerson.id,
           name: castPerson.name,

@@ -2,19 +2,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 
 final initialLoadingProvider = Provider<bool>((ref) {
-  final step1 = ref.watch(nowPlayingMoviesProvider).movies.isEmpty;
-  final step2 = ref.watch(upcomingMoviesProvider).movies.isEmpty;
-  final step3 = ref.watch(popularMoviesProvider).movies.isEmpty;
-  final step4 = ref.watch(topRatedMoviesProvider).movies.isEmpty;
-  final step5 = ref.watch(genresMovieProvider).isEmpty;
-  final step6 = ref.watch(airingTodayTVShowsProvider).shows.isEmpty;
-  final step7 = ref.watch(onTheAirTVShowsProvider).shows.isEmpty;
-  final step8 = ref.watch(popularTVShowsProvider).shows.isEmpty;
-  final step9 = ref.watch(topRatedTVShowsProvider).shows.isEmpty;
-  final step10 = ref.watch(genresTVShowProvider).isEmpty;
-  final step11 = ref.watch(personPopularProvider).isEmpty;
-  //final step12 = ref.watch(personTrendingProvider).isEmpty;
-  //final step11 = ref.watch(favoritesProvider).isEmpty;
+  final step1 = ref.watch(
+    nowPlayingMoviesProvider.select((s) => s.movies.isEmpty),
+  );
+  final step2 = ref.watch(
+    upcomingMoviesProvider.select((s) => s.movies.isEmpty),
+  );
+  final step3 = ref.watch(
+    popularMoviesProvider.select((s) => s.movies.isEmpty),
+  );
+  final step4 = ref.watch(
+    topRatedMoviesProvider.select((s) => s.movies.isEmpty),
+  );
+  final step5 = ref.watch(genresMovieProvider.select((s) => s.isEmpty));
+  final step6 = ref.watch(
+    airingTodayTVShowsProvider.select((s) => s.shows.isEmpty),
+  );
+  final step7 = ref.watch(
+    onTheAirTVShowsProvider.select((s) => s.shows.isEmpty),
+  );
+  final step8 = ref.watch(
+    popularTVShowsProvider.select((s) => s.shows.isEmpty),
+  );
+  final step9 = ref.watch(
+    topRatedTVShowsProvider.select((s) => s.shows.isEmpty),
+  );
+  final step10 = ref.watch(genresTVShowProvider.select((s) => s.isEmpty));
+  final step11 = ref.watch(personPopularProvider.select((s) => s.isEmpty));
 
   final curatedActors = ref.watch(curatedActorsProvider);
 
@@ -23,7 +37,7 @@ final initialLoadingProvider = Provider<bool>((ref) {
     orElse: () => true,
   );
 
-  if (step1 ||
+  return step1 ||
       step2 ||
       step3 ||
       step4 ||
@@ -34,9 +48,5 @@ final initialLoadingProvider = Provider<bool>((ref) {
       step9 ||
       step10 ||
       step11 ||
-      step12) {
-    return true;
-  }
-
-  return false;
+      step12;
 });
