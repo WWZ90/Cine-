@@ -286,12 +286,14 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
                     DeviceOrientation.landscapeLeft,
                     DeviceOrientation.landscapeRight,
                   ]);
+                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
                 },
                 onExitFullScreen: () {
                   _isInFullscreen = false;
                   SystemChrome.setPreferredOrientations([
                     DeviceOrientation.portraitUp,
                   ]);
+                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
                 },
               ),
             ),
@@ -302,12 +304,12 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
               Center(
                 child:
                     !_controllerReady
-                        ? const CircularProgressIndicator(strokeWidth: 2)
+                        ? const CircularProgressIndicator(strokeWidth: 2, color: Colors.white,)
                         : IconButton(
-                          iconSize: 64,
+                          iconSize: 50,
                           icon: const Icon(
-                            Icons.play_circle_fill,
-                            color: Colors.red,
+                            Icons.play_arrow,
+                            color: Colors.white,
                           ),
                           onPressed: () {
                             setState(() {
