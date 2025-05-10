@@ -208,6 +208,7 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:y_player/y_player.dart';
 
@@ -230,12 +231,15 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
   bool _wasPlayingBeforeHidden = false;
   bool _controllerReady = false;
   bool _playRequested = false;
+  bool _isInFullscreen = false;
 
   void _handleVisibilityChanged(VisibilityInfo info) {
     if (_controller == null) return;
 
     final status = _controller!.status;
-    if (info.visibleFraction == 0 && status == YPlayerStatus.playing) {
+    if (info.visibleFraction == 0 &&
+        status == YPlayerStatus.playing &&
+        !_isInFullscreen) {
       _controller!.pause();
       _wasPlayingBeforeHidden = true;
     } else if (info.visibleFraction > 0 && _wasPlayingBeforeHidden) {
@@ -268,12 +272,26 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
               child: YPlayer(
                 youtubeUrl:
                     'https://www.youtube.com/watch?v=${widget.youtubeId}',
-                autoPlay: true,
+                autoPlay: false,
+                chooseBestQuality: false,
                 onControllerReady: (controller) {
                   _controller = controller;
                   setState(() {
                     _controllerReady = true;
                   });
+                },
+                onEnterFullScreen: () {
+                  _isInFullscreen = true;
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight,
+                  ]);
+                },
+                onExitFullScreen: () {
+                  _isInFullscreen = false;
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                  ]);
                 },
               ),
             ),
@@ -284,17 +302,20 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
               Center(
                 child:
                     !_controllerReady
-                        ? const CircularProgressIndicator()
+                        ? const CircularProgressIndicator(strokeWidth: 2)
                         : IconButton(
                           iconSize: 64,
                           icon: const Icon(
                             Icons.play_circle_fill,
-                            color: Colors.white,
+                            color: Colors.red,
                           ),
                           onPressed: () {
                             setState(() {
                               _playRequested = true;
                             });
+                            if (_controllerReady && _controller != null) {
+                              _controller!.play();
+                            }
                           },
                         ),
               ),
