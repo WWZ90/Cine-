@@ -1,3 +1,4 @@
+import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemania/config/router/router.dart';
 import 'package:flutter/services.dart';
@@ -16,14 +17,16 @@ Future main() async {
   runApp(const ProviderScope(child: MainApp()));
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = AppTheme();
     return MaterialApp.router(
       routerConfig: appRouter,
+      locale: ref.watch(languageProvider),
+      supportedLocales: const [Locale('en'), Locale('es')],
       debugShowCheckedModeBanner: false,
       theme: appTheme.getTheme(),
     );
