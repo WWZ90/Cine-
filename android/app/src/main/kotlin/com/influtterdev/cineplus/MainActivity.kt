@@ -1,4 +1,4 @@
-package com.tonymoisesamaran.cineplus
+package com.influtterdev.cineplus
 
 import io.flutter.embedding.android.FlutterActivity
 

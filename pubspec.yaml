@@ -1,7 +1,7 @@
 name: cinemania
-description: "A new Flutter project."
+description: "An app to explore information about movies, TV shows, and actors."
 publish_to: "none"
-version: 0.1.0
+version: 0.1.1+2
 
 environment:
   sdk: ^3.7.2
