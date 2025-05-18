@@ -45,6 +45,7 @@
   "noFavorites": "You currently have no favorites",
   "restarting": "Restarting with the new language",
   "language": "Language",
+  "pressAgainToExit": "Press again to exit",
   "searchPlaceholder": "Search movies, tv shows, persons...",
   "unableToLoadVideos": "Unable to load videos",
   "videoType_trailer": "Trailer",

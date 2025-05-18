@@ -1,7 +1,10 @@
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
@@ -23,14 +26,48 @@ final GoRouter appRouter = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return Consumer(
-          builder: (context, ref, _) {
-            final restartKey = ref.watch(appRestartKeyProvider);
-            return InitialScreenLoader(
-              key: restartKey.value,
-              navigationShell: navigationShell,
-            );
+        DateTime? lastBackPressTime;
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (_, __) async {
+            if (navigationShell.currentIndex > 0) {
+              navigationShell.goBranch(0);
+              return;
+            }
+
+            final now = DateTime.now();
+            final shouldExit =
+                lastBackPressTime == null ||
+                now.difference(lastBackPressTime!) > const Duration(seconds: 2);
+
+            if (shouldExit) {
+              lastBackPressTime = now;
+
+              if (context.mounted) {
+                ScaffoldMessenger.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.pressAgainToExit),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+              }
+
+              return;
+            }
+
+            SystemNavigator.pop();
           },
+          child: Consumer(
+            builder: (context, ref, _) {
+              final restartKey = ref.watch(appRestartKeyProvider);
+              return InitialScreenLoader(
+                key: restartKey.value,
+                navigationShell: navigationShell,
+              );
+            },
+          ),
         );
       },
       branches: [

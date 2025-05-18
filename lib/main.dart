@@ -8,7 +8,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/config/theme/app_theme.dart';
 import 'package:y_player/y_player.dart';
@@ -34,10 +33,26 @@ class MainApp extends ConsumerWidget {
     final locale = ref.watch(languageProvider); // 🌐 idioma dinámico
     final appTheme = AppTheme();
 
+    bool defaultOnNavigationNotification(NavigationNotification _) {
+      switch (WidgetsBinding.instance.lifecycleState) {
+        case null:
+        case AppLifecycleState.detached:
+        case AppLifecycleState.inactive:
+          // Evita cerrar la app cuando no está lista
+          return true;
+        case AppLifecycleState.resumed:
+        case AppLifecycleState.hidden:
+        case AppLifecycleState.paused:
+          SystemNavigator.setFrameworkHandlesBack(true);
+          return true;
+      }
+    }
+
     return ValueListenableBuilder<Key>(
       valueListenable: restartKey,
       builder: (context, key, _) {
         return MaterialApp.router(
+          onNavigationNotification: defaultOnNavigationNotification,
           key: key, // ← reinicia todo el árbol
           routerConfig: appRouter,
           locale: locale, // ← usa el provider, no GlobalAppState

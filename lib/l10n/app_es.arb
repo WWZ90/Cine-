@@ -44,6 +44,7 @@
   "noFavorites": "No tienes favoritos actualmente",
   "restarting": "Reiniciando con el nuevo idioma",
   "language": "Idioma",
+  "pressAgainToExit": "Presiona otra vez para salir",
   "searchPlaceholder": "Busca películas, series, actores...",
   "unableToLoadVideos": "No se pudo cargar los videos",
   "videoType_trailer": "Tráiler",
