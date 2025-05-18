@@ -46,6 +46,10 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
       ref.read(personPopularProvider.notifier).loadNextPage();
       ref.read(curatedActorsProvider);
 
+      ref.invalidate(movieDetailProvider);
+      ref.invalidate(tvShowDetailsProvider);
+      ref.invalidate(personDetailsProvider);
+
       // Oculta el mensaje transitorio después de 1.5 segundos
       Future.delayed(const Duration(seconds: 2), () {
         if (mounted) {
