@@ -103,22 +103,26 @@ class FavoritePosterLink extends StatelessWidget {
         }
       },
       child: FadeInUp(
-        child: Stack(
-          children: [
-            LoadImage(
-              url:
-                  favorite is Person
-                      ? favorite.profilePath
-                      : favorite.posterPath,
-              h: 200,
-              w: 150,
-            ),
-            Positioned(
-              bottom: 4,
-              right: 4,
-              child: FavLikeButtonConsumer(data: favorite, type: type),
-            ),
-          ],
+        child: SizedBox(
+          height: 200,
+          width: 150,
+          child: Stack(
+            children: [
+              LoadImage(
+                url:
+                    favorite is Person
+                        ? favorite.profilePath
+                        : favorite.posterPath,
+                h: 200,
+                w: 150,
+              ),
+              Positioned(
+                bottom: 4,
+                right: 4,
+                child: FavLikeButtonConsumer(data: favorite, type: type),
+              ),
+            ],
+          ),
         ),
       ),
     );
