@@ -1,7 +1,5 @@
 import 'package:cinemania/config/global_app_state.dart';
-import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/genres_datasource.dart';

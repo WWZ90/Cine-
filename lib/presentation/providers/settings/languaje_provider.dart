@@ -1,8 +1,7 @@
 import 'dart:ui';
-import 'package:cinemania/config/global_app_state.dart';
-import 'package:cinemania/restart_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemania/config/global_app_state.dart';
 import 'package:cinemania/infrastructure/datasources/isar_datasource.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 

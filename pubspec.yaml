@@ -15,12 +15,12 @@ dependencies:
   dio: ^5.8.0+1
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
   flutter_cache_manager: ^3.4.1
   flutter_dotenv: ^5.2.1
   flutter_html: ^3.0.0
   flutter_launcher_icons: ^0.14.3
+  flutter_localizations:
+    sdk: flutter
   flutter_native_splash: ^2.4.6
   flutter_riverpod: ^2.6.1
   flutter_staggered_grid_view: ^0.7.0
@@ -39,8 +39,7 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   stylish_bottom_bar: ^1.1.1
   visibility_detector: ^0.4.0+2
-  #youtube_player_iframe: ^5.2.1
-  y_player: ^2.0.0
+  y_player: ^2.0.5+1
   youtube_box_thumbnail: ^1.0.1
 
 dev_dependencies:
