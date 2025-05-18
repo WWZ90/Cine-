@@ -344,7 +344,7 @@ class _PersonMoviesSectionState extends ConsumerState<_PersonMoviesSection> {
 
     return SliderHorizontalListview(
       allData: moviesState.visibleMovies,
-      type: AppLocalizations.of(context)!.movies,
+      type: 'Movie',
       title: AppLocalizations.of(context)!.movies,
       onEndReached: () {
         notifier.loadMoreLocally();
@@ -385,7 +385,7 @@ class _PersonTVShowsSectionState extends ConsumerState<_PersonTVShowsSection> {
 
     return SliderHorizontalListview(
       allData: tvShowState.visibleShows,
-      type: AppLocalizations.of(context)!.tvShows,
+      type: 'TVShow',
       title: AppLocalizations.of(context)!.tvShows,
       onEndReached: () {
         notifier.loadMoreLocally();

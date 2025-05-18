@@ -48,7 +48,12 @@ class AppDrawer extends ConsumerWidget {
               if (langCode != 'es') {
                 await _setLanguage(ref, const Locale('es'));
                 ref.read(appRestartKeyProvider).value = UniqueKey();
-                navigationShell.goBranch(0); // 👈 Cambia a Home (películas)
+                Future.microtask(() {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    context.go('/home');
+                  }
+                });
               } else {
                 Navigator.pop(context);
               }
@@ -62,7 +67,12 @@ class AppDrawer extends ConsumerWidget {
               if (langCode != 'en') {
                 await _setLanguage(ref, const Locale('en'));
                 ref.read(appRestartKeyProvider).value = UniqueKey();
-                navigationShell.goBranch(0); // 👈 Cambia a Home (películas)
+                Future.microtask(() {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    context.go('/home');
+                  }
+                });
               } else {
                 Navigator.pop(context);
               }

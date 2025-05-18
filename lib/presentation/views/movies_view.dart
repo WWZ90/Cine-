@@ -45,7 +45,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                   allData: popularMovies.movies,
                   title: AppLocalizations.of(context)?.popular,
                   subTitle: AppLocalizations.of(context)?.popular,
-                  type: AppLocalizations.of(context)!.movies,
+                  type: 'Movie',
                   loadNextPage: () {
                     ref.read(popularMoviesProvider.notifier).loadNextPage();
                   },
