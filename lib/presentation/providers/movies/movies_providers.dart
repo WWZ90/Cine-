@@ -172,14 +172,3 @@ final moviesByGenreProvider = StateNotifierProvider.family<
 
   return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
 });
-
-// final moviesByPersonProvider =
-//     StateNotifierProvider.family<MoviesNotifier, MoviesState, String>((
-//       ref,
-//       personId,
-//     ) {
-//       fetchMoreMovies({int page = 1}) =>
-//           ref.read(movieRepositoryProvider).getMoviesByPersonId(personId);
-
-//       return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
-//     });

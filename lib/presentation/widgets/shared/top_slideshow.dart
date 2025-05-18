@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
@@ -86,9 +84,9 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
             child: GestureDetector(
               onTap: () {
                 final data = widget.allData[_currentIndex];
-                if (widget.type == AppLocalizations.of(context)!.movies) {
+                if (widget.type == 'Movie') {
                   context.pushNamed(MovieScreen.name, extra: data);
-                } else if (widget.type == AppLocalizations.of(context)!.tvShows) {
+                } else if (widget.type == 'TVShow') {
                   context.pushNamed(TVShowScreen.name, extra: data);
                 } else {
                   context.pushNamed(
@@ -115,7 +113,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                 itemBuilder: (context, index) {
                   final data = widget.allData[index];
                   String name =
-                      widget.type == AppLocalizations.of(context)!.person ? data.name : data.title;
+                      widget.type == 'Person' ? data.name : data.title;
                   data.uniqueID =
                       '${data.id}"-${widget.type}-section-top-slideshow-$name';
 
@@ -133,11 +131,11 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                           child: Image(
                             image: NetworkToFileImage(
                               url:
-                                  widget.type == AppLocalizations.of(context)!.person
+                                  widget.type == 'Person'
                                       ? data.profilePath
                                       : data.posterPath,
                               file: LocalImageFileManager.fileFromUrl(
-                                widget.type == AppLocalizations.of(context)!.person
+                                widget.type == 'Person'
                                     ? data.profilePath
                                     : data.posterPath,
                               ),
@@ -161,7 +159,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                                         MediaQuery.of(context).size.width *
                                         0.80,
                                     child: Text(
-                                      widget.type == AppLocalizations.of(context)!.person
+                                      widget.type == 'Person'
                                           ? data.name
                                           : data.title,
                                       overflow: TextOverflow.ellipsis,
@@ -176,11 +174,11 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                                   const SizedBox(height: 5),
                                   StarsRatingBarWithInfo(
                                     rating:
-                                        widget.type != AppLocalizations.of(context)!.person
+                                        widget.type != 'Person'
                                             ? data.voteAverage
                                             : data.popularity,
                                     voteCount:
-                                        widget.type != AppLocalizations.of(context)!.person
+                                        widget.type != 'Person'
                                             ? data.voteCount
                                             : 0,
                                     type: widget.type,

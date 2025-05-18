@@ -5,6 +5,7 @@ import 'package:cinemania/presentation/providers/providers.dart';
 
 final personTrendingProvider =
     StateNotifierProvider<PersonNotifier, List<Person>>((ref) {
+      ref.keepAlive();
       final personRepository =
           ref.watch(personsRepositoryProvider).getPersonTrending;
       return PersonNotifier(fetchPersons: personRepository);
@@ -12,6 +13,7 @@ final personTrendingProvider =
 
 final personPopularProvider =
     StateNotifierProvider<PersonNotifier, List<Person>>((ref) {
+      ref.keepAlive();
       final personsRepository =
           ref.watch(personsRepositoryProvider).getPersonPopular;
       return PersonNotifier(fetchPersons: personsRepository);
@@ -63,21 +65,22 @@ typedef PersonsCallback = Future<List<Person>> Function({int page});
 class PersonNotifier extends StateNotifier<List<Person>> {
   int currentPage = 0;
   bool isLoading = false;
+  bool _initialized = false;
   final PersonsCallback fetchPersons;
+
   PersonNotifier({required this.fetchPersons}) : super([]);
 
   Future<void> loadNextPage() async {
-    if (isLoading) return;
+    if (isLoading || _initialized) return;
     isLoading = true;
-
     currentPage++;
 
-    print('Loading new Persons');
-
     final List<Person> persons = await fetchPersons(page: currentPage);
-
     state = [...state, ...persons];
+
+    _initialized = true;
     await Future.delayed(Duration(milliseconds: 400));
     isLoading = false;
   }
 }
+
