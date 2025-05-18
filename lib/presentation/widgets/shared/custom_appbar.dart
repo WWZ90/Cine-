@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
@@ -17,6 +19,7 @@ class CustomAppbar extends ConsumerWidget {
       backgroundColor: const Color.fromARGB(135, 17, 17, 17),
       toolbarHeight: 50,
       centerTitle: true,
+      automaticallyImplyLeading: false,
       title: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(left: 0, right: 0),
@@ -26,10 +29,19 @@ class CustomAppbar extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 50, // igual al ancho máximo del botón derecho
+                  width: 50,
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Image.asset('assets/images/app_icon.png', width: 23),
+                    child: Builder(
+                      builder:
+                          (context) => GestureDetector(
+                            onTap: () => Scaffold.of(context).openDrawer(),
+                            child: Image.asset(
+                              'assets/images/app_icon.png',
+                              width: 23,
+                            ),
+                          ),
+                    ),
                   ),
                 ),
                 Image.asset('assets/images/cine.png', width: 50),
@@ -46,6 +58,13 @@ class CustomAppbar extends ConsumerWidget {
                           query: searchQuery,
                           context: context,
                           delegate: MultiSearchDelegate(
+                            searchPlaceholder:
+                                AppLocalizations.of(context)!.searchPlaceholder,
+                            movieLabel: AppLocalizations.of(context)!.movie,
+                            tvLabel: AppLocalizations.of(context)!.tvShow,
+                            personLabel: AppLocalizations.of(context)!.person,
+                            knownForLabel:
+                                AppLocalizations.of(context)!.knownFor,
                             initialSearchs: searchedMulti,
                             search:
                                 ref

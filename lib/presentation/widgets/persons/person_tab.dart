@@ -1,10 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class PersonTab extends ConsumerWidget {
   const PersonTab({super.key});
@@ -43,12 +46,12 @@ class _TabState extends ConsumerState<_PersonTabContent>
     final moviesState = ref.read(moviesByPersonProvider(personId));
     final tvState = ref.read(tvShowsByPersonProvider(personId));
 
-    if (moviesState.movies.isEmpty) {
-      ref.read(moviesByPersonProvider(personId).notifier).loadNextPage();
+    if (moviesState.visibleMovies.isEmpty) {
+      ref.read(moviesByPersonProvider(personId).notifier).loadMoreLocally();
     }
 
-    if (tvState.shows.isEmpty) {
-      ref.read(tvShowsByPersonProvider(personId).notifier).loadNextPage();
+    if (tvState.visibleShows.isEmpty) {
+      ref.read(tvShowsByPersonProvider(personId).notifier).loadMoreLocally();
     }
   }
 
@@ -60,7 +63,9 @@ class _TabState extends ConsumerState<_PersonTabContent>
       error: (e, _) => Center(child: Text('Error: $e')),
       data: (persons) {
         if (persons.isEmpty) {
-          return const Center(child: Text('No actors found.'));
+          return Center(
+            child: Text(AppLocalizations.of(context)!.noActorFound),
+          );
         }
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -82,10 +87,10 @@ class _TabState extends ConsumerState<_PersonTabContent>
             final firstId = persons[0].id;
             ref
                 .read(moviesByPersonProvider(firstId.toString()).notifier)
-                .loadNextPage();
+                .loadMoreLocally();
             ref
                 .read(tvShowsByPersonProvider(firstId.toString()).notifier)
-                .loadNextPage();
+                .loadMoreLocally();
           }
         });
 
@@ -124,7 +129,10 @@ class _TabState extends ConsumerState<_PersonTabContent>
                 controller: _tabController!,
                 children:
                     persons.map((person) {
-                      return _InfoTab(personId: person.id, type: 'Movie');
+                      return _InfoTab(
+                        personId: person.id,
+                        type: 'Movie',
+                      );
                     }).toList(),
               ),
             ),
@@ -134,7 +142,10 @@ class _TabState extends ConsumerState<_PersonTabContent>
                 controller: _tabController!,
                 children:
                     persons.map((person) {
-                      return _InfoTab(personId: person.id, type: 'TVShow');
+                      return _InfoTab(
+                        personId: person.id,
+                        type: 'TVShow',
+                      );
                     }).toList(),
               ),
             ),
@@ -196,39 +207,55 @@ class _InfoTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (type == 'Movie') {
+    final isMovie = type == 'Movie';
+
+    if (isMovie) {
       final moviesState = ref.watch(
         moviesByPersonProvider(personId.toString()),
       );
+      final moviesNotifier = ref.read(
+        moviesByPersonProvider(personId.toString()).notifier,
+      );
 
-      if (moviesState.isLoading && moviesState.movies.isEmpty) {
+      if (moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
         return const Center(child: CircularProgressIndicator(strokeWidth: 2));
       }
 
-      if (!moviesState.isLoading && moviesState.movies.isEmpty) {
-        return const Center(child: Text('No movies'));
+      if (!moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
+        return Center(child: Text(AppLocalizations.of(context)!.noMoviesFound));
       }
 
       return SliderHorizontalListview(
-        allData: moviesState.movies,
-        type: 'Movie',
-        title: 'Películas',
+        allData: moviesState.visibleMovies,
+        type: type,
+        title: type,
+        onEndReached: () {
+          moviesNotifier.loadMoreLocally();
+        },
       );
     } else {
       final tvState = ref.watch(tvShowsByPersonProvider(personId.toString()));
+      final tvNotifier = ref.read(
+        tvShowsByPersonProvider(personId.toString()).notifier,
+      );
 
-      if (tvState.isLoading && tvState.shows.isEmpty) {
+      if (tvState.isLoading && tvState.visibleShows.isEmpty) {
         return const Center(child: CircularProgressIndicator(strokeWidth: 2));
       }
 
-      if (!tvState.isLoading && tvState.shows.isEmpty) {
-        return const Center(child: Text('No TV shows'));
+      if (!tvState.isLoading && tvState.visibleShows.isEmpty) {
+        return Center(
+          child: Text(AppLocalizations.of(context)!.noTVShowsFound),
+        );
       }
 
       return SliderHorizontalListview(
-        allData: tvState.shows,
-        type: 'TVShow',
-        title: 'Series',
+        allData: tvState.visibleShows,
+        type: type,
+        title: type,
+        onEndReached: () {
+          tvNotifier.loadMoreLocally();
+        },
       );
     }
   }

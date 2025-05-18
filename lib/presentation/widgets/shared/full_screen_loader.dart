@@ -1,19 +1,22 @@
 import 'dart:async';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenLoader extends StatelessWidget {
+  final BuildContext context;
   // StreamController para manejar la repetición de los mensajes
   Stream<String> getLoadingMessages() {
     final messages = <String>[
-      'Loading data...',
-      'Buying popcorn...',
-      'We are about to start...',
-      'A few more seconds...',
-      'Almost ready...',
-      'This is taking longer than usual...',
-      'It\'s movie time!',
+      AppLocalizations.of(context)!.loadingData,
+      AppLocalizations.of(context)!.buyingPopcorn,
+      AppLocalizations.of(context)!.weAreAboutToStart,
+      AppLocalizations.of(context)!.aFewMoreSeconds,
+      AppLocalizations.of(context)!.almostReady,
+      AppLocalizations.of(context)!.thisIsTakingLongerThanUsual,
+      AppLocalizations.of(context)!.isTimeToHaveFun,
     ];
 
     // Creamos el StreamController
@@ -36,7 +39,7 @@ class FullScreenLoader extends StatelessWidget {
     return controller.stream; // Retorna el stream
   }
 
-  const FullScreenLoader({super.key});
+  const FullScreenLoader({required this.context, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +92,7 @@ class FullScreenLoader extends StatelessWidget {
           StreamBuilder<String>(
             stream: getLoadingMessages(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return Text('Loading...');
+              if (!snapshot.hasData) return Text(AppLocalizations.of(context)!.starting);
               return Text(snapshot.data!);
             },
           ),

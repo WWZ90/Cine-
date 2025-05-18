@@ -1,6 +1,8 @@
-import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
@@ -25,7 +27,7 @@ class _VideoTrailerState extends ConsumerState<VideoTrailer> {
     }
     return videosAsync.when(
       data: (videos) => _VideosList(videos: videos),
-      error: (_, __) => const Center(child: Text('No se pudo cargar videos')),
+      error: (_, __) => Center(child: Text(AppLocalizations.of(context)!.unableToLoadVideos)),
       loading:
           () => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );

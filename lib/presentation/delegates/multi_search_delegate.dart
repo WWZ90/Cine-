@@ -1,28 +1,39 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
 import 'package:animate_do/animate_do.dart';
+
 import 'package:cinemania/domain/entities/search.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
 typedef SearchCallback = Future<List<MultiSearch>> Function(String query);
 
 class MultiSearchDelegate extends SearchDelegate<MultiSearch?> {
-  StreamController<List<MultiSearch>> debouncedMultiSearch =
-      StreamController.broadcast();
-
-  StreamController<bool> isLoadingStream = StreamController.broadcast();
-
-  Timer? _debounceTimer;
-
   final SearchCallback search;
   List<MultiSearch> initialSearchs;
 
-  MultiSearchDelegate({required this.search, required this.initialSearchs})
-    : super(
-        searchFieldLabel: 'Busca películas, series, actores...',
-        searchFieldStyle: TextStyle(fontSize: 18),
-      );
+  final String searchPlaceholder;
+  final String movieLabel;
+  final String tvLabel;
+  final String personLabel;
+  final String knownForLabel;
+
+  StreamController<List<MultiSearch>> debouncedMultiSearch =
+      StreamController.broadcast();
+  StreamController<bool> isLoadingStream = StreamController.broadcast();
+  Timer? _debounceTimer;
+
+  MultiSearchDelegate({
+    required this.search,
+    required this.initialSearchs,
+    required this.searchPlaceholder,
+    required this.movieLabel,
+    required this.tvLabel,
+    required this.personLabel,
+    required this.knownForLabel,
+  }) : super(
+         searchFieldLabel: searchPlaceholder,
+         searchFieldStyle: const TextStyle(fontSize: 18),
+       );
 
   void clearStreams() {
     debouncedMultiSearch.close();
@@ -50,10 +61,14 @@ class MultiSearchDelegate extends SearchDelegate<MultiSearch?> {
 
           return _SearchsItems(
             searchs: searchs,
-            onSelected: (context, searchs) {
+            onSelected: (context, result) {
               clearStreams();
-              close(context, searchs);
+              close(context, result);
             },
+            movieLabel: movieLabel,
+            tvLabel: tvLabel,
+            personLabel: personLabel,
+            knownForLabel: knownForLabel,
           );
         } else {
           return Container(color: Colors.blueGrey.shade900);
@@ -141,7 +156,19 @@ class MultiSearchDelegate extends SearchDelegate<MultiSearch?> {
 class _SearchsItems extends StatelessWidget {
   final List? searchs;
   final Function onSelected;
-  const _SearchsItems({required this.searchs, required this.onSelected});
+  final String movieLabel;
+  final String tvLabel;
+  final String personLabel;
+  final String knownForLabel;
+
+  const _SearchsItems({
+    required this.searchs,
+    required this.onSelected,
+    required this.movieLabel,
+    required this.tvLabel,
+    required this.personLabel,
+    required this.knownForLabel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,46 +179,44 @@ class _SearchsItems extends StatelessWidget {
             searchs!.map((response) {
               if (response.mediaType == "movie") {
                 return GestureDetector(
+                  onTap: () => onSelected(context, response),
                   child: _ListItems(
-                    type: 'Película',
+                    type: movieLabel,
                     imgUrl: response.posterPath ?? '',
                     title: response.title ?? '',
-                    rating: response.voteAverage ?? '',
-                    voteCount: response.voteCount ?? '',
+                    rating: response.voteAverage ?? 0,
+                    voteCount: response.voteCount ?? 0,
                     overview: response.overview ?? '',
+                    knownForLabel: knownForLabel,
                   ),
-                  onTap: () {
-                    onSelected(context, response);
-                  },
                 );
               } else if (response.mediaType == "person") {
                 return GestureDetector(
+                  onTap: () => onSelected(context, response),
                   child: _ListItems(
-                    type: 'Persona',
+                    type: personLabel,
                     imgUrl: response.profilePath ?? '',
                     title: response.name ?? '',
                     knownForDepartment: response.knownForDepartment ?? '',
+                    overview: '',
+                    knownForLabel: knownForLabel,
                   ),
-                  onTap: (){
-                    onSelected(context, response);
-                  },
                 );
               } else if (response.mediaType == "tv") {
                 return GestureDetector(
+                  onTap: () => onSelected(context, response),
                   child: _ListItems(
-                    type: 'Serie',
+                    type: tvLabel,
                     imgUrl: response.posterPath ?? '',
                     title: response.name ?? '',
-                    rating: response.voteAverage!,
-                    voteCount: response.voteCount ?? '',
+                    rating: response.voteAverage ?? 0,
+                    voteCount: response.voteCount ?? 0,
                     overview: response.overview ?? '',
+                    knownForLabel: knownForLabel,
                   ),
-                  onTap: () {
-                    onSelected(context, response);
-                  },
                 );
               } else {
-                return Container(color: ThemeData().primaryColor);
+                return const SizedBox.shrink();
               }
             }).toList(),
       ),
@@ -207,6 +232,7 @@ class _ListItems extends StatelessWidget {
   final String overview;
   final String type;
   final String knownForDepartment;
+  final String knownForLabel;
   const _ListItems({
     required this.imgUrl,
     required this.title,
@@ -215,6 +241,7 @@ class _ListItems extends StatelessWidget {
     this.overview = '',
     required this.type,
     this.knownForDepartment = '',
+    this.knownForLabel = '',
   });
 
   @override
@@ -261,12 +288,12 @@ class _ListItems extends StatelessWidget {
                 SizedBox(height: 10),
 
                 if (overview.isNotEmpty) ...[
-                  Text(overview, overflow: TextOverflow.ellipsis, maxLines: 4),
+                  Text(overview, overflow: TextOverflow.ellipsis, maxLines: 3),
                   SizedBox(height: 10.0),
                 ],
 
                 if (knownForDepartment.isNotEmpty)
-                  Text('Conocido por: $knownForDepartment'),
+                  Text('$knownForLabel: $knownForDepartment'),
               ],
             ),
           ),

@@ -1,14 +1,15 @@
-import 'package:cinemania/infrastructure/mappers/castperson_to_person.dart';
-import 'package:cinemania/domain/entities/cast_person.dart' as domain;
-
-import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:animate_do/animate_do.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:cinemania/domain/entities/cast_person.dart' as domain;
+import 'package:cinemania/infrastructure/mappers/castperson_to_person.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
-import 'package:go_router/go_router.dart';
 
 class Actors extends ConsumerWidget {
   final String id;

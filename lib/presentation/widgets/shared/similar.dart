@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Similar extends ConsumerWidget {
   final String id;
   final String type;
@@ -42,7 +44,10 @@ class Similar extends ConsumerWidget {
     }
     return SliderHorizontalListview(
       allData: type == 'Movie' ? similar.movies : similar.shows,
-      title: type == 'Movie' ? 'Similar movies' : 'Similar TVShow',
+      title:
+          type == 'Movie'
+              ? AppLocalizations.of(context)!.similarMovies
+              : AppLocalizations.of(context)!.similarTVShows,
       subTitle: 'All time',
       type: type,
       id: id,

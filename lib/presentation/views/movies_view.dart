@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
@@ -14,12 +16,6 @@ class MoviesView extends ConsumerStatefulWidget {
 class HomeViewState extends ConsumerState<MoviesView> {
   @override
   Widget build(BuildContext context) {
-    // final initialLoading = ref.watch(initialLoadingProvider);
-
-    // if (initialLoading) {
-    //   return Scaffold(body: FullScreenLoader());
-    // }
-
     final nowPlaying = ref.watch(nowPlayingMoviesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
@@ -37,8 +33,8 @@ class HomeViewState extends ConsumerState<MoviesView> {
                 SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: upcomingMovies.movies,
-                  title: 'Próximamente',
-                  subTitle: 'Pronto',
+                  title: AppLocalizations.of(context)?.upcoming,
+                  subTitle: AppLocalizations.of(context)?.soon,
                   type: 'Movie',
                   loadNextPage: () {
                     ref.read(upcomingMoviesProvider.notifier).loadNextPage();
@@ -47,9 +43,9 @@ class HomeViewState extends ConsumerState<MoviesView> {
                 SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: popularMovies.movies,
-                  title: 'Populares',
-                  subTitle: 'Populares',
-                  type: 'Movie',
+                  title: AppLocalizations.of(context)?.popular,
+                  subTitle: AppLocalizations.of(context)?.popular,
+                  type: AppLocalizations.of(context)!.movies,
                   loadNextPage: () {
                     ref.read(popularMoviesProvider.notifier).loadNextPage();
                   },
@@ -59,8 +55,8 @@ class HomeViewState extends ConsumerState<MoviesView> {
                 SizedBox(height: 20),
                 SliderHorizontalListview(
                   allData: topRatedMovies.movies,
-                  title: 'Mejores valoradas',
-                  subTitle: 'Mejores valoradas',
+                  title: AppLocalizations.of(context)?.topRated,
+                  subTitle: AppLocalizations.of(context)?.topRated,
                   type: 'Movie',
                   loadNextPage: () {
                     ref.read(topRatedMoviesProvider.notifier).loadNextPage();

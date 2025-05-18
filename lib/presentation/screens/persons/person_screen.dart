@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/config/helpers/date_format.dart';
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
@@ -137,13 +139,13 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                               StarsRatingBarWithInfo(
                                 rating: widget.popularity,
                                 voteCount: 0,
-                                type: 'Person',
+                                type: AppLocalizations.of(context)!.person,
                               ),
                             ],
                           ),
                           FavLikeButtonConsumer(
                             data: basePerson,
-                            type: 'Person',
+                            type: AppLocalizations.of(context)!.person,
                           ),
                         ],
                       ),
@@ -196,7 +198,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                           Row(
                                             children: [
                                               Text(
-                                                'Fecha de nacimiento: ',
+                                                '${AppLocalizations.of(context)!.birthday}: ',
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.grey[500],
@@ -218,7 +220,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'Lugar de nacimiento: ',
+                                                '${AppLocalizations.of(context)!.placeOfBirth}: ',
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.grey[500],
@@ -283,7 +285,11 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                         () => _isExpanded = !_isExpanded,
                                       ),
                                   child: Text(
-                                    _isExpanded ? 'Ver menos' : 'Ver más',
+                                    _isExpanded
+                                        ? AppLocalizations.of(context)!.viewLess
+                                        : AppLocalizations.of(
+                                          context,
+                                        )!.viewMore,
                                   ),
                                 ),
                               ),
@@ -308,56 +314,82 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
   }
 }
 
-class _PersonMoviesSection extends ConsumerWidget {
+class _PersonMoviesSection extends ConsumerStatefulWidget {
   final int personId;
   const _PersonMoviesSection({required this.personId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final moviesState = ref.watch(moviesByPersonProvider(personId.toString()));
+  ConsumerState<_PersonMoviesSection> createState() =>
+      _PersonMoviesSectionState();
+}
 
-    if (moviesState.isLoading && moviesState.movies.isEmpty) {
-      return SizedBox(
-        height: 200,
-        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-      );
+class _PersonMoviesSectionState extends ConsumerState<_PersonMoviesSection> {
+  @override
+  Widget build(BuildContext context) {
+    final moviesState = ref.watch(
+      moviesByPersonProvider(widget.personId.toString()),
+    );
+
+    final notifier = ref.read(
+      moviesByPersonProvider(widget.personId.toString()).notifier,
+    );
+
+    if (moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
+      return Center(child: CircularProgressIndicator(strokeWidth: 2));
     }
 
-    if (!moviesState.isLoading && moviesState.movies.isEmpty) {
-      return const Center(child: Text('No movies found'));
+    if (!moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
+      return Center(child: Text(AppLocalizations.of(context)!.noMoviesFound));
     }
 
     return SliderHorizontalListview(
-      allData: moviesState.movies,
-      type: 'Movie',
-      title: 'Películas',
+      allData: moviesState.visibleMovies,
+      type: AppLocalizations.of(context)!.movies,
+      title: AppLocalizations.of(context)!.movies,
+      onEndReached: () {
+        notifier.loadMoreLocally();
+      },
     );
   }
 }
 
-class _PersonTVShowsSection extends ConsumerWidget {
+class _PersonTVShowsSection extends ConsumerStatefulWidget {
   final int personId;
   const _PersonTVShowsSection({required this.personId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tvState = ref.watch(tvShowsByPersonProvider(personId.toString()));
+  ConsumerState<_PersonTVShowsSection> createState() =>
+      _PersonTVShowsSectionState();
+}
 
-    if (tvState.isLoading && tvState.shows.isEmpty) {
-      return SizedBox(
-        height: 200,
-        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+class _PersonTVShowsSectionState extends ConsumerState<_PersonTVShowsSection> {
+  @override
+  Widget build(BuildContext context) {
+    final tvShowState = ref.watch(
+      tvShowsByPersonProvider(widget.personId.toString()),
+    );
+
+    final notifier = ref.read(
+      tvShowsByPersonProvider(widget.personId.toString()).notifier,
+    );
+
+    if (tvShowState.isLoading && tvShowState.visibleShows.isEmpty) {
+      return Center(child: CircularProgressIndicator(strokeWidth: 2));
+    }
+
+    if (!tvShowState.isLoading && tvShowState.visibleShows.isEmpty) {
+      return Center(
+        child: Text(AppLocalizations.of(context)!.noTVShowsFound),
       );
     }
 
-    if (!tvState.isLoading && tvState.shows.isEmpty) {
-      return const Center(child: Text('No TV shows found'));
-    }
-
     return SliderHorizontalListview(
-      allData: tvState.shows,
-      type: 'TVShow',
-      title: 'Series',
+      allData: tvShowState.visibleShows,
+      type: AppLocalizations.of(context)!.tvShows,
+      title: AppLocalizations.of(context)!.tvShows,
+      onEndReached: () {
+        notifier.loadMoreLocally();
+      },
     );
   }
 }

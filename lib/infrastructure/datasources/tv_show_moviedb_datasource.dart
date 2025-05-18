@@ -1,3 +1,4 @@
+import 'package:cinemania/config/global_app_state.dart';
 import 'package:dio/dio.dart';
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/tv_show_datasource.dart';
@@ -16,9 +17,13 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
   final dio = Dio(
     BaseOptions(
       baseUrl: 'https://api.themoviedb.org/3',
-      queryParameters: {'api_key': Environment.movieDBKey, 'language': 'es-ES'},
+      queryParameters: {'api_key': Environment.movieDBKey},
     ),
   );
+
+  void _updateLanguage() {
+    dio.options.queryParameters['language'] = GlobalAppState.languageCode;
+  }
 
   List<TVShow> _jsonToTVShow(
     Map<String, dynamic> json, {
@@ -49,23 +54,19 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
 
   List<Video> _jsonToVideo(Map<String, dynamic> json) {
     final videoResponse = VideoResponse.fromJson(json);
-    final List<Video> videos =
-        videoResponse.results
-            .map((video) => VideoMapper.videoToEntity(video))
-            .toList();
-    return videos;
+    return videoResponse.results.map(VideoMapper.videoToEntity).toList();
   }
 
   @override
   Future<List<TVShow>> getAiringToday({int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/tv/airing_today',
         queryParameters: {'page': page},
       );
-
       return _jsonToTVShow(response.data);
-    } catch (e) {
+    } catch (_) {
       return [];
     }
   }
@@ -73,13 +74,13 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
   @override
   Future<List<TVShow>> getOnTheAir({int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/tv/on_the_air',
         queryParameters: {'page': page},
       );
-
       return _jsonToTVShow(response.data);
-    } catch (e) {
+    } catch (_) {
       return [];
     }
   }
@@ -87,13 +88,13 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
   @override
   Future<List<TVShow>> getPopular({int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/tv/popular',
         queryParameters: {'page': page},
       );
-
       return _jsonToTVShow(response.data);
-    } catch (e) {
+    } catch (_) {
       return [];
     }
   }
@@ -101,41 +102,34 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
   @override
   Future<List<TVShow>> getTopRated({int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/tv/top_rated',
         queryParameters: {'page': page},
       );
-
       return _jsonToTVShow(response.data);
-    } catch (e) {
+    } catch (_) {
       return [];
     }
   }
 
   @override
   Future<TvShowDetails> getTVShowById(String id) async {
+    _updateLanguage();
     final response = await dio.get('/tv/$id');
-
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200)
       throw Exception('No TVShow found for this id $id');
-    }
 
     final tvShowDetailsR = TvShowDetailsResponse.fromJson(response.data);
-
-    final TvShowDetails tvShowDetails =
-        TvShowDetailMapper.tvShowDetailsToEntity(tvShowDetailsR);
-
-    return tvShowDetails;
+    return TvShowDetailMapper.tvShowDetailsToEntity(tvShowDetailsR);
   }
 
   @override
   Future<List<Video>> getVideosByTVShowId(String id) async {
     try {
+      _updateLanguage();
       final response = await dio.get('/tv/$id/videos');
-
-      if (response.statusCode != 200) {
-        throw Exception('TVShow with id $id not found');
-      }
+      if (response.statusCode != 200) throw Exception();
 
       List<Video> videos = _jsonToVideo(response.data);
 
@@ -144,20 +138,20 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
           '/movie/$id/videos',
           queryParameters: {'language': 'en-US'},
         );
-
         if (responseEn.statusCode == 200) {
           videos = _jsonToVideo(responseEn.data);
         }
       }
 
       return videos;
-    } catch (e) {
+    } catch (_) {
       return [];
     }
   }
 
   @override
   Future<List<TVShow>> getTVShowByGenreId(String id, {int page = 1}) async {
+    _updateLanguage();
     final response = await dio.get(
       '/discover/tv',
       queryParameters: {'with_genres': id, 'page': page},
@@ -167,6 +161,7 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
 
   @override
   Future<List<TVShow>> getSimilar(String id, {int page = 1}) async {
+    _updateLanguage();
     final response = await dio.get(
       '/tv/$id/similar',
       queryParameters: {'page': page},
@@ -176,6 +171,7 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
 
   @override
   Future<List<TVShow>> getTVShowByPersonId(String id) async {
+    _updateLanguage();
     final response = await dio.get('/person/$id/tv_credits');
     return _jsonToTVShow(response.data, type: 'Cast');
   }

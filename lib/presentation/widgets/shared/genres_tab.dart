@@ -16,53 +16,58 @@ class GenresTab extends ConsumerStatefulWidget {
 
 class _GenresTabState extends ConsumerState<GenresTab>
     with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
+  TabController? _tabController;
+
   @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: widget.genres.length, vsync: this);
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final genres = widget.genres;
+
+    if (genres.isEmpty) {
+      return const SizedBox(
+        height: 253,
+        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      );
+    }
+
+    // Crea el TabController cuando ya hay géneros disponibles
+    _tabController ??= TabController(length: genres.length, vsync: this);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final firstId = widget.genres[0].id;
-
-      if (widget.type == 'Movie') {
-        ref
-            .read(moviesByGenreProvider(firstId.toString()).notifier)
-            .loadNextPage();
-      }
-
-      if (widget.type == 'TVShow') {
-        ref
-            .read(tvShowsByGenreProvider(firstId.toString()).notifier)
-            .loadNextPage();
+      if (_tabController!.indexIsChanging == false) {
+        final selectedId = genres[_tabController!.index].id;
+        if (widget.type == 'Movie') {
+          ref
+              .read(moviesByGenreProvider(selectedId.toString()).notifier)
+              .loadNextPage();
+        } else {
+          ref
+              .read(tvShowsByGenreProvider(selectedId.toString()).notifier)
+              .loadNextPage();
+        }
       }
     });
 
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        final newGenreId = widget.genres[_tabController.index].id;
+    _tabController!.addListener(() {
+      if (_tabController!.indexIsChanging) {
+        final newGenreId = genres[_tabController!.index].id;
         if (widget.type == 'Movie') {
           ref
               .read(moviesByGenreProvider(newGenreId.toString()).notifier)
               .loadNextPage();
-        }
-        if (widget.type == 'TVShow') {
+        } else {
           ref
               .read(tvShowsByGenreProvider(newGenreId.toString()).notifier)
               .loadNextPage();
         }
       }
     });
-  }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Column(
       children: [
         Align(
@@ -78,10 +83,7 @@ class _GenresTabState extends ConsumerState<GenresTab>
             indicatorWeight: 1.0,
             indicatorAnimation: TabIndicatorAnimation.elastic,
             labelColor: Colors.white,
-            tabs:
-                widget.genres
-                    .map((g) => Tab(text: g.name.toUpperCase()))
-                    .toList(),
+            tabs: genres.map((g) => Tab(text: g.name.toUpperCase())).toList(),
           ),
         ),
         SizedBox(
@@ -89,10 +91,13 @@ class _GenresTabState extends ConsumerState<GenresTab>
           child: TabBarView(
             controller: _tabController,
             children:
-                widget.genres.map((g) {
+                genres.map((g) {
                   return widget.type == 'Movie'
                       ? _GenreTab(genreId: g.id, type: 'Movie')
-                      : _GenreTab(genreId: g.id, type: 'TVShow');
+                      : _GenreTab(
+                        genreId: g.id,
+                        type: 'TVShow',
+                      );
                 }).toList(),
           ),
         ),
@@ -112,7 +117,7 @@ class _GenreTab extends ConsumerWidget {
     if (type == 'Movie') {
       final movies = ref.watch(moviesByGenreProvider(genreId.toString()));
       if (movies.isLoading && movies.movies.isEmpty) {
-        return const Center(child: CircularProgressIndicator(strokeWidth: 2,));
+        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
       }
       return SliderHorizontalListview(
         allData: movies.movies,
@@ -126,7 +131,7 @@ class _GenreTab extends ConsumerWidget {
     } else {
       final tvShows = ref.watch(tvShowsByGenreProvider(genreId.toString()));
       if (tvShows.isLoading && tvShows.shows.isEmpty) {
-        return const Center(child: CircularProgressIndicator(strokeWidth: 2,));
+        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
       }
       return SliderHorizontalListview(
         allData: tvShows.shows,

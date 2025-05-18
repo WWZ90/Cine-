@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemania/presentation/screens/movies/movie_screen.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
@@ -13,6 +15,7 @@ class SliderHorizontalListview extends ConsumerStatefulWidget {
   final String? subTitle;
   final String type;
   final String? id; // For movie or tv show id - to get Similars.
+  final VoidCallback? onEndReached;
 
   final VoidCallback? loadNextPage;
 
@@ -24,6 +27,7 @@ class SliderHorizontalListview extends ConsumerStatefulWidget {
     required this.type,
     this.loadNextPage,
     this.id = '',
+    this.onEndReached,
   });
 
   @override
@@ -38,12 +42,17 @@ class _SliderHorizontalListviewState
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(() {
-      if (widget.loadNextPage == null) return;
 
-      if ((scrollController.position.pixels + 200) >=
-          scrollController.position.maxScrollExtent) {
-        widget.loadNextPage!();
+    scrollController.addListener(() {
+      // Detectamos que estamos cerca del final (scroll horizontal)
+      final reachedEnd =
+          (scrollController.position.pixels + 200) >=
+          scrollController.position.maxScrollExtent;
+
+      if (reachedEnd) {
+        // Llama a ambos callbacks si están definidos
+        if (widget.loadNextPage != null) widget.loadNextPage!();
+        if (widget.onEndReached != null) widget.onEndReached!();
       }
     });
   }
@@ -67,22 +76,20 @@ class _SliderHorizontalListviewState
               type: widget.type,
               id: widget.id,
             ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
               itemCount: widget.allData.length,
               controller: scrollController,
               scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 final data = widget.allData[index];
                 data.uniqueID =
                     '${data.id}-${widget.type}-section-${widget.title}-$index';
                 return FadeInRight(
                   child: Stack(
-                    children: [
-                      _Slide(data: data, type: widget.type),
-                    ],
+                    children: [_Slide(data: data, type: widget.type)],
                   ),
                 );
               },
@@ -126,7 +133,7 @@ class _Title extends StatelessWidget {
                 );
               },
               style: ButtonStyle(visualDensity: VisualDensity.compact),
-              child: Text('Ver Todo'),
+              child: Text(AppLocalizations.of(context)!.viewAll),
             ),
         ],
       ),

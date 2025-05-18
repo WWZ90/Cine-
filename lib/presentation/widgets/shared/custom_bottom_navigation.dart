@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CustomBottomNavigation extends StatelessWidget {
   final int currentIndex;
   final void Function(int, bool) onTap;
@@ -29,25 +31,25 @@ class CustomBottomNavigation extends StatelessWidget {
             color: Colors.white,
           ),
           selectedColor: Colors.white,
-          title: const Text('Películas'),
+          title: Text(AppLocalizations.of(context)!.movies),
         ),
         BottomBarItem(
           icon: const Icon(Icons.movie_filter_outlined),
           selectedIcon: const Icon(Icons.movie_filter, color: Colors.white),
           selectedColor: Colors.white,
-          title: const Text('Series'),
+          title: Text(AppLocalizations.of(context)!.tvShows),
         ),
         BottomBarItem(
           icon: const Icon(Icons.person_2_outlined),
           selectedIcon: const Icon(Icons.person_2_rounded, color: Colors.white),
           selectedColor: Colors.white,
-          title: const Text('Actores'),
+          title: Text(AppLocalizations.of(context)!.actors),
         ),
         BottomBarItem(
           icon: const Icon(Icons.favorite_border),
           selectedIcon: const Icon(Icons.favorite, color: Colors.red),
           selectedColor: Colors.white,
-          title: const Text('Favoritos'),
+          title: Text(AppLocalizations.of(context)!.favorites),
         ),
       ],
       hasNotch: true,

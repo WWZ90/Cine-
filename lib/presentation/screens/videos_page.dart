@@ -3,6 +3,8 @@ import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/domain/entities/entities.dart';
 
 class VideosPage extends ConsumerWidget {
@@ -13,7 +15,21 @@ class VideosPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //final List<Video> videos = ref.watch(videos);
+    String getVideoTypeTitle(BuildContext context, Type type) {
+      final loc = AppLocalizations.of(context)!;
+      switch (type) {
+        case Type.TRAILER:
+          return loc.videoType_trailer;
+        case Type.TEASER:
+          return loc.videoType_teaser;
+        case Type.FEATURETTE:
+          return loc.videoType_featurette;
+        case Type.CLIP:
+          return loc.videoType_clip;
+        case Type.BEHIND_THE_SCENES:
+          return loc.videoType_behindTheScenes;
+      }
+    }
 
     final typeIcons = {
       Type.TRAILER: Icons.movie_filter,
@@ -82,7 +98,7 @@ class VideosPage extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final type = orderedEntries[index].key;
                     final typeVideos = orderedEntries[index].value;
-                    final title = typeValues.reverse[type] ?? type.name;
+                    final title = getVideoTypeTitle(context, type);
                     final icon = typeIcons[type] ?? Icons.video_library;
                     final color = typeColors[type] ?? Colors.white;
 
@@ -129,10 +145,17 @@ class VideosPage extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    YouTubeVideoPlayer(youtubeId: video.key, videoTitle: video.name),
+                                    YouTubeVideoPlayer(
+                                      youtubeId: video.key,
+                                      videoTitle: video.name,
+                                    ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      'Publicado el ${_formatDate(video.publishedAt)}',
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.video_publishedOn(
+                                        _formatDate(context, video.publishedAt),
+                                      ),
                                       style: const TextStyle(
                                         fontSize: 12,
                                         color: Colors.white70,
@@ -156,26 +179,42 @@ class VideosPage extends ConsumerWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')} '
-        '${_monthName(date.month)}. ${date.year}';
+  String _formatDate(BuildContext context, DateTime date) {
+    final loc = AppLocalizations.of(context)!;
+    final day = date.day.toString().padLeft(2, '0');
+    final month = _localizedMonth(loc, date.month);
+    final year = date.year;
+    return '$day $month. $year';
   }
 
-  String _monthName(int month) {
-    const months = [
-      'ene',
-      'feb',
-      'mar',
-      'abr',
-      'may',
-      'jun',
-      'jul',
-      'ago',
-      'sep',
-      'oct',
-      'nov',
-      'dic',
-    ];
-    return months[month - 1];
+  String _localizedMonth(AppLocalizations loc, int month) {
+    switch (month) {
+      case 1:
+        return loc.month_1;
+      case 2:
+        return loc.month_2;
+      case 3:
+        return loc.month_3;
+      case 4:
+        return loc.month_4;
+      case 5:
+        return loc.month_5;
+      case 6:
+        return loc.month_6;
+      case 7:
+        return loc.month_7;
+      case 8:
+        return loc.month_8;
+      case 9:
+        return loc.month_9;
+      case 10:
+        return loc.month_10;
+      case 11:
+        return loc.month_11;
+      case 12:
+        return loc.month_12;
+      default:
+        return '';
+    }
   }
 }

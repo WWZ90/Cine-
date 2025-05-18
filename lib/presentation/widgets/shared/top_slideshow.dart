@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
@@ -22,7 +24,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
   int _currentIndex = 0;
   Timer? _autoPlayTimer;
   Timer? _resumeTimer;
-  late PageController _pageController; // Controlador para manejar el scroll
+  late PageController _pageController;
 
   @override
   void initState() {
@@ -31,17 +33,19 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
     _startAutoPlay();
   }
 
-  // Comenzar el auto-play
   void _startAutoPlay() {
+    if (!mounted || widget.allData.isEmpty) return;
     _autoPlayTimer?.cancel();
     _autoPlayTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (_pageController.hasClients) {
-        _currentIndex = (_currentIndex + 1) % widget.allData.length;
-        _pageController.animateToPage(
-          _currentIndex,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
+      if (_pageController.hasClients && widget.allData.isNotEmpty) {
+        setState(() {
+          _currentIndex = (_currentIndex + 1) % widget.allData.length;
+          _pageController.animateToPage(
+            _currentIndex,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        });
       }
     });
   }
@@ -67,6 +71,13 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
 
+    if (widget.allData.isEmpty) {
+      return SizedBox(
+        height: screenHeight * 0.55,
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      );
+    }
+
     return SizedBox(
       height: screenHeight * 0.55,
       child: Column(
@@ -75,9 +86,9 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
             child: GestureDetector(
               onTap: () {
                 final data = widget.allData[_currentIndex];
-                if (widget.type == 'Movie') {
+                if (widget.type == AppLocalizations.of(context)!.movies) {
                   context.pushNamed(MovieScreen.name, extra: data);
-                } else if (widget.type == 'TVShow') {
+                } else if (widget.type == AppLocalizations.of(context)!.tvShows) {
                   context.pushNamed(TVShowScreen.name, extra: data);
                 } else {
                   context.pushNamed(
@@ -104,12 +115,12 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                 itemBuilder: (context, index) {
                   final data = widget.allData[index];
                   String name =
-                      widget.type == 'Person' ? data.name : data.title;
+                      widget.type == AppLocalizations.of(context)!.person ? data.name : data.title;
                   data.uniqueID =
                       '${data.id}"-${widget.type}-section-top-slideshow-$name';
 
                   return AnimatedSwitcher(
-                    duration: Duration(milliseconds: 800),
+                    duration: const Duration(milliseconds: 800),
                     transitionBuilder:
                         (child, animation) =>
                             FadeTransition(opacity: animation, child: child),
@@ -122,11 +133,11 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                           child: Image(
                             image: NetworkToFileImage(
                               url:
-                                  widget.type == 'Person'
+                                  widget.type == AppLocalizations.of(context)!.person
                                       ? data.profilePath
                                       : data.posterPath,
                               file: LocalImageFileManager.fileFromUrl(
-                                widget.type == 'Person'
+                                widget.type == AppLocalizations.of(context)!.person
                                     ? data.profilePath
                                     : data.posterPath,
                               ),
@@ -145,13 +156,12 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Ajustar el texto para que se recorte antes del corazón
                                   SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width *
-                                        0.80, // Ajuste aquí el ancho
+                                        0.80,
                                     child: Text(
-                                      widget.type == 'Person'
+                                      widget.type == AppLocalizations.of(context)!.person
                                           ? data.name
                                           : data.title,
                                       overflow: TextOverflow.ellipsis,
@@ -166,11 +176,11 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                                   const SizedBox(height: 5),
                                   StarsRatingBarWithInfo(
                                     rating:
-                                        widget.type != 'Person'
+                                        widget.type != AppLocalizations.of(context)!.person
                                             ? data.voteAverage
                                             : data.popularity,
                                     voteCount:
-                                        widget.type != 'Person'
+                                        widget.type != AppLocalizations.of(context)!.person
                                             ? data.voteCount
                                             : 0,
                                     type: widget.type,
@@ -193,7 +203,6 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
             ),
           ),
           const SizedBox(height: 10),
-          // Indicador
           SmoothPageIndicator(
             controller: _pageController,
             count: widget.allData.length,

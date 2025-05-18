@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
@@ -22,21 +24,21 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
     if (isLoading) return;
     isLoading = true;
 
-    if (widget.type == 'Próximamente-Movie') {
+    if (widget.type == '${AppLocalizations.of(context)!.upcoming}-Movie') {
       await ref.read(upcomingMoviesProvider.notifier).loadNextPage();
-    } else if (widget.type == 'Populares-Movie') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.popular}-Movie') {
       await ref.read(popularMoviesProvider.notifier).loadNextPage();
-    } else if (widget.type == 'Mejores valoradas-Movie') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.topRated}-Movie') {
       await ref.read(topRatedMoviesProvider.notifier).loadNextPage();
-    } else if (widget.type == 'Similar movies-Movie') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.similarMovies}-Movie') {
       await ref.read(similarMoviesProvider(widget.id).notifier).loadNextPage();
-    } else if (widget.type == 'En esta semana-TVShow') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.thisWeek}-TVShow') {
       await ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
-    } else if (widget.type == 'Populares-TVShow') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.popular}-TVShow') {
       await ref.read(popularTVShowsProvider.notifier).loadNextPage();
-    } else if (widget.type == 'Mejores valoradas-TVShow') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.topRated}-TVShow') {
       await ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
-    } else if (widget.type == 'Similar TVShow-TVShow') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.similarTVShows}-TVShow') {
       await ref.read(similarTVShowsProvider(widget.id).notifier).loadNextPage();
     }
 
@@ -52,21 +54,21 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
   @override
   Widget build(BuildContext context) {
     dynamic allData;
-    if (widget.type == 'Próximamente-Movie') {
+    if (widget.type == '${AppLocalizations.of(context)!.upcoming}-Movie') {
       allData = ref.watch(upcomingMoviesProvider).movies;
-    } else if (widget.type == 'Populares-Movie') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.popular}-Movie') {
       allData = ref.watch(popularMoviesProvider).movies;
-    } else if (widget.type == 'Mejores valoradas-Movie') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.topRated}-Movie') {
       allData = ref.watch(topRatedMoviesProvider).movies;
-    } else if (widget.type == 'Similar movies-Movie') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.similarMovies}-Movie') {
       allData = ref.watch(similarMoviesProvider(widget.id)).movies;
-    } else if (widget.type == 'En esta semana-TVShow') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.thisWeek}-TVShow') {
       allData = ref.watch(onTheAirTVShowsProvider).shows;
-    } else if (widget.type == 'Populares-TVShow') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.popular}-TVShow') {
       allData = ref.watch(popularTVShowsProvider).shows;
-    } else if (widget.type == 'Mejores valoradas-TVShow') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.topRated}-TVShow') {
       allData = ref.watch(topRatedTVShowsProvider).shows;
-    } else if (widget.type == 'Similar TVShow-TVShow') {
+    } else if (widget.type == '${AppLocalizations.of(context)!.similarTVShows}-TVShow') {
       allData = ref.watch(similarTVShowsProvider(widget.id)).shows;
     }
 

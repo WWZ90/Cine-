@@ -1,7 +1,8 @@
-import 'package:cinemania/presentation/providers/persons/persons_provider.dart';
-import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:cinemania/presentation/providers/persons/persons_provider.dart';
+import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class PersonsViews extends ConsumerStatefulWidget {
   static const name = 'persons-view';

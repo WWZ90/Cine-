@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:cinemania/config/helpers/date_format.dart';
+
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
-import 'package:cinemania/config/helpers/date_format.dart';
 
 class TvShowDetailCard extends StatelessWidget {
   final TvShowDetails tvShowDetails;
@@ -32,7 +36,7 @@ class TvShowDetailCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _infoBlock(
-                        'First Air Date',
+                        AppLocalizations.of(context)!.firstAirDate,
                         formatDate(tvShowDetails.firstAirDate),
                         context,
                       ),
@@ -46,8 +50,8 @@ class TvShowDetailCard extends StatelessWidget {
                     Expanded(
                       child: _infoBlock(
                         tvShowDetails.lastEpisodeToAir != null
-                            ? 'Last Episode s${tvShowDetails.lastEpisodeToAir!.seasonNumber}e${tvShowDetails.lastEpisodeToAir!.episodeNumber}'
-                            : 'Last Episode',
+                            ? '${AppLocalizations.of(context)!.lastEpisode} s${tvShowDetails.lastEpisodeToAir!.seasonNumber}e${tvShowDetails.lastEpisodeToAir!.episodeNumber}'
+                            : AppLocalizations.of(context)!.lastEpisode,
                         tvShowDetails.lastEpisodeToAir != null
                             ? '${tvShowDetails.lastEpisodeToAir!.name}\n${formatDate(tvShowDetails.lastEpisodeToAir!.airDate)}'
                             : 'N/A',
@@ -63,7 +67,7 @@ class TvShowDetailCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _infoBlock(
-                        'Seasons',
+                        AppLocalizations.of(context)!.seasons,
                         '${tvShowDetails.numberOfSeasons}',
                         context,
                       ),
@@ -77,8 +81,8 @@ class TvShowDetailCard extends StatelessWidget {
                     Expanded(
                       child: _infoBlock(
                         tvShowDetails.nextEpisodeToAir != null
-                            ? 'Next Episode s${tvShowDetails.nextEpisodeToAir!.seasonNumber}e${tvShowDetails.nextEpisodeToAir!.episodeNumber}'
-                            : 'Next Episode',
+                            ? '${AppLocalizations.of(context)!.nextEpisode} s${tvShowDetails.nextEpisodeToAir!.seasonNumber}e${tvShowDetails.nextEpisodeToAir!.episodeNumber}'
+                            : AppLocalizations.of(context)!.nextEpisode,
                         tvShowDetails.nextEpisodeToAir != null
                             ? '${tvShowDetails.nextEpisodeToAir!.name}\n${formatDate(tvShowDetails.nextEpisodeToAir!.airDate)}'
                             : 'N/A',
@@ -131,7 +135,7 @@ class TvShowDetailCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Sinopsis',
+                    AppLocalizations.of(context)!.synopsis,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Colors.grey[400],
                       fontWeight: FontWeight.bold,
@@ -141,7 +145,7 @@ class TvShowDetailCard extends StatelessWidget {
                   Text(
                     tvShowDetails.overview.isNotEmpty
                         ? tvShowDetails.overview
-                        : 'No hay sinopsis disponible.',
+                        : AppLocalizations.of(context)!.synopsis,
                     style: Theme.of(
                       context,
                     ).textTheme.bodyMedium?.copyWith(color: Colors.white),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:cinemania/config/global_app_state.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:cinemania/domain/entities/movie.dart';
@@ -21,7 +22,7 @@ class IsarDatasource extends LocalStorageDatasource {
     final path = dir.path;
 
     try {
-      return Isar.openSync([
+      return await Isar.open([
         MovieSchema,
         TVShowSchema,
         PersonSchema,
@@ -39,7 +40,7 @@ class IsarDatasource extends LocalStorageDatasource {
           }
         }
         // Reintenta sobre una carpeta limpia
-        return Isar.openSync([
+        return await Isar.open([
           MovieSchema,
           TVShowSchema,
           PersonSchema,
@@ -135,5 +136,7 @@ class IsarDatasource extends LocalStorageDatasource {
         AppSettings()..languageCode = locale.languageCode,
       );
     });
+
+    GlobalAppState.currentLocale = locale;
   }
 }

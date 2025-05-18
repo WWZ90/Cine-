@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:cinemania/config/helpers/human_formats.dart';
@@ -34,7 +36,7 @@ class MovieDetailCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _infoBlock(
-                        'Estreno',
+                        AppLocalizations.of(context)!.premiere,
                         formatDate(movieDetails.releaseDate),
                         context,
                       ),
@@ -47,7 +49,7 @@ class MovieDetailCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: _infoBlock(
-                        'Presupuesto',
+                        AppLocalizations.of(context)!.budget,
                         HumanFormats.number(movieDetails.budget.toDouble()),
                         context,
                       ),
@@ -60,7 +62,7 @@ class MovieDetailCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: _infoBlock(
-                        'Recaudado',
+                        AppLocalizations.of(context)!.revenue,
                         HumanFormats.number(movieDetails.revenue.toDouble()),
                         context,
                       ),
@@ -111,7 +113,7 @@ class MovieDetailCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Sinopsis',
+                    AppLocalizations.of(context)!.synopsis,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Colors.grey[400],
                       fontWeight: FontWeight.bold,
@@ -121,7 +123,7 @@ class MovieDetailCard extends StatelessWidget {
                   Text(
                     movieDetails.overview.isNotEmpty
                         ? movieDetails.overview
-                        : 'No hay sinopsis disponible.',
+                        : AppLocalizations.of(context)!.noSynopsis,
                     style: Theme.of(
                       context,
                     ).textTheme.bodyMedium?.copyWith(color: Colors.white),

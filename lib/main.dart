@@ -1,9 +1,13 @@
-import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:cinemania/config/global_app_state.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/config/router/router.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/config/theme/app_theme.dart';
@@ -14,6 +18,10 @@ Future main() async {
   await LocalImageFileManager.init();
   YPlayerInitializer.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  final locale = await isarSingleton.getAppLocale();
+  GlobalAppState.currentLocale = locale;
+
   runApp(const ProviderScope(child: MainApp()));
 }
 
@@ -22,13 +30,28 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final restartKey = ref.watch(appRestartKeyProvider); // 🔁 fuerza reinicio
+    final locale = ref.watch(languageProvider); // 🌐 idioma dinámico
     final appTheme = AppTheme();
-    return MaterialApp.router(
-      routerConfig: appRouter,
-      locale: ref.watch(languageProvider),
-      supportedLocales: const [Locale('en'), Locale('es')],
-      debugShowCheckedModeBanner: false,
-      theme: appTheme.getTheme(),
+
+    return ValueListenableBuilder<Key>(
+      valueListenable: restartKey,
+      builder: (context, key, _) {
+        return MaterialApp.router(
+          key: key, // ← reinicia todo el árbol
+          routerConfig: appRouter,
+          locale: locale, // ← usa el provider, no GlobalAppState
+          supportedLocales: const [Locale('en'), Locale('es')],
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          debugShowCheckedModeBanner: false,
+          theme: appTheme.getTheme(),
+        );
+      },
     );
   }
 }

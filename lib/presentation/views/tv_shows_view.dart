@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
@@ -33,8 +35,8 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                 SliderHorizontalListview(
                   allData: onTheAir.shows,
                   type: 'TVShow',
-                  title: 'En esta semana',
-                  subTitle: 'This week',
+                  title: AppLocalizations.of(context)?.thisWeek,
+                  subTitle: AppLocalizations.of(context)?.thisWeek,
                   loadNextPage: () {
                     ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
                   },
@@ -43,8 +45,8 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                 SliderHorizontalListview(
                   allData: popular.shows,
                   type: 'TVShow',
-                  title: 'Populares',
-                  subTitle: 'All time',
+                  title: AppLocalizations.of(context)?.popular,
+                  subTitle: AppLocalizations.of(context)?.allTime,
                   loadNextPage: () {
                     ref.read(popularTVShowsProvider.notifier).loadNextPage();
                   },
@@ -55,8 +57,8 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                 SliderHorizontalListview(
                   allData: topRated.shows,
                   type: 'TVShow',
-                  title: 'Mejores valoradas',
-                  subTitle: 'All time',
+                  title: AppLocalizations.of(context)?.topRated,
+                  subTitle: AppLocalizations.of(context)?.allTime,
                   loadNextPage: () {
                     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
                   },

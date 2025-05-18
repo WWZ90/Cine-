@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
@@ -48,7 +50,7 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
               style: TextStyle(fontSize: 25, color: Colors.white),
             ),
             Text(
-              'No tienes favoritos actualmente...',
+              AppLocalizations.of(context)!.noFavorites,
               style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 141, 141, 141)),
             ),
           ],

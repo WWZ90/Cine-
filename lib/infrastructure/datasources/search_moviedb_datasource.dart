@@ -1,3 +1,4 @@
+import 'package:cinemania/config/global_app_state.dart';
 import 'package:dio/dio.dart';
 import 'package:cinemania/domain/entities/search.dart';
 import 'package:cinemania/infrastructure/models/moviedb/searchs_response.dart';
@@ -9,14 +10,19 @@ class SearchMoviedbDatasource extends SearchsDatasource {
   final dio = Dio(
     BaseOptions(
       baseUrl: 'https://api.themoviedb.org/3',
-      queryParameters: {'api_key': Environment.movieDBKey, 'language': 'es-ES'},
+      queryParameters: {'api_key': Environment.movieDBKey},
     ),
   );
+
+  void _updateLanguage() {
+    dio.options.queryParameters['language'] = GlobalAppState.languageCode;
+  }
 
   @override
   Future<List<MultiSearch>> multiSearch(String query) async {
     if (query.isEmpty) return [];
 
+    _updateLanguage();
     final response = await dio.get(
       '/search/multi',
       queryParameters: {'query': query},

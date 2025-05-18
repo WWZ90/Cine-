@@ -1,3 +1,4 @@
+import 'package:cinemania/config/global_app_state.dart';
 import 'package:cinemania/infrastructure/models/moviedb/movie_moviedb.dart';
 import 'package:dio/dio.dart';
 import 'package:cinemania/domain/entities/movie_detail.dart';
@@ -16,14 +17,15 @@ class MoviedbDatasource extends MoviesDatasource {
   final dio = Dio(
     BaseOptions(
       baseUrl: 'https://api.themoviedb.org/3',
-      queryParameters: {'api_key': Environment.movieDBKey, 'language': 'es-ES'},
+      queryParameters: {'api_key': Environment.movieDBKey},
     ),
   );
 
-  List<Movie> _jsonToMovie(
-    Map<String, dynamic> json, {
-    String type = 'Movie',
-  }) {
+  void _updateLanguage() {
+    dio.options.queryParameters['language'] = GlobalAppState.languageCode;
+  }
+
+  List<Movie> _jsonToMovie(Map<String, dynamic> json, {String type = 'Movie'}) {
     List<Movie> movies;
     if (type == 'Movie') {
       final movieDBResponse = MovieDbResponse.fromJson(json);
@@ -51,20 +53,18 @@ class MoviedbDatasource extends MoviesDatasource {
   List<Video> _jsonToVideo(Map<String, dynamic> json) {
     final videoResponse = VideoResponse.fromJson(json);
     final List<Video> videos =
-        videoResponse.results
-            .map((video) => VideoMapper.videoToEntity(video))
-            .toList();
+        videoResponse.results.map(VideoMapper.videoToEntity).toList();
     return videos;
   }
 
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/movie/now_playing',
         queryParameters: {'page': page},
       );
-
       return _jsonToMovie(response.data);
     } catch (e) {
       return [];
@@ -74,11 +74,11 @@ class MoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getUpcoming({int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/movie/upcoming',
         queryParameters: {'page': page},
       );
-
       return _jsonToMovie(response.data);
     } catch (e) {
       return [];
@@ -88,11 +88,11 @@ class MoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getPopular({int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/movie/popular',
         queryParameters: {'page': page},
       );
-
       return _jsonToMovie(response.data);
     } catch (e) {
       return [];
@@ -102,11 +102,11 @@ class MoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getTopRated({int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/movie/top_rated',
         queryParameters: {'page': page},
       );
-
       return _jsonToMovie(response.data);
     } catch (e) {
       return [];
@@ -119,18 +119,14 @@ class MoviedbDatasource extends MoviesDatasource {
     CancelToken? cancelToken,
   }) async {
     try {
+      _updateLanguage();
       final response = await dio.get('/movie/$id', cancelToken: cancelToken);
       if (response.statusCode != 200) {
         throw Exception('Movie with id $id not found');
       }
 
       final movieDetails = MovieDetailsResponse.fromJson(response.data);
-
-      final MovieDetail movie = MovieDetailMapper.movieDetailsToEntity(
-        movieDetails,
-      );
-
-      return movie;
+      return MovieDetailMapper.movieDetailsToEntity(movieDetails);
     } catch (e) {
       rethrow;
     }
@@ -139,10 +135,9 @@ class MoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Video>> getVideosByMovieId(String id) async {
     try {
+      _updateLanguage();
       final response = await dio.get('/movie/$id/videos');
-      if (response.statusCode != 200) {
-        throw Exception('Movie with id $id not found');
-      }
+      if (response.statusCode != 200) throw Exception();
 
       List<Video> videos = _jsonToVideo(response.data);
 
@@ -151,7 +146,6 @@ class MoviedbDatasource extends MoviesDatasource {
           '/movie/$id/videos',
           queryParameters: {'language': 'en-US'},
         );
-
         if (responseEn.statusCode == 200) {
           videos = _jsonToVideo(responseEn.data);
         }
@@ -166,11 +160,11 @@ class MoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getSimilar(String id, {int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/movie/$id/similar',
         queryParameters: {'page': page},
       );
-
       return _jsonToMovie(response.data);
     } catch (e) {
       return [];
@@ -180,6 +174,7 @@ class MoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getMoviesByGenreId(String id, {int page = 1}) async {
     try {
+      _updateLanguage();
       final response = await dio.get(
         '/discover/movie',
         queryParameters: {'with_genres': id, 'page': page},
@@ -193,8 +188,8 @@ class MoviedbDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getMoviesByPersonId(String id) async {
     try {
+      _updateLanguage();
       final response = await dio.get('/person/$id/movie_credits');
-
       return _jsonToMovie(response.data, type: 'Cast');
     } catch (e) {
       return [];

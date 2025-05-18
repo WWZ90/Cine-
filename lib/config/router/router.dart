@@ -1,10 +1,12 @@
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/views/views.dart';
+import 'package:cinemania/presentation/providers/providers.dart';
 
 // Llaves de navegadores para estado independiente
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -21,10 +23,17 @@ final GoRouter appRouter = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return InitialScreenLoader(navigationShell: navigationShell);
+        return Consumer(
+          builder: (context, ref, _) {
+            final restartKey = ref.watch(appRestartKeyProvider);
+            return InitialScreenLoader(
+              key: restartKey.value,
+              navigationShell: navigationShell,
+            );
+          },
+        );
       },
       branches: [
-        // Branch 0: Home / Movies
         StatefulShellBranch(
           navigatorKey: _branchNavigatorKeys[0],
           routes: [
@@ -53,11 +62,7 @@ final GoRouter appRouter = GoRouter(
                   path: 'masonry-all-view',
                   name: 'masonry-all-view',
                   pageBuilder: (context, state) {
-                    //final type = state.extra as String?;
-                    //return MasonryAllView(type: type ?? '');
-
                     final extras = state.extra as Map<String, dynamic>?;
-
                     final type = extras?['type'] as String? ?? '';
                     final id = extras?['id'] as String? ?? '';
 
@@ -72,16 +77,12 @@ final GoRouter appRouter = GoRouter(
                         return FadeTransition(opacity: animation, child: child);
                       },
                     );
-                    // return NoTransitionPage(
-                    //   child: MasonryAllView(type: type, id: id),
-                    // );
                   },
                 ),
               ],
             ),
           ],
         ),
-        // Branch 1: TV Shows
         StatefulShellBranch(
           navigatorKey: _branchNavigatorKeys[1],
           routes: [
@@ -110,7 +111,6 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
-        // Branch 2: Persons / Actors
         StatefulShellBranch(
           navigatorKey: _branchNavigatorKeys[2],
           routes: [
@@ -141,7 +141,6 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
-        // Branch 3: Favorites
         StatefulShellBranch(
           navigatorKey: _branchNavigatorKeys[3],
           routes: [

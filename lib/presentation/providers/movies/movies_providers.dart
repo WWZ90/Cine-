@@ -25,9 +25,7 @@ class MoviesNotifier extends StateNotifier<MoviesState> {
   final MovieCallback fetchMoreMovies;
 
   MoviesNotifier({required this.fetchMoreMovies})
-    : super(MoviesState(movies: [], isLoading: false)) {
-    loadNextPage(); // carga inicial
-  }
+    : super(MoviesState(movies: [], isLoading: false));
 
   Future<void> loadNextPage() async {
     if (state.isLoading) return;
@@ -38,7 +36,92 @@ class MoviesNotifier extends StateNotifier<MoviesState> {
     final List<Movie> movies = await fetchMoreMovies(page: currentPage);
     state = MoviesState(movies: [...state.movies, ...movies], isLoading: false);
   }
+
+  Future<void> reset() async {
+    currentPage = 0;
+    state = MoviesState(movies: [], isLoading: false);
+    await loadNextPage();
+  }
 }
+
+class MoviesByPersonState {
+  final List<Movie> allMovies;
+  final List<Movie> visibleMovies;
+  final bool isLoading;
+  final bool hasReachedEnd;
+
+  MoviesByPersonState({
+    required this.allMovies,
+    required this.visibleMovies,
+    required this.isLoading,
+    required this.hasReachedEnd,
+  });
+
+  factory MoviesByPersonState.initial() => MoviesByPersonState(
+    allMovies: [],
+    visibleMovies: [],
+    isLoading: true,
+    hasReachedEnd: false,
+  );
+
+  MoviesByPersonState copyWith({
+    List<Movie>? allMovies,
+    List<Movie>? visibleMovies,
+    bool? isLoading,
+    bool? hasReachedEnd,
+  }) {
+    return MoviesByPersonState(
+      allMovies: allMovies ?? this.allMovies,
+      visibleMovies: visibleMovies ?? this.visibleMovies,
+      isLoading: isLoading ?? this.isLoading,
+      hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
+    );
+  }
+}
+
+class MoviesByPersonNotifier extends StateNotifier<MoviesByPersonState> {
+  final dynamic repository;
+  final String personId;
+  static const int localPageSize = 10;
+
+  MoviesByPersonNotifier({required this.repository, required this.personId})
+    : super(MoviesByPersonState.initial()) {
+    _loadInitial();
+  }
+
+  Future<void> _loadInitial() async {
+    final all = await repository.getMoviesByPersonId(personId);
+    final initial = all.take(localPageSize).toList();
+    state = state.copyWith(
+      allMovies: all,
+      visibleMovies: initial,
+      isLoading: false,
+      hasReachedEnd: initial.length >= all.length,
+    );
+  }
+
+  void loadMoreLocally() {
+    if (state.isLoading || state.hasReachedEnd) return;
+
+    final current = state.visibleMovies.length;
+    final more = state.allMovies.skip(current).take(localPageSize).toList();
+    final updated = [...state.visibleMovies, ...more];
+
+    state = state.copyWith(
+      visibleMovies: updated,
+      hasReachedEnd: updated.length >= state.allMovies.length,
+    );
+  }
+}
+
+final moviesByPersonProvider = StateNotifierProvider.family<
+  MoviesByPersonNotifier,
+  MoviesByPersonState,
+  String
+>((ref, personId) {
+  final repo = ref.watch(movieRepositoryProvider);
+  return MoviesByPersonNotifier(repository: repo, personId: personId);
+});
 
 // Providers por categoría
 
@@ -90,13 +173,13 @@ final moviesByGenreProvider = StateNotifierProvider.family<
   return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
 });
 
-final moviesByPersonProvider =
-    StateNotifierProvider.family<MoviesNotifier, MoviesState, String>((
-      ref,
-      personId,
-    ) {
-      fetchMoreMovies({int page = 1}) =>
-          ref.read(movieRepositoryProvider).getMoviesByPersonId(personId);
+// final moviesByPersonProvider =
+//     StateNotifierProvider.family<MoviesNotifier, MoviesState, String>((
+//       ref,
+//       personId,
+//     ) {
+//       fetchMoreMovies({int page = 1}) =>
+//           ref.read(movieRepositoryProvider).getMoviesByPersonId(personId);
 
-      return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
-    });
+//       return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+//     });
