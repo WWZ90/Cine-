@@ -1,6 +1,5 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:animate_do/animate_do.dart';
 
 class TemporaryLoadingScreen extends StatelessWidget {
   const TemporaryLoadingScreen({super.key});
