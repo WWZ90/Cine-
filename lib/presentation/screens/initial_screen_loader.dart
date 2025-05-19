@@ -64,16 +64,16 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
     final isFullScreen = ref.watch(isFullscreenProvider);
     final isLoading = ref.watch(initialLoadingProvider);
 
-    if (!initialCheckDone && !isLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() {
-            shouldShowLoader = false;
-            initialCheckDone = true;
-          });
-        }
-      });
-    }
+    // if (!initialCheckDone && !isLoading) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     if (mounted) {
+    //       setState(() {
+    //         shouldShowLoader = false;
+    //         initialCheckDone = true;
+    //       });
+    //     }
+    //   });
+    // }
 
     if (isFullScreen) {
       showNav.value = false;
@@ -83,34 +83,11 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
       });
     }
 
-    if (!initialCheckDone || shouldShowLoader) {
+    if (isLoading) {
       return Scaffold(
         body: Stack(
           children: [
             FullScreenLoader(context: context),
-
-            // Mensaje sobrepuesto (solo por breve momento)
-            // if (showRestartMessage)
-            //   Positioned.fill(
-            //     bottom: 40,
-            //     child: AnimatedOpacity(
-            //       opacity: showRestartMessage ? 1.0 : 0.0,
-            //       duration: const Duration(milliseconds: 600),
-            //       child: Container(
-            //         color: Colors.black.withOpacity(0.5),
-            //         child: Center(
-            //           child: Text(
-            //             AppLocalizations.of(context)!.restarting,
-            //             style: TextStyle(
-            //               color: Colors.white,
-            //               fontSize: 20,
-            //               fontWeight: FontWeight.w500,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
           ],
         ),
       );

@@ -1,3 +1,4 @@
+import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:animate_do/animate_do.dart';
@@ -16,6 +17,52 @@ class AppDrawer extends ConsumerWidget {
 
   Future<void> _setLanguage(WidgetRef ref, Locale locale) async {
     await ref.read(languageProvider.notifier).setLocale(locale);
+  }
+
+  Future<void> changeLanguageWithLoader({
+    required BuildContext context,
+    required WidgetRef ref,
+    required Locale locale,
+    required String currentLangCode,
+  }) async {
+    if (locale.languageCode == currentLangCode) {
+      if (context.mounted) Navigator.pop(context);
+      return;
+    }
+
+    GlobalAppState.suppressExitSnackbar = true;
+
+    // Cerrar drawer
+    if (context.mounted) Navigator.pop(context);
+
+    // Esperar a que el drawer se cierre
+    await Future.delayed(Duration.zero);
+
+    // Mostrar loader inmediatamente
+    if (context.mounted) {
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          opaque: false,
+          barrierDismissible: false,
+          pageBuilder: (_, __, ___) => const TemporaryLoadingScreen(),
+        ),
+      );
+    }
+
+    // Capturar la función antes de posibles disposals
+    final restartKeyNotifier = ref.read(appRestartKeyProvider);
+
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    // Cambiar idioma y reiniciar
+    await _setLanguage(ref, locale);
+
+    // Ya no usamos ref aquí directamente
+    restartKeyNotifier.value = UniqueKey();
+
+    if (context.mounted) {
+      Navigator.of(context).pop(); // Cierra TemporaryLoadingScreen
+    }
   }
 
   void showAboutDialogWithAnimation() {
@@ -154,35 +201,25 @@ class AppDrawer extends ConsumerWidget {
             leading: const Text('🇪🇸', style: TextStyle(fontSize: 24)),
             title: const Text('Español'),
             trailing: langCode == 'es' ? const Icon(Icons.check) : null,
-            onTap: () async {
-              GlobalAppState.suppressExitSnackbar = true;
-              if (langCode != 'es') {
-                await _setLanguage(ref, const Locale('es'));
-                ref.read(appRestartKeyProvider).value = UniqueKey();
-                Future.microtask(() {
-                  if (context.mounted) Navigator.pop(context);
-                });
-              } else {
-                Navigator.pop(context);
-              }
-            },
+            onTap:
+                () => changeLanguageWithLoader(
+                  context: context,
+                  ref: ref,
+                  locale: const Locale('es'),
+                  currentLangCode: langCode,
+                ),
           ),
           ListTile(
             leading: const Text('🇺🇸', style: TextStyle(fontSize: 24)),
             title: const Text('English'),
             trailing: langCode == 'en' ? const Icon(Icons.check) : null,
-            onTap: () async {
-              GlobalAppState.suppressExitSnackbar = true;
-              if (langCode != 'en') {
-                await _setLanguage(ref, const Locale('en'));
-                ref.read(appRestartKeyProvider).value = UniqueKey();
-                Future.microtask(() {
-                  if (context.mounted) Navigator.pop(context);
-                });
-              } else {
-                Navigator.pop(context);
-              }
-            },
+            onTap:
+                () => changeLanguageWithLoader(
+                  context: context,
+                  ref: ref,
+                  locale: const Locale('en'),
+                  currentLangCode: langCode,
+                ),
           ),
 
           ListTile(
