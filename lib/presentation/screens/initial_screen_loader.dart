@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
-
 class InitialScreenLoader extends ConsumerStatefulWidget {
   final StatefulNavigationShell navigationShell;
 
@@ -47,6 +46,8 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
       ref.invalidate(movieDetailProvider);
       ref.invalidate(tvShowDetailsProvider);
       ref.invalidate(personDetailsProvider);
+      ref.invalidate(reviewsByMovieProvider);
+      ref.invalidate(reviewsByTVShowProvider);
 
       // Oculta el mensaje transitorio después de 1.5 segundos
       Future.delayed(const Duration(seconds: 2), () {
@@ -85,11 +86,7 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
 
     if (isLoading) {
       return Scaffold(
-        body: Stack(
-          children: [
-            FullScreenLoader(context: context),
-          ],
-        ),
+        body: Stack(children: [FullScreenLoader(context: context)]),
       );
     }
 

@@ -16,7 +16,8 @@ class AppDrawer extends ConsumerWidget {
   const AppDrawer({required this.navigationShell, super.key});
 
   Future<void> _setLanguage(WidgetRef ref, Locale locale) async {
-    await ref.read(languageProvider.notifier).setLocale(locale);
+    final languageNotifier = ref.read(languageProvider.notifier);
+    await languageNotifier.setLocale(locale);
   }
 
   Future<void> changeLanguageWithLoader({
@@ -32,13 +33,7 @@ class AppDrawer extends ConsumerWidget {
 
     GlobalAppState.suppressExitSnackbar = true;
 
-    // Cerrar drawer
-    if (context.mounted) Navigator.pop(context);
-
-    // Esperar a que el drawer se cierre
-    await Future.delayed(Duration.zero);
-
-    // Mostrar loader inmediatamente
+    // Mostrar loader
     if (context.mounted) {
       Navigator.of(context).push(
         PageRouteBuilder(
@@ -49,19 +44,19 @@ class AppDrawer extends ConsumerWidget {
       );
     }
 
-    // Capturar la función antes de posibles disposals
+    // Capturar el notifier antes de posibles disposals
     final restartKeyNotifier = ref.read(appRestartKeyProvider);
 
     await Future.delayed(const Duration(milliseconds: 100));
 
     // Cambiar idioma y reiniciar
     await _setLanguage(ref, locale);
-
-    // Ya no usamos ref aquí directamente
     restartKeyNotifier.value = UniqueKey();
 
+    // Redirigir a home y cerrar loader
     if (context.mounted) {
-      Navigator.of(context).pop(); // Cierra TemporaryLoadingScreen
+      context.go('/home');
+      Navigator.of(context).pop(); 
     }
   }
 
