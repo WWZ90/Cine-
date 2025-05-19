@@ -66,7 +66,7 @@ class _SliderHorizontalListviewState
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 290,
+      height: 295,
       child: Column(
         children: [
           if (widget.title != null || widget.subTitle != null)

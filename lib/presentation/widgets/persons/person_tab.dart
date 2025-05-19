@@ -137,7 +137,7 @@ class _TabState extends ConsumerState<_PersonTabContent>
               ),
             ),
             SizedBox(
-              height: 272,
+              height: 278,
               child: TabBarView(
                 controller: _tabController!,
                 children:

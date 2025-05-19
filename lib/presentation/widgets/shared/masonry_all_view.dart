@@ -26,19 +26,26 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
 
     if (widget.type == '${AppLocalizations.of(context)!.upcoming}-Movie') {
       await ref.read(upcomingMoviesProvider.notifier).loadNextPage();
-    } else if (widget.type == '${AppLocalizations.of(context)!.popular}-Movie') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.popular}-Movie') {
       await ref.read(popularMoviesProvider.notifier).loadNextPage();
-    } else if (widget.type == '${AppLocalizations.of(context)!.topRated}-Movie') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.topRated}-Movie') {
       await ref.read(topRatedMoviesProvider.notifier).loadNextPage();
-    } else if (widget.type == '${AppLocalizations.of(context)!.similarMovies}-Movie') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.similarMovies}-Movie') {
       await ref.read(similarMoviesProvider(widget.id).notifier).loadNextPage();
-    } else if (widget.type == '${AppLocalizations.of(context)!.thisWeek}-TVShow') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.thisWeek}-TVShow') {
       await ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
-    } else if (widget.type == '${AppLocalizations.of(context)!.popular}-TVShow') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.popular}-TVShow') {
       await ref.read(popularTVShowsProvider.notifier).loadNextPage();
-    } else if (widget.type == '${AppLocalizations.of(context)!.topRated}-TVShow') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.topRated}-TVShow') {
       await ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
-    } else if (widget.type == '${AppLocalizations.of(context)!.similarTVShows}-TVShow') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.similarTVShows}-TVShow') {
       await ref.read(similarTVShowsProvider(widget.id).notifier).loadNextPage();
     }
 
@@ -56,23 +63,30 @@ class _MasonryAllViewState extends ConsumerState<MasonryAllView> {
     dynamic allData;
     if (widget.type == '${AppLocalizations.of(context)!.upcoming}-Movie') {
       allData = ref.watch(upcomingMoviesProvider).movies;
-    } else if (widget.type == '${AppLocalizations.of(context)!.popular}-Movie') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.popular}-Movie') {
       allData = ref.watch(popularMoviesProvider).movies;
-    } else if (widget.type == '${AppLocalizations.of(context)!.topRated}-Movie') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.topRated}-Movie') {
       allData = ref.watch(topRatedMoviesProvider).movies;
-    } else if (widget.type == '${AppLocalizations.of(context)!.similarMovies}-Movie') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.similarMovies}-Movie') {
       allData = ref.watch(similarMoviesProvider(widget.id)).movies;
-    } else if (widget.type == '${AppLocalizations.of(context)!.thisWeek}-TVShow') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.thisWeek}-TVShow') {
       allData = ref.watch(onTheAirTVShowsProvider).shows;
-    } else if (widget.type == '${AppLocalizations.of(context)!.popular}-TVShow') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.popular}-TVShow') {
       allData = ref.watch(popularTVShowsProvider).shows;
-    } else if (widget.type == '${AppLocalizations.of(context)!.topRated}-TVShow') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.topRated}-TVShow') {
       allData = ref.watch(topRatedTVShowsProvider).shows;
-    } else if (widget.type == '${AppLocalizations.of(context)!.similarTVShows}-TVShow') {
+    } else if (widget.type ==
+        '${AppLocalizations.of(context)!.similarTVShows}-TVShow') {
       allData = ref.watch(similarTVShowsProvider(widget.id)).shows;
     }
 
-    if (allData.isEmpty) {
+    if (allData == null || allData.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 

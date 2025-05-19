@@ -310,7 +310,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                         child: _PersonMoviesSection(personId: person.id),
                       ),
                       SizedBox(
-                        height: 270,
+                        height: 278,
                         child: _PersonTVShowsSection(personId: person.id),
                       ),
                     ],
