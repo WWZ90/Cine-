@@ -228,7 +228,7 @@ class _InfoTab extends ConsumerWidget {
       return SliderHorizontalListview(
         allData: moviesState.visibleMovies,
         type: type,
-        title: type,
+        title: AppLocalizations.of(context)!.movies,
         onEndReached: () {
           moviesNotifier.loadMoreLocally();
         },
@@ -252,7 +252,7 @@ class _InfoTab extends ConsumerWidget {
       return SliderHorizontalListview(
         allData: tvState.visibleShows,
         type: type,
-        title: type,
+        title: AppLocalizations.of(context)!.tvShows,
         onEndReached: () {
           tvNotifier.loadMoreLocally();
         },

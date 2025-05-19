@@ -156,6 +156,7 @@ class AppDrawer extends ConsumerWidget {
             trailing: langCode == 'es' ? const Icon(Icons.check) : null,
             onTap: () async {
               if (langCode != 'es') {
+                GlobalAppState.suppressExitSnackbar = true;
                 await _setLanguage(ref, const Locale('es'));
                 ref.read(appRestartKeyProvider).value = UniqueKey();
                 Future.microtask(() {
@@ -172,6 +173,7 @@ class AppDrawer extends ConsumerWidget {
             trailing: langCode == 'en' ? const Icon(Icons.check) : null,
             onTap: () async {
               if (langCode != 'en') {
+                GlobalAppState.suppressExitSnackbar = true;
                 await _setLanguage(ref, const Locale('en'));
                 ref.read(appRestartKeyProvider).value = UniqueKey();
                 Future.microtask(() {
