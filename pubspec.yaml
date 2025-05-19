@@ -38,6 +38,7 @@ dependencies:
   rename_app: ^1.6.3
   smooth_page_indicator: ^1.2.1
   stylish_bottom_bar: ^1.1.1
+  translator: ^1.0.3+1
   visibility_detector: ^0.4.0+2
   y_player: ^2.0.5+1
   youtube_box_thumbnail: ^1.0.1

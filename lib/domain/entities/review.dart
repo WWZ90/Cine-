@@ -14,4 +14,20 @@ class Review {
     required this.content,
     required this.createdAt,
   });
+
+  Review copyWith({
+    String? id,
+    String? author,
+    AuthorDetails? authorDetails,
+    String? content,
+    DateTime? createdAt,
+  }) {
+    return Review(
+      id: id ?? this.id,
+      author: author ?? this.author,
+      authorDetails: authorDetails ?? this.authorDetails,
+      content: content ?? this.content,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }
