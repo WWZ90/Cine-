@@ -37,7 +37,7 @@ class MovieDetailCard extends StatelessWidget {
                     Expanded(
                       child: _infoBlock(
                         AppLocalizations.of(context)!.premiere,
-                        formatDate(movieDetails.releaseDate),
+                        formatDateNew(context, movieDetails.releaseDate),
                         context,
                       ),
                     ),

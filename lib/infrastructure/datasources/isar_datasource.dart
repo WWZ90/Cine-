@@ -122,7 +122,7 @@ class IsarDatasource extends LocalStorageDatasource {
     final isar = await db;
 
     final settings = await isar.appSettings.where().findFirst();
-    final code = settings?.languageCode ?? 'es';
+    final code = settings?.languageCode ?? 'en';
 
     return Locale(code, '');
   }

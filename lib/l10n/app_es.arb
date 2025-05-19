@@ -44,6 +44,8 @@
   "noFavorites": "No tienes favoritos actualmente",
   "restarting": "Reiniciando con el nuevo idioma",
   "language": "Idioma",
+  "about": "Acerca de",
+  "settings": "Configuración",
   "pressAgainToExit": "Presiona otra vez para salir",
   "searchPlaceholder": "Busca películas, series, actores...",
   "unableToLoadVideos": "No se pudo cargar los videos",
@@ -70,5 +72,8 @@
   "month_9": "Sep",
   "month_10": "Oct",
   "month_11": "Nov",
-  "month_12": "Dic"
+  "month_12": "Dic",
+  "tmdb": "Este producto utiliza la API de TMDB pero no está respaldado ni certificado por TMDB.",
+  "aboutTheApp": "Cine+ es una aplicación para explorar películas, series y actores. Desarrollada por InFlutterDev.",
+  "version": "Versión"
 }

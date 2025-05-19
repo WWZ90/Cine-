@@ -130,7 +130,7 @@ class _ReviewsByMovieState extends ConsumerState<Reviews> {
                                       ],
                                     ),
                                     Text(
-                                      formatDate(review.createdAt),
+                                      formatDateNew(context, review.createdAt),
                                       style:
                                           Theme.of(context).textTheme.bodySmall,
                                     ),

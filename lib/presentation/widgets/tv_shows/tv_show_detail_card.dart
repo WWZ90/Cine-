@@ -37,7 +37,7 @@ class TvShowDetailCard extends StatelessWidget {
                     Expanded(
                       child: _infoBlock(
                         AppLocalizations.of(context)!.firstAirDate,
-                        formatDate(tvShowDetails.firstAirDate),
+                        formatDateNew(context, tvShowDetails.firstAirDate),
                         context,
                       ),
                     ),
@@ -53,7 +53,7 @@ class TvShowDetailCard extends StatelessWidget {
                             ? '${AppLocalizations.of(context)!.lastEpisode} s${tvShowDetails.lastEpisodeToAir!.seasonNumber}e${tvShowDetails.lastEpisodeToAir!.episodeNumber}'
                             : AppLocalizations.of(context)!.lastEpisode,
                         tvShowDetails.lastEpisodeToAir != null
-                            ? '${tvShowDetails.lastEpisodeToAir!.name}\n${formatDate(tvShowDetails.lastEpisodeToAir!.airDate)}'
+                            ? '${tvShowDetails.lastEpisodeToAir!.name}\n${formatDateNew(context, tvShowDetails.lastEpisodeToAir!.airDate)}'
                             : 'N/A',
                         context,
                       ),
@@ -84,7 +84,7 @@ class TvShowDetailCard extends StatelessWidget {
                             ? '${AppLocalizations.of(context)!.nextEpisode} s${tvShowDetails.nextEpisodeToAir!.seasonNumber}e${tvShowDetails.nextEpisodeToAir!.episodeNumber}'
                             : AppLocalizations.of(context)!.nextEpisode,
                         tvShowDetails.nextEpisodeToAir != null
-                            ? '${tvShowDetails.nextEpisodeToAir!.name}\n${formatDate(tvShowDetails.nextEpisodeToAir!.airDate)}'
+                            ? '${tvShowDetails.nextEpisodeToAir!.name}\n${formatDateNew(context, tvShowDetails.nextEpisodeToAir!.airDate)}'
                             : 'N/A',
                         context,
                       ),

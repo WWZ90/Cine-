@@ -1,3 +1,4 @@
+import 'package:cinemania/config/global_app_state.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,6 @@ import 'package:cinemania/presentation/views/views.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 
 // Llaves de navegadores para estado independiente
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _branchNavigatorKeys = [
   GlobalKey<NavigatorState>(), // Home - Movies
   GlobalKey<NavigatorState>(), // TV Shows
@@ -21,7 +21,7 @@ final _branchNavigatorKeys = [
 ];
 
 final GoRouter appRouter = GoRouter(
-  navigatorKey: _rootNavigatorKey,
+  navigatorKey: GlobalAppState.navigatorKey,
   initialLocation: '/home',
   routes: [
     StatefulShellRoute.indexedStack(
@@ -32,6 +32,11 @@ final GoRouter appRouter = GoRouter(
           onPopInvokedWithResult: (_, __) async {
             if (navigationShell.currentIndex > 0) {
               navigationShell.goBranch(0);
+              return;
+            }
+
+            if (GlobalAppState.suppressExitSnackbar) {
+              GlobalAppState.suppressExitSnackbar = false;
               return;
             }
 
@@ -48,7 +53,9 @@ final GoRouter appRouter = GoRouter(
                   ..removeCurrentSnackBar()
                   ..showSnackBar(
                     SnackBar(
-                      content: Text(AppLocalizations.of(context)!.pressAgainToExit),
+                      content: Text(
+                        AppLocalizations.of(context)!.pressAgainToExit,
+                      ),
                       duration: Duration(seconds: 2),
                     ),
                   );

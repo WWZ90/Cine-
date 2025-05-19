@@ -1,4 +1,5 @@
 // lib/presentation/screens/video_page.dart
+import 'package:cinemania/config/helpers/date_format.dart';
 import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -154,7 +155,7 @@ class VideosPage extends ConsumerWidget {
                                       AppLocalizations.of(
                                         context,
                                       )!.video_publishedOn(
-                                        _formatDate(context, video.publishedAt),
+                                        formatDateNew(context, video.publishedAt),
                                       ),
                                       style: const TextStyle(
                                         fontSize: 12,
@@ -177,44 +178,5 @@ class VideosPage extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  String _formatDate(BuildContext context, DateTime date) {
-    final loc = AppLocalizations.of(context)!;
-    final day = date.day.toString().padLeft(2, '0');
-    final month = _localizedMonth(loc, date.month);
-    final year = date.year;
-    return '$day $month. $year';
-  }
-
-  String _localizedMonth(AppLocalizations loc, int month) {
-    switch (month) {
-      case 1:
-        return loc.month_1;
-      case 2:
-        return loc.month_2;
-      case 3:
-        return loc.month_3;
-      case 4:
-        return loc.month_4;
-      case 5:
-        return loc.month_5;
-      case 6:
-        return loc.month_6;
-      case 7:
-        return loc.month_7;
-      case 8:
-        return loc.month_8;
-      case 9:
-        return loc.month_9;
-      case 10:
-        return loc.month_10;
-      case 11:
-        return loc.month_11;
-      case 12:
-        return loc.month_12;
-      default:
-        return '';
-    }
   }
 }

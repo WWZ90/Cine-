@@ -195,50 +195,59 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         if (person.birthday != null)
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '${AppLocalizations.of(context)!.birthday}: ',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.grey[500],
-                                                ),
-                                              ),
-                                              Text(
-                                                formatDate(person.birthday!),
-                                                style: textStyle.bodyMedium
-                                                    ?.copyWith(
-                                                      color: Colors.white,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 8.0,
+                                            ),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        '${AppLocalizations.of(context)!.birthday}: ',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.grey[500],
                                                     ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: formatDateNew(
+                                                      context,
+                                                      person.birthday!,
+                                                    ),
+                                                    style: textStyle.bodyMedium
+                                                        ?.copyWith(
+                                                          color: Colors.white,
+                                                        ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
 
                                         if (person.placeOfBirth.isNotEmpty)
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                '${AppLocalizations.of(context)!.placeOfBirth}: ',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.grey[500],
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      '${AppLocalizations.of(context)!.placeOfBirth}: ',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.grey[500],
+                                                  ),
                                                 ),
-                                              ),
-                                              Flexible(
-                                                child: Text(
-                                                  person.placeOfBirth,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                                TextSpan(
+                                                  text: person.placeOfBirth,
                                                   style: textStyle.bodyMedium
                                                       ?.copyWith(
                                                         color: Colors.white,
                                                       ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                       ],
                                     ),
@@ -378,9 +387,7 @@ class _PersonTVShowsSectionState extends ConsumerState<_PersonTVShowsSection> {
     }
 
     if (!tvShowState.isLoading && tvShowState.visibleShows.isEmpty) {
-      return Center(
-        child: Text(AppLocalizations.of(context)!.noTVShowsFound),
-      );
+      return Center(child: Text(AppLocalizations.of(context)!.noTVShowsFound));
     }
 
     return SliderHorizontalListview(
