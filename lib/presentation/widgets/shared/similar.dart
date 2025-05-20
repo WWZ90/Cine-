@@ -21,7 +21,7 @@ class Similar extends ConsumerWidget {
       if (similar.isLoading && similar.movies.isEmpty) {
         return const SizedBox(
           height: 200,
-          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
         );
       }
 
@@ -33,7 +33,7 @@ class Similar extends ConsumerWidget {
       if (similar.isLoading && similar.shows.isEmpty) {
         return const SizedBox(
           height: 200,
-          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
         );
       }
 

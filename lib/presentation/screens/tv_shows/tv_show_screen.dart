@@ -73,7 +73,7 @@ class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
             : SliverToBoxAdapter(
               child: SizedBox(
                 height: 200,
-                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
               ),
             ),
       ],

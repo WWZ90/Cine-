@@ -43,7 +43,7 @@ class _ReviewsByMovieState extends ConsumerState<Reviews> {
           () => SizedBox(
             height: 200,
             child: const Center(
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: CircularProgressIndicator(strokeWidth: 1),
             ),
           ),
       error: (err, stack) => SizedBox(),

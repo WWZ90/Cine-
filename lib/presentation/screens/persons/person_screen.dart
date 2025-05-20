@@ -162,7 +162,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                   () => SizedBox(
                     height: 300,
                     child: const Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                      child: CircularProgressIndicator(strokeWidth: 1),
                     ),
                   ),
               error: (e, _) => Center(child: Text('Error loading details: $e')),
@@ -344,7 +344,7 @@ class _PersonMoviesSectionState extends ConsumerState<_PersonMoviesSection> {
     );
 
     if (moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
-      return Center(child: CircularProgressIndicator(strokeWidth: 2));
+      return Center(child: CircularProgressIndicator(strokeWidth: 1));
     }
 
     if (!moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
@@ -383,7 +383,7 @@ class _PersonTVShowsSectionState extends ConsumerState<_PersonTVShowsSection> {
     );
 
     if (tvShowState.isLoading && tvShowState.visibleShows.isEmpty) {
-      return Center(child: CircularProgressIndicator(strokeWidth: 2));
+      return Center(child: CircularProgressIndicator(strokeWidth: 1));
     }
 
     if (!tvShowState.isLoading && tvShowState.visibleShows.isEmpty) {

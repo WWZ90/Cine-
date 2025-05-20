@@ -29,7 +29,7 @@ class _VideoTrailerState extends ConsumerState<VideoTrailer> {
       data: (videos) => _VideosList(videos: videos),
       error: (_, __) => Center(child: Text(AppLocalizations.of(context)!.unableToLoadVideos)),
       loading:
-          () => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          () => const Center(child: CircularProgressIndicator(strokeWidth: 1)),
     );
   }
 }

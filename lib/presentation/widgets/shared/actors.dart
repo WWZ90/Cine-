@@ -24,7 +24,7 @@ class Actors extends ConsumerWidget {
     if (actorsAll[id] == null) {
       return SizedBox(
         height: 200,
-        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
       );
     }
 

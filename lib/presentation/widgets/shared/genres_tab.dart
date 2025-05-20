@@ -31,7 +31,7 @@ class _GenresTabState extends ConsumerState<GenresTab>
     if (genres.isEmpty) {
       return const SizedBox(
         height: 253,
-        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
       );
     }
 
@@ -117,7 +117,7 @@ class _GenreTab extends ConsumerWidget {
     if (type == 'Movie') {
       final movies = ref.watch(moviesByGenreProvider(genreId.toString()));
       if (movies.isLoading && movies.movies.isEmpty) {
-        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+        return const Center(child: CircularProgressIndicator(strokeWidth: 1));
       }
       return SliderHorizontalListview(
         allData: movies.movies,
@@ -131,7 +131,7 @@ class _GenreTab extends ConsumerWidget {
     } else {
       final tvShows = ref.watch(tvShowsByGenreProvider(genreId.toString()));
       if (tvShows.isLoading && tvShows.shows.isEmpty) {
-        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+        return const Center(child: CircularProgressIndicator(strokeWidth: 1));
       }
       return SliderHorizontalListview(
         allData: tvShows.shows,

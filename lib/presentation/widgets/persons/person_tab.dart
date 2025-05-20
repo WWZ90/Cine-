@@ -59,7 +59,7 @@ class _TabState extends ConsumerState<_PersonTabContent>
   Widget build(BuildContext context) {
     return widget.persons.when(
       loading:
-          () => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          () => const Center(child: CircularProgressIndicator(strokeWidth: 1)),
       error: (e, _) => Center(child: Text('Error: $e')),
       data: (persons) {
         if (persons.isEmpty) {
@@ -97,7 +97,7 @@ class _TabState extends ConsumerState<_PersonTabContent>
         if (_tabController == null) {
           return const SizedBox(
             height: 500,
-            child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
           );
         }
 
@@ -218,7 +218,7 @@ class _InfoTab extends ConsumerWidget {
       );
 
       if (moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
-        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+        return const Center(child: CircularProgressIndicator(strokeWidth: 1));
       }
 
       if (!moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
@@ -240,7 +240,7 @@ class _InfoTab extends ConsumerWidget {
       );
 
       if (tvState.isLoading && tvState.visibleShows.isEmpty) {
-        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+        return const Center(child: CircularProgressIndicator(strokeWidth: 1));
       }
 
       if (!tvState.isLoading && tvState.visibleShows.isEmpty) {

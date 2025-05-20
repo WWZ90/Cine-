@@ -35,7 +35,7 @@ class _FavLikeButtonConsumerState extends ConsumerState<FavLikeButtonConsumer> {
                 : ref.watch(isFavoriteProvider(favKey));
 
         return favAsync.when(
-          loading: () => const CircularProgressIndicator(strokeWidth: 2),
+          loading: () => const CircularProgressIndicator(strokeWidth: 1),
           error: (_, __) => const Icon(Icons.error),
           data:
               (isFav) => Center(

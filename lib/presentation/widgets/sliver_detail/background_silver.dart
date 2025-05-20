@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cinemania/config/helpers/file_storage.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class BackgroundSilver extends StatelessWidget {
   final dynamic data;
@@ -17,7 +16,9 @@ class BackgroundSilver extends StatelessWidget {
           top: 0,
           child: Container(
             decoration: BoxDecoration(shape: BoxShape.rectangle),
-            child: Image(
+            child:
+            /*
+            Image(
               image: NetworkToFileImage(
                 url: data.posterPath,
                 file: LocalImageFileManager.fileFromUrl(data.posterPath),
@@ -26,11 +27,19 @@ class BackgroundSilver extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
-            // child: CachedNetworkImage(
-            //   fit: BoxFit.cover,
-            //   imageUrl: pelicula.getBackgroundImg(),
-            //   height: 350.0,
-            // ),
+            */
+            CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: data.posterPath,
+              height: 350.0,
+              width: MediaQuery.of(context).size.width,
+              placeholder:
+                  (context, url) => Center(child: SizedBox(
+                    width: 35,
+                    height: 35,
+                    child: CircularProgressIndicator(strokeWidth: 1))),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
           ),
         ),
       ],

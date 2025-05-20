@@ -1,6 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:cinemania/config/helpers/file_storage.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
 
 class CoverPhoto extends StatelessWidget {
   final Size size;
@@ -15,7 +14,25 @@ class CoverPhoto extends StatelessWidget {
       height: size.height * 0.18,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Image(
+        child: CachedNetworkImage(
+          imageUrl: data.posterPath,
+          height: 350.0,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+          placeholder:
+              (context, url) => Center(
+                child: SizedBox(
+                  width: 35,
+                  height: 35,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1,
+                  ),
+                ),
+              ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
+        /*
+        Image(
           image: NetworkToFileImage(
             url: data.posterPath,
             file: LocalImageFileManager.fileFromUrl(data.posterPath),
@@ -24,6 +41,7 @@ class CoverPhoto extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
+        */
       ),
     );
   }

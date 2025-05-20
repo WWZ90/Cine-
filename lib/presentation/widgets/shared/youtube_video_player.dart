@@ -304,7 +304,7 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
               Center(
                 child:
                     !_controllerReady
-                        ? const CircularProgressIndicator(strokeWidth: 2, color: Colors.white,)
+                        ? const CircularProgressIndicator(strokeWidth: 1, color: Colors.white,)
                         : IconButton(
                           iconSize: 50,
                           icon: const Icon(

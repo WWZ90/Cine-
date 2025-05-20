@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cinemania/config/helpers/file_storage.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LoadImage extends StatelessWidget {
   final String url;
@@ -41,7 +40,25 @@ class LoadImage extends StatelessWidget {
     }
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      child: Image(
+      child: CachedNetworkImage(
+        imageUrl: url,
+        width: w,
+        height: h,
+        fit: BoxFit.cover,
+        placeholder:
+            (context, url) => Center(
+              child: SizedBox(
+                width: 35,
+                height: 35,
+                child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                ),
+              ),
+            ),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      ),
+      /*
+      Image(
         image: NetworkToFileImage(
           url: url,
           file: LocalImageFileManager.fileFromUrl(url),
@@ -63,7 +80,7 @@ class LoadImage extends StatelessWidget {
               height: h,
               color: Colors.grey[850],
               alignment: Alignment.center,
-              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white38,),
+              child: CircularProgressIndicator(strokeWidth: 1, color: Colors.white38,),
             );
           }
           return child;
@@ -76,6 +93,7 @@ class LoadImage extends StatelessWidget {
               child: Icon(Icons.broken_image, size: 40, color: Colors.grey),
             ),
       ),
+      */
     );
   }
 }

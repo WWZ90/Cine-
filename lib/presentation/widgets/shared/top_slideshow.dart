@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
 
 import 'package:cinemania/presentation/screens/screens.dart';
-import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class TopSlideShow extends ConsumerStatefulWidget {
@@ -72,7 +71,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
     if (widget.allData.isEmpty) {
       return SizedBox(
         height: screenHeight * 0.55,
-        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 1)),
       );
     }
 
@@ -128,7 +127,28 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                       children: [
                         Hero(
                           tag: data.uniqueID,
-                          child: Image(
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl:
+                                widget.type == 'Person'
+                                    ? data.profilePath
+                                    : data.posterPath,
+                            width: MediaQuery.of(context).size.width,
+                            placeholder:
+                                (context, url) => Center(
+                                  child: SizedBox(
+                                    width: 35,
+                                    height: 35,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 1,
+                                    ),
+                                  ),
+                                ),
+                            errorWidget:
+                                (context, url, error) => Icon(Icons.error),
+                          ),
+                          /*
+                          Image(
                             image: NetworkToFileImage(
                               url:
                                   widget.type == 'Person'
@@ -142,6 +162,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                             ),
                             fit: BoxFit.cover,
                           ),
+                          */
                         ),
                         GradientImageBackground(),
                         Positioned(
