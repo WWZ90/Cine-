@@ -21,119 +21,103 @@ class CustomAppbar extends ConsumerWidget {
       centerTitle: true,
       automaticallyImplyLeading: false,
       title: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(left: 0, right: 0),
-          child: SizedBox(
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 50,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Builder(
-                      builder:
-                          (context) => GestureDetector(
-                            onTap: () => Scaffold.of(context).openDrawer(),
-                            child: Image.asset(
-                              'assets/images/app_icon.png',
-                              width: 23,
-                            ),
-                          ),
-                    ),
-                  ),
-                ),
-                Image.asset('assets/images/cine.png', width: 50),
-                SizedBox(
-                  width: 50, // igual que el izquierdo
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () async {
-                        final searchedMulti = ref.read(searchedProvider);
-                        final searchQuery = ref.read(searchQueryProvider);
-                        final response = await showSearch<MultiSearch?>(
-                          query: searchQuery,
-                          context: context,
-                          delegate: MultiSearchDelegate(
-                            searchPlaceholder:
-                                AppLocalizations.of(context)!.searchPlaceholder,
-                            movieLabel: AppLocalizations.of(context)!.movie,
-                            tvLabel: AppLocalizations.of(context)!.tvShow,
-                            personLabel: AppLocalizations.of(context)!.person,
-                            knownForLabel:
-                                AppLocalizations.of(context)!.knownFor,
-                            initialSearchs: searchedMulti,
-                            search:
-                                ref
-                                    .read(searchedProvider.notifier)
-                                    .searchByQuery,
-                          ),
-                        );
-                        if (!context.mounted || response == null) return;
-
-                        if (response.mediaType == 'movie') {
-                          Movie movie = Movie(
-                            adult: response.adult,
-                            backdropPath: response.backdropPath!,
-                            genreIds: response.genreIds!,
-                            id: response.id,
-                            originalLanguage: response.originalLanguage!,
-                            originalTitle: response.originalTitle!,
-                            overview: response.overview!,
-                            popularity: response.popularity,
-                            posterPath: response.posterPath!,
-                            releaseDate: response.releaseDate!,
-                            title: response.title!,
-                            video: response.video!,
-                            voteAverage: response.voteAverage!,
-                            voteCount: response.voteCount!,
-                          );
-
-                          context.pushNamed(MovieScreen.name, extra: movie);
-                        }
-
-                        if (response.mediaType == 'tv') {
-                          TVShow tvShow = TVShow(
-                            id: response.id,
-                            title: response.name!,
-                            originalTitle: response.originalName!,
-                            adult: response.adult,
-                            backdropPath: response.backdropPath!,
-                            genreIds: response.genreIds!,
-                            originCountry: response.originCountry!,
-                            originalLanguage: response.originalLanguage!,
-                            overview: response.overview!,
-                            popularity: response.popularity,
-                            posterPath: response.posterPath!,
-                            firstAirDate: response.firstAirDate!,
-                            voteAverage: response.voteAverage!,
-                            voteCount: response.voteCount!,
-                          );
-
-                          context.pushNamed(TVShowScreen.name, extra: tvShow);
-                        }
-
-                        if (response.mediaType == 'person') {
-                          context.pushNamed(
-                            PersonScreen.name,
-                            extra: {
-                              'id': response.id,
-                              'name': response.name,
-                              'profilePath': response.profilePath,
-                              'popularity': response.popularity,
-                            },
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ),
-              ],
+        child: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.menu, color: Colors.white),
+              padding: EdgeInsets.zero,
+              onPressed: () => Scaffold.of(context).openDrawer(),
             ),
-          ),
+            Expanded(
+              child: Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset('assets/images/app_icon.png', width: 23),
+                    const SizedBox(width: 5),
+                    Image.asset('assets/images/cine.png', width: 50),
+                  ],
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              padding: EdgeInsets.zero,
+              onPressed: () async {
+                final searchedMulti = ref.read(searchedProvider);
+                final searchQuery = ref.read(searchQueryProvider);
+                final response = await showSearch<MultiSearch?>(
+                  query: searchQuery,
+                  context: context,
+                  delegate: MultiSearchDelegate(
+                    searchPlaceholder:
+                        AppLocalizations.of(context)!.searchPlaceholder,
+                    movieLabel: AppLocalizations.of(context)!.movie,
+                    tvLabel: AppLocalizations.of(context)!.tvShow,
+                    personLabel: AppLocalizations.of(context)!.person,
+                    knownForLabel: AppLocalizations.of(context)!.knownFor,
+                    initialSearchs: searchedMulti,
+                    search: ref.read(searchedProvider.notifier).searchByQuery,
+                  ),
+                );
+                if (!context.mounted || response == null) return;
+
+                if (response.mediaType == 'movie') {
+                  Movie movie = Movie(
+                    adult: response.adult,
+                    backdropPath: response.backdropPath!,
+                    genreIds: response.genreIds!,
+                    id: response.id,
+                    originalLanguage: response.originalLanguage!,
+                    originalTitle: response.originalTitle!,
+                    overview: response.overview!,
+                    popularity: response.popularity,
+                    posterPath: response.posterPath!,
+                    releaseDate: response.releaseDate!,
+                    title: response.title!,
+                    video: response.video!,
+                    voteAverage: response.voteAverage!,
+                    voteCount: response.voteCount!,
+                  );
+
+                  context.pushNamed(MovieScreen.name, extra: movie);
+                }
+
+                if (response.mediaType == 'tv') {
+                  TVShow tvShow = TVShow(
+                    id: response.id,
+                    title: response.name!,
+                    originalTitle: response.originalName!,
+                    adult: response.adult,
+                    backdropPath: response.backdropPath!,
+                    genreIds: response.genreIds!,
+                    originCountry: response.originCountry!,
+                    originalLanguage: response.originalLanguage!,
+                    overview: response.overview!,
+                    popularity: response.popularity,
+                    posterPath: response.posterPath!,
+                    firstAirDate: response.firstAirDate!,
+                    voteAverage: response.voteAverage!,
+                    voteCount: response.voteCount!,
+                  );
+
+                  context.pushNamed(TVShowScreen.name, extra: tvShow);
+                }
+
+                if (response.mediaType == 'person') {
+                  context.pushNamed(
+                    PersonScreen.name,
+                    extra: {
+                      'id': response.id,
+                      'name': response.name,
+                      'profilePath': response.profilePath,
+                      'popularity': response.popularity,
+                    },
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
