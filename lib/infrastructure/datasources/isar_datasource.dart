@@ -122,9 +122,22 @@ class IsarDatasource extends LocalStorageDatasource {
     final isar = await db;
 
     final settings = await isar.appSettings.where().findFirst();
-    final code = settings?.languageCode ?? 'en';
+    if (settings != null && settings.languageCode.isNotEmpty) {
+      return Locale(settings.languageCode);
+    }
 
-    return Locale(code, '');
+    final systemLocale = PlatformDispatcher.instance.locale;
+    final deviceLangCode = systemLocale.languageCode.toLowerCase();
+
+    final defaultLangCode = (deviceLangCode == 'es') ? 'es' : 'en';
+
+    await isar.writeTxn(() async {
+      await isar.appSettings.put(AppSettings()..languageCode = defaultLangCode);
+    });
+
+    GlobalAppState.currentLocale = Locale(defaultLangCode);
+
+    return Locale(defaultLangCode);
   }
 
   Future<void> setAppLocale(Locale locale) async {
