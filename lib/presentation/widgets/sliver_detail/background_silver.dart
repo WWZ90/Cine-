@@ -17,17 +17,6 @@ class BackgroundSilver extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(shape: BoxShape.rectangle),
             child:
-            /*
-            Image(
-              image: NetworkToFileImage(
-                url: data.posterPath,
-                file: LocalImageFileManager.fileFromUrl(data.posterPath),
-              ),
-              height: 350.0,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-            */
             CachedNetworkImage(
               fit: BoxFit.cover,
               imageUrl: data.posterPath,
