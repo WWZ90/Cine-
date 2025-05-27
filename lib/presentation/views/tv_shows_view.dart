@@ -37,6 +37,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                   type: 'TVShow',
                   title: AppLocalizations.of(context)?.thisWeek,
                   subTitle: AppLocalizations.of(context)?.thisWeek,
+                  isLoadingMore: onTheAir.isLoading,
                   loadNextPage: () {
                     ref.read(onTheAirTVShowsProvider.notifier).loadNextPage();
                   },
@@ -47,6 +48,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                   type: 'TVShow',
                   title: AppLocalizations.of(context)?.popular,
                   subTitle: AppLocalizations.of(context)?.allTime,
+                  isLoadingMore: popular.isLoading,
                   loadNextPage: () {
                     ref.read(popularTVShowsProvider.notifier).loadNextPage();
                   },
@@ -59,6 +61,7 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                   type: 'TVShow',
                   title: AppLocalizations.of(context)?.topRated,
                   subTitle: AppLocalizations.of(context)?.allTime,
+                  isLoadingMore: topRated.isLoading,
                   loadNextPage: () {
                     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
                   },

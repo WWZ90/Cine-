@@ -24,9 +24,9 @@ class _PersonsViewsState extends ConsumerState<PersonsViews> {
           delegate: SliverChildBuilderDelegate((context, index) {
             return Column(
               children: [
-                TopSlideShow(allData: populars, type: 'Person'),
+                TopSlideShow(allData: populars.persons, type: 'Person'),
                 SizedBox(height: 20),
-                PersonTab(),
+                PersonTab(persons: populars.persons),
               ],
             );
           }, childCount: 1),

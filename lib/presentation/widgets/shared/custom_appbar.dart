@@ -112,6 +112,7 @@ class CustomAppbar extends ConsumerWidget {
                       'name': response.name,
                       'profilePath': response.profilePath,
                       'popularity': response.popularity,
+                      'uniqueID': '',
                     },
                   );
                 }

@@ -30,5 +30,6 @@ class Person {
     required this.gender,
     required this.knownForDepartment,
     required this.profilePath,
+    this.uniqueID,
   });
 }

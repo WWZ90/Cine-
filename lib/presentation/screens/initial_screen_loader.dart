@@ -41,13 +41,15 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
       ref.read(topRatedTVShowsProvider.notifier).reset();
 
       ref.read(personPopularProvider.notifier).loadNextPage();
-      ref.read(curatedActorsProvider);
+      //ref.read(curatedActorsProvider);
 
       ref.invalidate(movieDetailProvider);
       ref.invalidate(tvShowDetailsProvider);
-      ref.invalidate(personDetailsProvider);
+      ref.invalidate(personDetailProvider);
       ref.invalidate(reviewsByMovieProvider);
       ref.invalidate(reviewsByTVShowProvider);
+
+      ref.invalidate(movieProvider);
 
       // Oculta el mensaje transitorio después de 1.5 segundos
       Future.delayed(const Duration(seconds: 2), () {
@@ -64,24 +66,22 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
   Widget build(BuildContext context) {
     final isFullScreen = ref.watch(isFullscreenProvider);
     final isLoading = ref.watch(initialLoadingProvider);
+    final currentShellIndex =
+        widget.navigationShell.currentIndex; // Obtener el índice actual
 
-    // if (!initialCheckDone && !isLoading) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     if (mounted) {
-    //       setState(() {
-    //         shouldShowLoader = false;
-    //         initialCheckDone = true;
-    //       });
-    //     }
-    //   });
-    // }
+    // Determinar si el BottomNav debe estar visible BASADO EN EL ÍNDICE DE LA BRANCH
+    // Y no solo en isFullScreen.
+    const List<int> mainBottomNavIndices = [0, 1, 2, 3];
+    final bool isMainSectionActive = mainBottomNavIndices.contains(
+      currentShellIndex,
+    );
 
     if (isFullScreen) {
+      // Si es pantalla completa, siempre oculto, independientemente de la sección
       showNav.value = false;
     } else {
-      Future.delayed(const Duration(milliseconds: 100), () {
-        if (mounted) showNav.value = true;
-      });
+      // Si no es pantalla completa, mostrar solo si estamos en una sección principal
+      showNav.value = isMainSectionActive;
     }
 
     if (isLoading) {
@@ -94,18 +94,24 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
       drawer: AppDrawer(navigationShell: widget.navigationShell),
       body: widget.navigationShell,
       bottomNavigationBar: ValueListenableBuilder<bool>(
-        valueListenable: showNav,
-        builder: (_, visible, __) {
-          return visible
-              ? CustomBottomNavigation(
-                currentIndex: widget.navigationShell.currentIndex,
-                onTap:
-                    (idx, _) => widget.navigationShell.goBranch(
-                      idx,
-                      initialLocation: true,
-                    ),
-              )
-              : const SizedBox.shrink();
+        valueListenable: showNav, // showNav ahora refleja el estado correcto
+        builder: (_, visibleFromNotifier, __) {
+          // 'visibleFromNotifier' ahora es el resultado de la lógica de arriba.
+          // La condición original 'mainBottomNavIndices.contains(...)' ya se ha aplicado
+          // al establecer showNav.value, por lo que 'visibleFromNotifier' ya tiene eso en cuenta.
+          if (!visibleFromNotifier) {
+            // Si showNav.value es false, no mostrar.
+            return const SizedBox.shrink();
+          }
+
+          // Si llegamos aquí, currentShellIndex es uno de [0, 1, 2, 3]
+          // y se puede pasar directamente a CustomBottomNavigation.
+          return CustomBottomNavigation(
+            currentIndex: currentShellIndex,
+            onTap:
+                (idx, _) =>
+                    widget.navigationShell.goBranch(idx, initialLocation: true),
+          );
         },
       ),
     );

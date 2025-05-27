@@ -6,6 +6,7 @@ class PersonDetails {
   final dynamic deathday;
   final int gender;
   final int id;
+  String? uniqueID;
   final String imdbId;
   final String knownForDepartment;
   final String name;

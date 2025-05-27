@@ -10,17 +10,17 @@ import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class PersonTab extends ConsumerWidget {
-  const PersonTab({super.key});
+  final List<Person> persons;
+  const PersonTab({super.key, required this.persons});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final persons = ref.watch(curatedActorsProvider);
     return _PersonTabContent(persons: persons);
   }
 }
 
 class _PersonTabContent extends ConsumerStatefulWidget {
-  final AsyncValue<List<Person>> persons;
+  final List<Person> persons;
   const _PersonTabContent({required this.persons});
 
   @override
@@ -57,101 +57,89 @@ class _TabState extends ConsumerState<_PersonTabContent>
 
   @override
   Widget build(BuildContext context) {
-    return widget.persons.when(
-      loading:
-          () => const Center(child: CircularProgressIndicator(strokeWidth: 1)),
-      error: (e, _) => Center(child: Text('Error: $e')),
-      data: (persons) {
-        if (persons.isEmpty) {
-          return Center(
-            child: Text(AppLocalizations.of(context)!.noActorFound),
+    if (widget.persons.isEmpty) {
+      return SizedBox(
+        height: 50,
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 1)),
+      );
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_tabController == null ||
+          _tabController!.length != widget.persons.length) {
+        final oldIndex = _tabController?.index ?? 0;
+        _tabController?.dispose();
+
+        setState(() {
+          _tabController = TabController(
+            length: widget.persons.length,
+            vsync: this,
+            initialIndex: oldIndex.clamp(0, widget.persons.length - 1),
           );
-        }
-
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_tabController == null ||
-              _tabController!.length != persons.length) {
-            final oldIndex = _tabController?.index ?? 0;
-            _tabController?.dispose();
-
-            setState(() {
-              _tabController = TabController(
-                length: persons.length,
-                vsync: this,
-                initialIndex: oldIndex.clamp(0, persons.length - 1),
-              );
-              _tabController!.addListener(() => _onTabChanged(persons));
-            });
-
-            // Precarga para el primer actor
-            final firstId = persons[0].id;
-            ref
-                .read(moviesByPersonProvider(firstId.toString()).notifier)
-                .loadMoreLocally();
-            ref
-                .read(tvShowsByPersonProvider(firstId.toString()).notifier)
-                .loadMoreLocally();
-          }
+          _tabController!.addListener(() => _onTabChanged(widget.persons));
         });
 
-        if (_tabController == null) {
-          return const SizedBox(
-            height: 500,
-            child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
-          );
-        }
+        // Precarga para el primer actor
+        final firstId = widget.persons[0].id;
+        ref
+            .read(moviesByPersonProvider(firstId.toString()).notifier)
+            .loadMoreLocally();
+        ref
+            .read(tvShowsByPersonProvider(firstId.toString()).notifier)
+            .loadMoreLocally();
+      }
+    });
 
-        return Column(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: TabBar(
-                controller: _tabController!,
-                isScrollable: true,
-                tabAlignment: TabAlignment.start,
-                indicatorColor: Colors.white,
-                indicatorSize: TabBarIndicatorSize.label,
-                indicatorPadding: EdgeInsets.zero,
-                indicatorWeight: 1.0,
-                indicatorAnimation: TabIndicatorAnimation.elastic,
-                labelColor: Colors.white,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 8),
-                tabs:
-                    persons.map((person) {
-                      return _circleProfileImg(context, person);
-                    }).toList(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 290,
-              child: TabBarView(
-                controller: _tabController!,
-                children:
-                    persons.map((person) {
-                      return _InfoTab(
-                        personId: person.id,
-                        type: 'Movie',
-                      );
-                    }).toList(),
-              ),
-            ),
-            SizedBox(
-              height: 278,
-              child: TabBarView(
-                controller: _tabController!,
-                children:
-                    persons.map((person) {
-                      return _InfoTab(
-                        personId: person.id,
-                        type: 'TVShow',
-                      );
-                    }).toList(),
-              ),
-            ),
-          ],
-        );
-      },
+    if (_tabController == null) {
+      return const SizedBox(
+        height: 500,
+        child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
+      );
+    }
+
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TabBar(
+            controller: _tabController!,
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            indicatorColor: Colors.white,
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorPadding: EdgeInsets.zero,
+            indicatorWeight: 1.0,
+            indicatorAnimation: TabIndicatorAnimation.elastic,
+            labelColor: Colors.white,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+            tabs:
+                widget.persons.map((person) {
+                  return _circleProfileImg(context, person);
+                }).toList(),
+          ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 290,
+          child: TabBarView(
+            controller: _tabController!,
+            children:
+                widget.persons.map((person) {
+                  return _InfoTab(personId: person.id, type: 'Movie');
+                }).toList(),
+          ),
+        ),
+        SizedBox(
+          height: 278,
+          child: TabBarView(
+            controller: _tabController!,
+            children:
+                widget.persons.map((person) {
+                  return _InfoTab(personId: person.id, type: 'TVShow');
+                }).toList(),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -161,15 +149,7 @@ Widget _circleProfileImg(BuildContext context, Person person) {
 
   return GestureDetector(
     onLongPress: () {
-      context.pushNamed(
-        PersonScreen.name,
-        extra: {
-          'id': person.id,
-          'name': person.name,
-          'profilePath': person.profilePath,
-          'popularity': person.popularity,
-        },
-      );
+      context.pushNamed(PersonScreen.name, extra: person);
     },
     child: SizedBox(
       width: 100,

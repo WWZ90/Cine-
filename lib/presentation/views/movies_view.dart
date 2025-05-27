@@ -36,6 +36,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                   title: AppLocalizations.of(context)?.upcoming,
                   subTitle: AppLocalizations.of(context)?.soon,
                   type: 'Movie',
+                  isLoadingMore: upcomingMovies.isLoading,
                   loadNextPage: () {
                     ref.read(upcomingMoviesProvider.notifier).loadNextPage();
                   },
@@ -46,6 +47,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                   title: AppLocalizations.of(context)?.popular,
                   subTitle: AppLocalizations.of(context)?.popular,
                   type: 'Movie',
+                  isLoadingMore: upcomingMovies.isLoading,
                   loadNextPage: () {
                     ref.read(popularMoviesProvider.notifier).loadNextPage();
                   },
@@ -58,6 +60,7 @@ class HomeViewState extends ConsumerState<MoviesView> {
                   title: AppLocalizations.of(context)?.topRated,
                   subTitle: AppLocalizations.of(context)?.topRated,
                   type: 'Movie',
+                  isLoadingMore: topRatedMovies.isLoading,
                   loadNextPage: () {
                     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
                   },

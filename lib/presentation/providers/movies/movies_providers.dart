@@ -172,3 +172,12 @@ final moviesByGenreProvider = StateNotifierProvider.family<
 
   return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
 });
+
+final movieProvider =
+    FutureProvider.family<Movie?, ({int movieId})>((
+      ref,
+      params,
+    ) async {
+      final datasource = ref.watch(movieRepositoryProvider);
+      return await datasource.getMovieById(params.movieId.toString());
+    });

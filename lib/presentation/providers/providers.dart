@@ -7,6 +7,7 @@ export 'movies/movie_detail_provider.dart';
 export 'movies/movies_providers.dart';
 export 'movies/movies_repository_provider.dart';
 export 'movies/movies_slideshow_provider.dart';
+export 'oscars/oscar_provider.dart';
 export 'persons/cast_provider.dart';
 export 'persons/person_detail_provider.dart';
 export 'persons/persons_provider.dart';

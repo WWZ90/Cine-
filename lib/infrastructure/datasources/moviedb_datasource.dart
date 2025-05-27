@@ -114,7 +114,27 @@ class MoviedbDatasource extends MoviesDatasource {
   }
 
   @override
-  Future<MovieDetail> getMovieById(
+  Future<Movie> getMovieById(String id, {CancelToken? cancelToken}) async {
+    try {
+      _updateLanguage();
+      final response = await dio.get('/movie/$id', cancelToken: cancelToken);
+      if (response.statusCode != 200) {
+        throw Exception('Movie with id $id not found');
+      }
+
+      final movieDetails = MovieDetailsResponse.fromJson(response.data);
+
+      
+      return MovieFromMovieDetailMapper.movieDetailsToMovie(
+        movieDetails,
+      ); // Mapea a tipo Movie
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MovieDetail> getMovieDetailById(
     String id, {
     CancelToken? cancelToken,
   }) async {

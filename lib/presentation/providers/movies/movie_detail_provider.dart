@@ -9,7 +9,7 @@ final movieDetailProvider =
       return MovieMapNotifier(
         getMovie:
             (id, {cancelToken}) =>
-                movieRepository.getMovieById(id, cancelToken: cancelToken),
+                movieRepository.getMovieDetailById(id, cancelToken: cancelToken),
       );
     });
 

@@ -31,8 +31,13 @@ class MovieRepositoryImpl extends MoviesRepository {
   }
 
   @override
-  Future<MovieDetail> getMovieById(String id, {CancelToken? cancelToken}) {
+  Future<Movie> getMovieById(String id, {CancelToken? cancelToken}) {
     return datasource.getMovieById(id, cancelToken: cancelToken);
+  }
+
+  @override
+  Future<MovieDetail> getMovieDetailById(String id, {CancelToken? cancelToken}) {
+    return datasource.getMovieDetailById(id, cancelToken: cancelToken);
   }
 
   @override

@@ -18,6 +18,11 @@ class PersonRepositoryImpl extends PersonRepository {
   }
 
   @override
+  Future<Person> getPersonById(String id) {
+    return datasource.getPersonById(id);
+  }
+
+  @override
   Future<PersonDetails> getPersonDetails(String id) {
     return datasource.getPersonDetails(id);
   }

@@ -248,56 +248,60 @@ class _ListItems extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-            width: size.width * 0.25,
-            child: LoadImage(url: imgUrl, h: 130, w: 110),
-          ),
-          SizedBox(
-            width: size.width * 0.67,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: textTheme.titleMedium,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-
-                if (type != 'Persona') ...[
-                  SizedBox(height: 10),
-
-                  Row(
-                    children: [
-                      StarsRatingBarWithInfo(
-                        rating: rating * 0.5,
-                        iconSize: 12,
-                        voteCount: voteCount,
-                      ),
-                      SizedBox(width: 5.0),
-                      Text('- $type', style: TextStyle(fontSize: 11.0)),
-                    ],
-                  ),
-                ],
-
-                SizedBox(height: 10),
-
-                if (overview.isNotEmpty) ...[
-                  Text(overview, overflow: TextOverflow.ellipsis, maxLines: 3),
-                  SizedBox(height: 10.0),
-                ],
-
-                if (knownForDepartment.isNotEmpty)
-                  Text('$knownForLabel: $knownForDepartment'),
-              ],
+    return Card(
+      elevation: 3,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: size.width * 0.25,
+              child: LoadImage(url: imgUrl, h: 130, w: 110),
             ),
-          ),
-        ],
+            SizedBox(
+              width: size.width * 0.67,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: textTheme.titleMedium,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+      
+                  if (type != 'Persona') ...[
+                    SizedBox(height: 10),
+      
+                    Row(
+                      children: [
+                        StarsRatingBarWithInfo(
+                          rating: rating * 0.5,
+                          iconSize: 12,
+                          voteCount: voteCount,
+                        ),
+                        SizedBox(width: 5.0),
+                        Text('- $type', style: TextStyle(fontSize: 11.0)),
+                      ],
+                    ),
+                  ],
+      
+                  SizedBox(height: 10),
+      
+                  if (overview.isNotEmpty) ...[
+                    Text(overview, overflow: TextOverflow.ellipsis, maxLines: 3),
+                    SizedBox(height: 10.0),
+                  ],
+      
+                  if (knownForDepartment.isNotEmpty)
+                    Text('$knownForLabel: $knownForDepartment'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:cinemania/domain/entities/entities.dart';
+import 'package:cinemania/infrastructure/models/moviedb/person_details_response.dart';
 import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 
 class PersonMapper {
@@ -11,6 +12,23 @@ class PersonMapper {
     popularity: person.popularity,
     gender: person.gender,
     knownForDepartment: person.knownForDepartment ?? KnownForDepartment.ACTING,
+    profilePath:
+        person.profilePath != ''
+            ? 'https://image.tmdb.org/t/p/w500${person.profilePath}'
+            : 'no-poster',
+  );
+}
+
+class PersonFromPersonDetailMapper {
+  static Person personDetailsToPerson(PersonDetailsResponse person) => Person(
+    id: person.id,
+    name: person.name,
+    originalName: person.name,
+    mediaType: MediaType.PERSON,
+    adult: person.adult,
+    popularity: person.popularity,
+    gender: person.gender,
+    knownForDepartment: parseKnownForDepartment(person.knownForDepartment),
     profilePath:
         person.profilePath != ''
             ? 'https://image.tmdb.org/t/p/w500${person.profilePath}'

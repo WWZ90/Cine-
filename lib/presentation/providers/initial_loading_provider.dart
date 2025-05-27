@@ -28,14 +28,16 @@ final initialLoadingProvider = Provider<bool>((ref) {
     topRatedTVShowsProvider.select((s) => s.shows.isEmpty),
   );
   final step10 = ref.watch(genresTVShowProvider.select((s) => s.isEmpty));
-  final step11 = ref.watch(personPopularProvider.select((s) => s.isEmpty));
+  final step11 = ref.watch(personPopularProvider.select((s) => s.persons.isEmpty));
 
+  /*
   final curatedActors = ref.watch(curatedActorsProvider);
 
   final step12 = curatedActors.maybeWhen(
     data: (actors) => actors.isEmpty,
     orElse: () => true,
   );
+*/
 
   return step1 ||
       step2 ||
@@ -47,6 +49,5 @@ final initialLoadingProvider = Provider<bool>((ref) {
       step8 ||
       step9 ||
       step10 ||
-      step11 ||
-      step12;
+      step11;
 });

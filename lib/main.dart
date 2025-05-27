@@ -18,6 +18,10 @@ Future main() async {
   YPlayerInitializer.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(systemNavigationBarColor: Color(0xFF121318)),
+  );
+
   final locale = await isarSingleton.getAppLocale();
   GlobalAppState.currentLocale = locale;
 

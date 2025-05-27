@@ -10,8 +10,8 @@ extension CastPersonToPerson on domain.CastPerson {
       originalName: name,
       mediaType: MediaType.PERSON,
       adult: false,
-      popularity: 0,
-      gender: 0,
+      popularity: popularity,
+      gender: gender,
       knownForDepartment: KnownForDepartment.ACTING,
       profilePath: profilePath,
     );

@@ -18,6 +18,8 @@ final _branchNavigatorKeys = [
   GlobalKey<NavigatorState>(), // TV Shows
   GlobalKey<NavigatorState>(), // Persons
   GlobalKey<NavigatorState>(), // Favorites
+  GlobalKey<NavigatorState>(), // Premium
+  GlobalKey<NavigatorState>(), // Oscars
 ];
 
 final GoRouter appRouter = GoRouter(
@@ -167,17 +169,9 @@ final GoRouter appRouter = GoRouter(
                   path: 'person-screen',
                   name: PersonScreen.name,
                   builder: (context, state) {
-                    final extras = state.extra as Map<String, dynamic>?;
-
-                    final id = extras?['id'] as int? ?? 0;
-                    final name = extras?['name'] as String? ?? '';
-                    final profilePath = extras?['profilePath'] as String? ?? '';
-                    final popularity = extras?['popularity'] as double? ?? 0;
+                    final person = state.extra as Person;
                     return PersonScreen(
-                      id: id,
-                      personName: name,
-                      popularity: popularity,
-                      profilePath: profilePath,
+                      person:person
                     );
                   },
                 ),
@@ -192,6 +186,52 @@ final GoRouter appRouter = GoRouter(
               path: '/favorites',
               name: FavoritesView.name,
               builder: (context, state) => const FavoritesView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _branchNavigatorKeys[4],
+          routes: [
+            GoRoute(
+              path: '/premium',
+              name: PremiumView.name,
+              builder: (context, state) => const PremiumView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _branchNavigatorKeys[5],
+          routes: [
+            // Redireccionar desde /oscars a la categoría por defecto
+            GoRoute(
+              path: '/oscars',
+              redirect:
+                  (_, __) => '/oscars/${Uri.encodeComponent('Best Picture')}',
+            ),
+
+            // Shell con ruta dinámica
+            ShellRoute(
+              builder: (context, state, child) => child,
+              routes: [
+                GoRoute(
+                  path: '/oscars/:categoryName',
+                  name: OscarsView.name,
+                  builder: (context, state) {
+                    final navigationShell =
+                        context
+                            .findAncestorWidgetOfExactType<
+                              StatefulNavigationShell
+                            >()!;
+                    final categoryName = Uri.decodeComponent(
+                      state.pathParameters['categoryName']!,
+                    );
+                    return OscarsView(
+                      navigationShell: navigationShell,
+                      selectedCategory: categoryName,
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

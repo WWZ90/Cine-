@@ -12,48 +12,29 @@ import 'package:cinemania/presentation/widgets/widgets.dart';
 
 class PersonScreen extends ConsumerStatefulWidget {
   static const name = 'person-screen';
-  final int id;
-  final String personName;
-  final String profilePath;
-  final double popularity;
-  const PersonScreen({
-    super.key,
-    required this.id,
-    required this.personName,
-    required this.profilePath,
-    required this.popularity,
-  });
+  final Person person;
+  const PersonScreen({super.key, required this.person});
 
   @override
   ConsumerState<PersonScreen> createState() => _PersonScreenState();
 }
 
 class _PersonScreenState extends ConsumerState<PersonScreen> {
-  late final Person basePerson;
   bool _isExpanded = false;
 
   @override
   void initState() {
     super.initState();
-    basePerson = Person(
-      id: widget.id,
-      name: widget.personName,
-      profilePath: widget.profilePath,
-      popularity: widget.popularity,
-      adult: false,
-      gender: 0,
-      mediaType: MediaType.PERSON,
-      originalName: widget.personName,
-      knownForDepartment: KnownForDepartment.ACTING,
-    );
-    ref.read(personDetailsProvider(widget.id).notifier);
+    final id = widget.person.id.toString();
+    ref.read(personDetailProvider.notifier).loadPerson(id);
   }
 
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
-    final personState = ref.watch(personDetailsProvider(widget.id));
     final size = MediaQuery.of(context).size;
+    final PersonDetails? personDetails =
+        ref.watch(personDetailProvider)[widget.person.id.toString()];
 
     return CustomScrollView(
       slivers: [
@@ -74,7 +55,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                   LoadImage(
                     h: size.height * 0.55,
                     w: double.infinity,
-                    url: widget.profilePath,
+                    url: widget.person.profilePath!,
                   ),
                   GradientImageBackground(),
 
@@ -101,7 +82,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                       left: 60,
                       bottom: 16,
                       child: Text(
-                        widget.personName,
+                        widget.person.name,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -125,7 +106,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.80,
                                 child: Text(
-                                  widget.personName,
+                                  widget.person.name,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: const TextStyle(
@@ -137,15 +118,15 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                               ),
                               const SizedBox(height: 5),
                               StarsRatingBarWithInfo(
-                                rating: widget.popularity,
+                                rating: widget.person.popularity,
                                 voteCount: 0,
                                 type: AppLocalizations.of(context)!.person,
                               ),
                             ],
                           ),
                           FavLikeButtonConsumer(
-                            data: basePerson,
-                            type: AppLocalizations.of(context)!.person,
+                            data: widget.person,
+                            type: "Person",
                           ),
                         ],
                       ),
@@ -157,165 +138,159 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
         ),
         SliverList(
           delegate: SliverChildListDelegate([
-            personState.when(
-              loading:
-                  () => SizedBox(
-                    height: 300,
-                    child: const Center(
-                      child: CircularProgressIndicator(strokeWidth: 1),
-                    ),
-                  ),
-              error: (e, _) => Center(child: Text('Error loading details: $e')),
-              data:
-                  (person) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if ((person.birthday != null) ||
-                          (person.placeOfBirth.isNotEmpty))
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 0),
-                          child: Card(
-                            color: const Color(0xFF1C1F26),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              side: const BorderSide(
-                                color: Colors.blueGrey,
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (person.birthday != null)
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              bottom: 8.0,
-                                            ),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                        '${AppLocalizations.of(context)!.birthday}: ',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.grey[500],
+            if (personDetails == null)
+              SizedBox(
+                height: 300,
+                child: const Center(
+                  child: CircularProgressIndicator(strokeWidth: 1),
+                ),
+              )
+            else
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if ((personDetails.birthday != null) ||
+                      (personDetails.placeOfBirth.isNotEmpty))
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: Card(
+                        color: const Color(0xFF1C1F26),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          side: const BorderSide(
+                            color: Colors.blueGrey,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (personDetails.birthday != null)
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 8.0,
+                                        ),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    '${AppLocalizations.of(context)!.birthday}: ',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey[500],
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: formatDateNew(
+                                                  context,
+                                                  personDetails.birthday!,
+                                                ),
+                                                style: textStyle.bodyMedium
+                                                    ?.copyWith(
+                                                      color: Colors.white,
                                                     ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: formatDateNew(
-                                                      context,
-                                                      person.birthday!,
-                                                    ),
-                                                    style: textStyle.bodyMedium
-                                                        ?.copyWith(
-                                                          color: Colors.white,
-                                                        ),
-                                                  ),
-                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                    if (personDetails.placeOfBirth.isNotEmpty)
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  '${AppLocalizations.of(context)!.placeOfBirth}: ',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.grey[500],
                                               ),
                                             ),
-                                          ),
-
-                                        if (person.placeOfBirth.isNotEmpty)
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                      '${AppLocalizations.of(context)!.placeOfBirth}: ',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.grey[500],
+                                            TextSpan(
+                                              text: personDetails.placeOfBirth,
+                                              style: textStyle.bodyMedium
+                                                  ?.copyWith(
+                                                    color: Colors.white,
                                                   ),
-                                                ),
-                                                TextSpan(
-                                                  text: person.placeOfBirth,
-                                                  style: textStyle.bodyMedium
-                                                      ?.copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
-                                              ],
                                             ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                      ],
-                                    ),
-                                  ),
+                                          ],
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                  ],
                                 ),
-                              ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                  if ((personDetails.birthday != null) ||
+                      (personDetails.placeOfBirth.isNotEmpty))
+                    SizedBox(height: 10),
+                  if (personDetails.biography.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AnimatedCrossFade(
+                            duration: const Duration(milliseconds: 300),
+                            crossFadeState:
+                                _isExpanded
+                                    ? CrossFadeState.showSecond
+                                    : CrossFadeState.showFirst,
+                            firstChild: Text(
+                              personDetails.biography,
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              textAlign: TextAlign.justify,
+                            ),
+                            secondChild: Text(
+                              personDetails.biography,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              textAlign: TextAlign.justify,
                             ),
                           ),
-                        ),
-
-                      if ((person.birthday != null) ||
-                          (person.placeOfBirth.isNotEmpty))
-                        SizedBox(height: 10),
-                      if (person.biography.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AnimatedCrossFade(
-                                duration: const Duration(milliseconds: 300),
-                                crossFadeState:
-                                    _isExpanded
-                                        ? CrossFadeState.showSecond
-                                        : CrossFadeState.showFirst,
-                                firstChild: Text(
-                                  person.biography,
-                                  maxLines: 5,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                  textAlign: TextAlign.justify,
-                                ),
-                                secondChild: Text(
-                                  person.biography,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                  textAlign: TextAlign.justify,
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  onPressed:
-                                      () => setState(
-                                        () => _isExpanded = !_isExpanded,
-                                      ),
-                                  child: Text(
-                                    _isExpanded
-                                        ? AppLocalizations.of(context)!.viewLess
-                                        : AppLocalizations.of(
-                                          context,
-                                        )!.viewMore,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed:
+                                  () => setState(
+                                    () => _isExpanded = !_isExpanded,
                                   ),
-                                ),
+                              child: Text(
+                                _isExpanded
+                                    ? AppLocalizations.of(context)!.viewLess
+                                    : AppLocalizations.of(context)!.viewMore,
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      SizedBox(
-                        height: 290,
-                        child: _PersonMoviesSection(personId: person.id),
+                        ],
                       ),
-                      SizedBox(
-                        height: 278,
-                        child: _PersonTVShowsSection(personId: person.id),
-                      ),
-                    ],
+                    ),
+                  SizedBox(
+                    height: 290,
+                    child: _PersonMoviesSection(personId: personDetails.id),
                   ),
-            ),
+                  SizedBox(
+                    height: 278,
+                    child: _PersonTVShowsSection(personId: personDetails.id),
+                  ),
+                ],
+              ),
           ]),
         ),
       ],

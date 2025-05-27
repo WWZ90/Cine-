@@ -41,11 +41,7 @@ class Actors extends ConsumerWidget {
               onTap: () {
                 context.pushNamed(
                   PersonScreen.name,
-                  extra: {
-                    'id': actor.id,
-                    'name': actor.name,
-                    'profilePath': actor.profilePath,
-                  },
+                  extra: actor.toPerson()
                 );
               },
               child: FadeInRight(

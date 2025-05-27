@@ -69,6 +69,26 @@ class PersonMovieDbDatasource extends PersonDatasource {
   }
 
   @override
+  Future<Person> getPersonById(String id) async {
+    try {
+      _updateLanguage();
+      final response = await dio.get('/person/$id');
+      if (response.statusCode != 200) {
+        throw Exception('No person with id $id found');
+      }
+
+      final personResponse = PersonDetailsResponse.fromJson(response.data);
+
+
+      return PersonFromPersonDetailMapper.personDetailsToPerson(
+        personResponse,
+      ); //
+    } catch (e) {
+      throw Exception('Failed to fetch person details for id $id');
+    }
+  }
+
+  @override
   Future<PersonDetails> getPersonDetails(String id) async {
     try {
       _updateLanguage();

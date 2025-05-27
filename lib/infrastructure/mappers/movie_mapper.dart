@@ -1,4 +1,5 @@
 import 'package:cinemania/domain/entities/movie.dart';
+import 'package:cinemania/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinemania/infrastructure/models/moviedb/movie_moviedb.dart';
 
 class MovieMapper {
@@ -24,4 +25,31 @@ class MovieMapper {
     voteAverage: moviedb.voteAverage,
     voteCount: moviedb.voteCount,
   );
+}
+
+class MovieFromMovieDetailMapper {
+  static Movie movieDetailsToMovie(MovieDetailsResponse moviedb) {
+    return Movie(
+      adult: moviedb.adult,
+      backdropPath:
+          moviedb.backdropPath != ''
+              ? 'https://image.tmdb.org/t/p/w500${moviedb.backdropPath}'
+              : 'no-poster',
+      genreIds: moviedb.genres.map((e) => e.id).toList(),
+      id: moviedb.id,
+      originalLanguage: moviedb.originalLanguage,
+      originalTitle: moviedb.originalTitle,
+      overview: moviedb.overview,
+      popularity: moviedb.popularity,
+      posterPath:
+          moviedb.posterPath != ''
+              ? 'https://image.tmdb.org/t/p/w500${moviedb.posterPath}'
+              : 'no-poster',
+      releaseDate: moviedb.releaseDate ?? DateTime(1970, 1, 1),
+      title: moviedb.title,
+      video: moviedb.video,
+      voteAverage: moviedb.voteAverage,
+      voteCount: moviedb.voteCount,
+    );
+  }
 }

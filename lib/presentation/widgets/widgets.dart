@@ -31,3 +31,6 @@ export 'sliver_detail/cut_rectangle.dart';
 export 'sliver_detail/data_cut_rectangle.dart';
 export 'sliver_detail/favorit_circle.dart';
 export 'tv_shows/tv_show_detail_card.dart';
+export 'oscars/oscar_movie_winner.dart';
+export 'oscars/ceremony_list_item.dart';
+export 'oscars/oscar_person_winner.dart';
