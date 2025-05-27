@@ -89,15 +89,7 @@ class FavoritePosterLink extends StatelessWidget {
         } else if (favorite is TVShow) {
           context.pushNamed(TVShowScreen.name, extra: favorite as TVShow);
         } else {
-          context.pushNamed(
-            PersonScreen.name,
-            extra: {
-              'id': favorite.id,
-              'name': favorite.name,
-              'profilePath': favorite.profilePath,
-              'popularity': favorite.popularity,
-            },
-          );
+          context.pushNamed(PersonScreen.name, extra: favorite as Person);
         }
       },
       child: FadeInUp(
