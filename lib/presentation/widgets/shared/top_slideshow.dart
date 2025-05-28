@@ -124,13 +124,13 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                       transitionBuilder:
                           (child, animation) =>
                               FadeTransition(opacity: animation, child: child),
-                      child: Stack(
-                        key: ValueKey(data.id),
-                        fit: StackFit.expand,
-                        children: [
-                          Hero(
-                            tag: data.uniqueID,
-                            child: CachedNetworkImage(
+                      child: Hero(
+                        tag: data.uniqueID,
+                        child: Stack(
+                          key: ValueKey(data.id),
+                          fit: StackFit.expand,
+                          children: [
+                            CachedNetworkImage(
                               fit: BoxFit.cover,
                               imageUrl:
                                   widget.type == 'Person'
@@ -151,58 +151,58 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                                   (context, url, error) =>
                                       const Icon(Icons.error),
                             ),
-                          ),
-                          GradientImageBackground(),
-                          Positioned(
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width *
-                                          0.80,
-                                      child: Text(
-                                        widget.type == 'Person'
-                                            ? data.name
-                                            : data.title,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
+                            GradientImageBackground(),
+                            Positioned(
+                              bottom: 10,
+                              left: 10,
+                              right: 10,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                            0.80,
+                                        child: Text(
+                                          widget.type == 'Person'
+                                              ? data.name
+                                              : data.title,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    StarsRatingBarWithInfo(
-                                      rating:
-                                          widget.type != 'Person'
-                                              ? data.voteAverage
-                                              : data.popularity,
-                                      voteCount:
-                                          widget.type != 'Person'
-                                              ? data.voteCount
-                                              : 0,
-                                      type: widget.type,
-                                    ),
-                                  ],
-                                ),
-                                FavLikeButtonConsumer(
-                                  data: data,
-                                  type: widget.type,
-                                  iconSize: 40,
-                                ),
-                              ],
+                                      const SizedBox(height: 5),
+                                      StarsRatingBarWithInfo(
+                                        rating:
+                                            widget.type != 'Person'
+                                                ? data.voteAverage
+                                                : data.popularity,
+                                        voteCount:
+                                            widget.type != 'Person'
+                                                ? data.voteCount
+                                                : 0,
+                                        type: widget.type,
+                                      ),
+                                    ],
+                                  ),
+                                  FavLikeButtonConsumer(
+                                    data: data,
+                                    type: widget.type,
+                                    iconSize: 40,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },

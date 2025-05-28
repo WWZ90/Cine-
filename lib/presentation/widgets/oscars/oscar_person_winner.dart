@@ -41,12 +41,11 @@ class OscarPersonWinnerCard extends ConsumerWidget {
           );
         }
 
+        person.uniqueID = "${person.id}-person-oscarWinner-${winnerNominee.tmdbId}";
+
         return GestureDetector(
           onTap: () {
-            context.pushNamed(
-              PersonScreen.name,
-              extra: person
-            );
+            context.pushNamed(PersonScreen.name, extra: person);
           },
           child: Card(
             elevation: 3,
