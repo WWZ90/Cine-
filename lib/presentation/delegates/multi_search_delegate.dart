@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:cinemania/config/helpers/known_for_department.dart';
+import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -248,6 +250,15 @@ class _ListItems extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
+
+    String displayKnownForDepartment = '';
+    if (knownForDepartment.isNotEmpty) {
+
+      KnownForDepartment departmentEnum = parseKnownForDepartment(knownForDepartment); // <--- USA TU FUNCIÓN DE PARSEO
+
+      displayKnownForDepartment = departmentEnum.toLocalizedString(context);
+    }
+    
     return Card(
       elevation: 3,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -296,7 +307,7 @@ class _ListItems extends StatelessWidget {
                   ],
       
                   if (knownForDepartment.isNotEmpty)
-                    Text('$knownForLabel: $knownForDepartment'),
+                    Text('$knownForLabel: $displayKnownForDepartment'),
                 ],
               ),
             ),

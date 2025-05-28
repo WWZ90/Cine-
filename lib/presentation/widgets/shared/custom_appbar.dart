@@ -1,3 +1,4 @@
+import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -105,16 +106,21 @@ class CustomAppbar extends ConsumerWidget {
                 }
 
                 if (response.mediaType == 'person') {
-                  context.pushNamed(
-                    PersonScreen.name,
-                    extra: {
-                      'id': response.id,
-                      'name': response.name,
-                      'profilePath': response.profilePath,
-                      'popularity': response.popularity,
-                      'uniqueID': '',
-                    },
+                  Person person = Person(
+                    id: response.id,
+                    name: response.name!,
+                    originalName: response.originalName!,
+                    mediaType: MediaType.PERSON,
+                    adult: response.adult,
+                    popularity: response.popularity,
+                    gender: response.gender!,
+                    knownForDepartment: parseKnownForDepartment(
+                      response.knownForDepartment,
+                    ),
+                    profilePath: response.profilePath,
+                    uniqueID: "${response.id}-person-from-search"
                   );
+                  context.pushNamed(PersonScreen.name, extra: person);
                 }
               },
             ),
