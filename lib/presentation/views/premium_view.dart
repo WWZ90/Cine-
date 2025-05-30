@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PremiumView extends StatelessWidget {
   static const name = 'premium-view';
   const PremiumView({super.key});
 
-  // Helper widget to build benefit list items consistently
   Widget _buildBenefitItem(
     BuildContext context,
     String text, {
@@ -33,21 +33,21 @@ class PremiumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final l10n = AppLocalizations.of(context)!;
 
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
         Image.asset(
-          'assets/images/premium_back.jpg', // Ensure this path is correct
+          'assets/images/premium_back.jpg',
           fit: BoxFit.cover,
         ),
-        // Gradient overlay for better text readability (optional)
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.black.withOpacity(0.6),
-                Colors.black.withOpacity(0.3),
+                const Color.fromARGB(153, 0, 0, 0),
+                const Color.fromARGB(77, 0, 0, 0),  
                 Colors.transparent,
               ],
               begin: Alignment.topCenter,
@@ -57,7 +57,6 @@ class PremiumView extends StatelessWidget {
         ),
         Center(
           child: SingleChildScrollView(
-            // Makes content scrollable if it overflows
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 24.0,
@@ -71,36 +70,35 @@ class PremiumView extends StatelessWidget {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       style: TextStyle(
-                        fontSize: 32, // Slightly larger
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
                             blurRadius: 5.0,
-                            color: Colors.black.withOpacity(0.7),
+                            color: const Color.fromARGB(179, 0, 0, 0), // Colors.black.withOpacity(0.7)
                             offset: Offset(2.0, 2.0),
                           ),
                         ],
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Go ',
+                          text: l10n.premiumView_title_go,
                           style: TextStyle(color: Colors.white),
                         ),
                         TextSpan(
-                          text: 'PREMIUM',
+                          text: l10n.premiumView_title_premium,
                           style: TextStyle(color: Colors.yellow),
                         ),
                         TextSpan(
-                          text: ' now!',
+                          text: l10n.premiumView_title_now,
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
                   ),
                   SizedBox(height: 25),
-
                   Text(
-                    "Enjoy full coverage of the Academy Awards with exclusive access to:",
+                    l10n.premiumView_oscarsAccessDescription,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -109,17 +107,15 @@ class PremiumView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-
-                  // Oscar Benefits List
-                  _buildBenefitItem(context, "Best Picture"),
-                  _buildBenefitItem(context, "Animated Feature Film"),
-                  _buildBenefitItem(context, "Best Visual Effects"),
-                  _buildBenefitItem(context, "Best Director"),
-                  _buildBenefitItem(context, "Actor in a Leading and Supporting Role"),
-                  _buildBenefitItem(context, "Actress in a Leading and Supporting Role"),
+                  _buildBenefitItem(context, l10n.premiumView_benefit_bestPicture),
+                  _buildBenefitItem(context, l10n.premiumView_benefit_animatedFeature),
+                  _buildBenefitItem(context, l10n.premiumView_benefit_visualEffects),
+                  _buildBenefitItem(context, l10n.premiumView_benefit_director),
+                  _buildBenefitItem(context, l10n.premiumView_benefit_actorLeadingSupporting),
+                  _buildBenefitItem(context, l10n.premiumView_benefit_actressLeadingSupporting),
                   SizedBox(height: 15),
                   Text(
-                    "✨ We're working hard to add many more categories!",
+                    l10n.premiumView_workingHardMessage,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white70,
@@ -127,11 +123,9 @@ class PremiumView extends StatelessWidget {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-
                   SizedBox(height: 35),
-
                   Text(
-                    "🧭 What's Coming Next?",
+                    l10n.premiumView_comingNextTitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -141,7 +135,7 @@ class PremiumView extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Soon, you'll also be able to explore:",
+                    l10n.premiumView_comingNextDescription,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -150,38 +144,36 @@ class PremiumView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-
-                  // Future Awards List
                   _buildBenefitItem(
                     context,
-                    "Golden Globes",
+                    l10n.premiumView_benefit_goldenGlobes,
                     icon: Icons.star_outline,
                     iconColor: Colors.amber,
                     textColor: Colors.white70,
                   ),
                   _buildBenefitItem(
                     context,
-                    "BAFTA Awards",
+                    l10n.premiumView_benefit_baftaAwards,
                     icon: Icons.star_outline,
                     iconColor: Colors.amber,
                     textColor: Colors.white70,
                   ),
                   _buildBenefitItem(
                     context,
-                    "Cannes Film Festival",
+                    l10n.premiumView_benefit_cannesFestival,
                     icon: Icons.star_outline,
                     iconColor: Colors.amber,
                     textColor: Colors.white70,
                   ),
                   SizedBox(height: 15),
                   Text(
-                    "And many other major film awards!",
+                    l10n.premiumView_manyMoreAwardsMessage,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "The Premium experience keeps growing!",
+                    l10n.premiumView_experienceGrowingMessage,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.yellow,
@@ -189,34 +181,30 @@ class PremiumView extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-
-                  SizedBox(height: 30), // Space before the button
-
-                  // --- Pricing Information ---
+                  SizedBox(height: 30),
                   Text(
-                    "Just \$9.99 per year", // Or "Just $9.99 per year"
+                    l10n.premiumView_priceInfo,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 22, // Make price prominent
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 3),
                   Text(
-                    "Auto-renewable. Cancel anytime.",
+                    l10n.premiumView_renewalInfo,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white54, // Slightly less emphasis
+                      color: Colors.white54,
                       fontSize: 13,
                     ),
                   ),
-                  // --- End Pricing Information ---
                   SizedBox(height: 6),
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: screenWidth * 0.05,
-                    ), // Responsive horizontal padding
+                    ),
                     child: SizedBox(
                       width: double.infinity,
                       height: 55,
@@ -236,14 +224,31 @@ class PremiumView extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'Subscribe Today', // Changed from "Subscribe today" for consistency
+                          l10n.premiumView_subscribeButtonText,
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
                     ),
                   ),
-
-                  SizedBox(height: 10), // Bottom padding
+                  SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () {
+                      // Restore purchases logic
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16)
+                    ),
+                    child: Text(
+                      l10n.premiumView_restorePurchasesButtonText,
+                      style: TextStyle(
+                        color: const Color.fromARGB(217, 255, 255, 255), // Colors.white.withOpacity(0.85)
+                        decoration: TextDecoration.underline,
+                        decorationColor: const Color.fromARGB(217, 255, 255, 255), // Colors.white.withOpacity(0.85)
+                        fontSize: 16
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
                 ],
               ),
             ),

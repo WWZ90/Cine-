@@ -139,5 +139,36 @@
   "otherNomineesMaleLabel": "Other nominees",
   "otherNomineesFemaleLabel": "Other nominees",
   "forLabel": "For",
-  "ceremonyTitle": "{number}th Academy Awards | {year}"
+  "ceremonyTitle": "{number}th Academy Awards | {year}",
+  "premiumView_title_go": "Go ",
+  "@premiumView_title_go": {
+    "description": "Part of the main title on the premium screen"
+  },
+  "premiumView_title_premium": "PREMIUM",
+  "@premiumView_title_premium": {
+    "description": "The word 'PREMIUM' in the main title"
+  },
+  "premiumView_title_now": " now!",
+  "@premiumView_title_now": {
+    "description": "Part of the main title on the premium screen"
+  },
+  "premiumView_oscarsAccessDescription": "Enjoy full coverage of the Academy Awards with exclusive access to:",
+  "premiumView_benefit_bestPicture": "Best Picture",
+  "premiumView_benefit_animatedFeature": "Animated Feature Film",
+  "premiumView_benefit_visualEffects": "Best Visual Effects",
+  "premiumView_benefit_director": "Best Director",
+  "premiumView_benefit_actorLeadingSupporting": "Actor in a Leading and Supporting Role",
+  "premiumView_benefit_actressLeadingSupporting": "Actress in a Leading and Supporting Role",
+  "premiumView_workingHardMessage": "✨ We're working hard to add many more categories!",
+  "premiumView_comingNextTitle": "🧭 What's Coming Next?",
+  "premiumView_comingNextDescription": "Soon, you'll also be able to explore:",
+  "premiumView_benefit_goldenGlobes": "Golden Globes",
+  "premiumView_benefit_baftaAwards": "BAFTA Awards",
+  "premiumView_benefit_cannesFestival": "Cannes Film Festival",
+  "premiumView_manyMoreAwardsMessage": "And many other major film awards!",
+  "premiumView_experienceGrowingMessage": "The Premium experience keeps growing!",
+  "premiumView_priceInfo": "Just $9.99 per year",
+  "premiumView_renewalInfo": "Auto-renewable. Cancel anytime.",
+  "premiumView_subscribeButtonText": "Subscribe Today",
+  "premiumView_restorePurchasesButtonText": "Restore Purchases"
 }
