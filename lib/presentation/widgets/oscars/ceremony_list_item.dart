@@ -49,7 +49,8 @@ class _CeremonyListItemState extends State<CeremonyListItem>
         return l10n.otherNomineesFemaleLabel; // "Otras nominadas"
       }
 
-      if (category == 'Best Actress') {
+      if (category == 'Actress in a Leading Role' ||
+          category == 'Actress in a Supporting Role') {
         return l10n.otherNomineesFemaleLabel; // "Otras nominadas"
       }
 
@@ -84,7 +85,11 @@ class _CeremonyListItemState extends State<CeremonyListItem>
           ...ceremony.categories.map((category) {
             String type = "Movie";
 
-            if (category.category == "Best Director") {
+            if (category.category == "Best Director" ||
+                category.category == 'Actor in a Leading Role' ||
+                category.category == 'Actor in a Supporting Role' ||
+                category.category == 'Actress in a Leading Role' ||
+                category.category == 'Actress in a Supporting Role') {
               type = "Person";
             }
 
@@ -147,13 +152,11 @@ class _CeremonyListItemState extends State<CeremonyListItem>
                                     ..sort((a, b) {
                                       final indexA = data.indexWhere(
                                         (person) =>
-                                            (person as dynamic).name ==
-                                            a.name,
+                                            (person as dynamic).name == a.name,
                                       );
                                       final indexB = data.indexWhere(
                                         (person) =>
-                                            (person as dynamic).name ==
-                                            b.name,
+                                            (person as dynamic).name == b.name,
                                       );
                                       return indexA.compareTo(indexB);
                                     });
@@ -170,7 +173,10 @@ class _CeremonyListItemState extends State<CeremonyListItem>
                                   ),
                                   type: type,
                                   isForOscars: type == "Person" ? true : false,
-                                  forMovies: type == "Person" ? orderedNonWinners : null,
+                                  forMovies:
+                                      type == "Person"
+                                          ? orderedNonWinners
+                                          : null,
                                 ),
                               );
                             },

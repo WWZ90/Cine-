@@ -41,7 +41,8 @@ class OscarPersonWinnerCard extends ConsumerWidget {
           );
         }
 
-        person.uniqueID = "${person.id}-person-oscarWinner-${winnerNominee.tmdbId}";
+        person.uniqueID =
+            "${person.id}-person-oscarWinner-${winnerNominee.tmdbId}";
 
         return GestureDetector(
           onTap: () {
@@ -56,7 +57,9 @@ class OscarPersonWinnerCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    l10n.winningDirectorLabel.toUpperCase(), // GANADOR
+                    person.gender == 1
+                        ? l10n.winnerFemaleLabel.toUpperCase()
+                        : l10n.winnerMaleLabel.toUpperCase(), // GANADOR
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary,

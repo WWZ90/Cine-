@@ -147,18 +147,20 @@ class AppDrawer extends ConsumerWidget {
     final langCode = locale.languageCode;
     final currentIndex = navigationShell.currentIndex;
     final isPremiumSelected = currentIndex == 4;
-    final isOscarsSelected = currentIndex == 5;
     bool isOscarsCategoryActive = false;
     String? activeOscarsCategoryPathParameter;
 
     final currentRoute = GoRouterState.of(context).uri.toString();
-    final currentShellIndex = navigationShell.currentIndex;
 
     final Map<String, String> oscarCategories = {
       'Best Picture': l10n.bestPictureLabel,
       'Animated Feature Film': l10n.animatedFeatureFilmLabel,
       'Best Visual Effects': l10n.visualEffectsLabel,
       'Best Director': l10n.directingLabel,
+      'Actor in a Leading Role': l10n.bestActorInALeadingRoleLabel,
+      'Actor in a Supporting Role': l10n.bestActorInASupportingRoleLabel,
+      'Actress in a Leading Role': l10n.bestActressInALeadingRoleLabel,
+      'Actress in a Supporting Role': l10n.bestActressInASupportingRoleLabel,
       // Añade más categorías aquí a medida que las implementes
     };
 
@@ -321,7 +323,7 @@ class AppDrawer extends ConsumerWidget {
                                             53,
                                             51,
                                             45,
-                                          )?.withOpacity(0.5))
+                                          ).withOpacity(0.5))
                                           : Colors.transparent,
                                   child: ListTile(
                                     contentPadding: const EdgeInsets.only(
@@ -429,6 +431,12 @@ final Map<String, IconData> oscarCategoryIcons = {
   'Animated Feature Film': Icons.animation_outlined,
   'Best Visual Effects': Icons.auto_awesome_outlined,
   'Best Director': Icons.chair_outlined,
-  'Best Actor / Actress': Icons.person_outline,
+  'Actor in a Leading Role':
+      Icons.person_pin_outlined, // O Icons.theater_comedy_outlined
+  'Actress in a Leading Role':
+      Icons.person_pin_outlined, // O Icons.theater_comedy_outlined
+  'Actor in a Supporting Role': Icons.group_outlined, // O Icons.person_outline
+  'Actress in a Supporting Role':
+      Icons.group_outlined, // O Icons.person_outline
   'Best Original Screenplay': Icons.edit_note_outlined,
 };

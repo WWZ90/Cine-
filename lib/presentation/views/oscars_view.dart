@@ -46,9 +46,11 @@ class OscarsView extends ConsumerWidget {
         'Best Picture': l10n.bestPictureLabel,
         'Animated Feature Film': l10n.animatedFeatureFilmLabel,
         'Best Visual Effects': l10n.visualEffectsLabel,
-        'Best Director':
-            l10n.directingLabel, // Asegúrate que exista 'directingLabel' en tus .arb
-        // Añade otros mapeos aquí si es necesario
+        'Best Director': l10n.directingLabel,
+        'Actor in a Leading Role': l10n.bestActorInALeadingRoleLabel,
+        'Actor in a Supporting Role': l10n.bestActorInASupportingRoleLabel,
+        'Actress in a Leading Role': l10n.bestActressInALeadingRoleLabel,
+        'Actress in a Supporting Role': l10n.bestActressInASupportingRoleLabel,
       };
       // Usar el nombre localizado si está en el mapa, sino usar el selectedCategory directamente
       appBarTitle =

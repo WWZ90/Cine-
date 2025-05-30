@@ -136,7 +136,11 @@ class Nominee {
     Map<String, dynamic> json, {
     required String categoryName,
   }) {
-    if (categoryName == 'Best Director') {
+    if (categoryName == "Best Director" ||
+        categoryName == 'Actor in a Leading Role' ||
+        categoryName == 'Actor in a Supporting Role' ||
+        categoryName == 'Actress in a Leading Role' ||
+        categoryName == 'Actress in a Supporting Role') {
       return Nominee(
         tmdbId: json['tmdb_id'] as int?, // Este será el ID del director
         name: json['name'] as String?,
