@@ -316,9 +316,12 @@ class AppDrawer extends ConsumerWidget {
                                 return Material(
                                   color:
                                       isSelected
-                                          ? (const Color.fromARGB(255, 53, 51, 45)?.withOpacity(
-                                            0.5,
-                                          ))
+                                          ? (const Color.fromARGB(
+                                            255,
+                                            53,
+                                            51,
+                                            45,
+                                          )?.withOpacity(0.5))
                                           : Colors.transparent,
                                   child: ListTile(
                                     contentPadding: const EdgeInsets.only(

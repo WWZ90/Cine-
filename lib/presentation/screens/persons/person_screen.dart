@@ -6,7 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cinemania/config/helpers/date_format.dart';
 import 'package:cinemania/domain/entities/entities.dart';
-import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
@@ -36,6 +35,21 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
     final PersonDetails? personDetails =
         ref.watch(personDetailProvider)[widget.person.id.toString()];
 
+    final l10n = AppLocalizations.of(context)!;
+    String actorActressLabel = l10n.asActor;
+    int? gender = widget.person.gender;
+
+    if (gender == 1) {
+      actorActressLabel = l10n.asActress;
+    } else if (gender == 2) {
+      actorActressLabel = l10n.asActor;
+    } else {
+      actorActressLabel = l10n.asActorActress;
+    }
+
+    String moviesAsCastTitle = l10n.moviesAs(actorActressLabel);
+    String tvShowsAsCastTitle = l10n.tvShowsAs(actorActressLabel);
+
     return Container(
       color: Color(0xFF121318),
       child: CustomScrollView(
@@ -50,7 +64,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                 final collapsed =
                     constraints.maxHeight <=
                     kToolbarHeight + MediaQuery.of(context).padding.top;
-      
+
                 return Hero(
                   tag: widget.person.uniqueID!,
                   child: Stack(
@@ -62,7 +76,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                         url: widget.person.profilePath!,
                       ),
                       GradientImageBackground(),
-      
+
                       // 🔙 Back Button
                       Positioned(
                         top: MediaQuery.of(context).padding.top + 10,
@@ -79,7 +93,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                           ),
                         ),
                       ),
-      
+
                       // ✅ Nombre solo visible cuando está colapsado
                       if (collapsed)
                         Positioned(
@@ -94,7 +108,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                             ),
                           ),
                         ),
-      
+
                       // 📦 Nombre + rating (cuando expandido)
                       if (!collapsed)
                         Positioned(
@@ -109,7 +123,8 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                 children: [
                                   SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width * 0.80,
+                                        MediaQuery.of(context).size.width *
+                                        0.80,
                                     child: Text(
                                       widget.person.name,
                                       overflow: TextOverflow.ellipsis,
@@ -177,7 +192,8 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       if (personDetails.birthday != null)
                                         Padding(
@@ -188,12 +204,11 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                             text: TextSpan(
                                               children: [
                                                 TextSpan(
-                                                  text:
-                                                      '${AppLocalizations.of(context)!.birthday}: ',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.grey[500],
-                                                  ),
+                                                  text: '${l10n.birthday}: ',
+                                                  style: textStyle.bodyMedium
+                                                      ?.copyWith(
+                                                        color: Colors.grey[500],
+                                                      ),
                                                 ),
                                                 TextSpan(
                                                   text: formatDateNew(
@@ -209,21 +224,21 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                             ),
                                           ),
                                         ),
-      
+
                                       if (personDetails.placeOfBirth.isNotEmpty)
                                         RichText(
                                           text: TextSpan(
                                             children: [
                                               TextSpan(
-                                                text:
-                                                    '${AppLocalizations.of(context)!.placeOfBirth}: ',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.grey[500],
-                                                ),
+                                                text: '${l10n.placeOfBirth}: ',
+                                                style: textStyle.bodyMedium
+                                                    ?.copyWith(
+                                                      color: Colors.grey[500],
+                                                    ),
                                               ),
                                               TextSpan(
-                                                text: personDetails.placeOfBirth,
+                                                text:
+                                                    personDetails.placeOfBirth,
                                                 style: textStyle.bodyMedium
                                                     ?.copyWith(
                                                       color: Colors.white,
@@ -242,7 +257,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                           ),
                         ),
                       ),
-      
+
                     if ((personDetails.birthday != null) ||
                         (personDetails.placeOfBirth.isNotEmpty))
                       SizedBox(height: 10),
@@ -279,23 +294,46 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                       () => _isExpanded = !_isExpanded,
                                     ),
                                 child: Text(
-                                  _isExpanded
-                                      ? AppLocalizations.of(context)!.viewLess
-                                      : AppLocalizations.of(context)!.viewMore,
+                                  _isExpanded ? l10n.viewLess : l10n.viewMore,
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    SizedBox(
-                      height: 290,
-                      child: _PersonMoviesSection(personId: personDetails.id),
-                    ),
-                    SizedBox(
-                      height: 278,
-                      child: _PersonTVShowsSection(personId: personDetails.id),
-                    ),
+                    if (personDetails.knownForDepartment != 'Acting')
+                      Column(
+                        children: [
+                          _PersonGroupedCrewWorkSection(
+                            personId: personDetails.id,
+                          ),
+                          _PersonMoviesSection(
+                            personId: personDetails.id,
+                            title: moviesAsCastTitle,
+                          ),
+                          _PersonTVShowsSection(
+                            personId: personDetails.id,
+                            title: tvShowsAsCastTitle,
+                          ),
+                        ],
+                      ),
+
+                    if (personDetails.knownForDepartment == 'Acting')
+                      Column(
+                        children: [
+                          _PersonMoviesSection(
+                            personId: personDetails.id,
+                            title: moviesAsCastTitle,
+                          ),
+                          _PersonTVShowsSection(
+                            personId: personDetails.id,
+                            title: tvShowsAsCastTitle,
+                          ),
+                          _PersonGroupedCrewWorkSection(
+                            personId: personDetails.id,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
             ]),
@@ -306,9 +344,96 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
   }
 }
 
+class _PersonGroupedCrewWorkSection extends ConsumerWidget {
+  final int personId;
+  const _PersonGroupedCrewWorkSection({required this.personId});
+
+  static const List<String> sectionOrder = [
+    'Director',
+    'Producer',
+    'Writer',
+    'Sound',
+    'Other Crew Work',
+  ];
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final crewState = ref.watch(
+      moviesCrewByPersonGroupedProvider(personId.toString()),
+    );
+
+    if (crewState.isLoading) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 50.0),
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 1)),
+      );
+    }
+
+    if (crewState.groupedMovies.isEmpty && !crewState.isLoading) {
+      // Podrías mostrar un mensaje de "No hay trabajos de crew" o simplemente nada
+      return SizedBox.shrink();
+    }
+
+    List<Widget> sections = [];
+    for (String sectionTitleKey in sectionOrder) {
+      if (crewState.groupedMovies.containsKey(sectionTitleKey)) {
+        final moviesForSection = crewState.groupedMovies[sectionTitleKey]!;
+        if (moviesForSection.isNotEmpty) {
+          String localizedSectionTitle = getLocalizedCrewSectionTitle(
+            context,
+            sectionTitleKey,
+          );
+          sections.add(
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0, bottom: 5.0),
+              child: SizedBox(
+                height: 273,
+                child: SliderHorizontalListview(
+                  title: localizedSectionTitle,
+                  allData: moviesForSection,
+                  type: 'Movie',
+                ),
+              ),
+            ),
+          );
+        }
+      }
+    }
+
+    if (sections.isEmpty) return SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: sections,
+    );
+  }
+
+  String getLocalizedCrewSectionTitle(
+    BuildContext context,
+    String categoryKey,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (categoryKey) {
+      case 'Director':
+        return l10n.crewRoleDirector;
+      case 'Producer':
+        return l10n.crewRoleProducer;
+      case 'Writer':
+        return l10n.crewRoleWriter;
+      case 'Sound':
+        return l10n.crewRoleSound;
+      case 'Other Crew Work':
+        return l10n.crewRoleOther; 
+      default:
+        return categoryKey;
+    }
+  }
+}
+
 class _PersonMoviesSection extends ConsumerStatefulWidget {
   final int personId;
-  const _PersonMoviesSection({required this.personId});
+  final String title;
+  const _PersonMoviesSection({required this.personId, required this.title});
 
   @override
   ConsumerState<_PersonMoviesSection> createState() =>
@@ -327,17 +452,20 @@ class _PersonMoviesSectionState extends ConsumerState<_PersonMoviesSection> {
     );
 
     if (moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
-      return Center(child: CircularProgressIndicator(strokeWidth: 1));
+      return SizedBox(
+        height: 290,
+        child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
+      );
     }
 
     if (!moviesState.isLoading && moviesState.visibleMovies.isEmpty) {
-      return Center(child: Text(AppLocalizations.of(context)!.noMoviesFound));
+      return SizedBox.shrink();
     }
 
     return SliderHorizontalListview(
       allData: moviesState.visibleMovies,
       type: 'Movie',
-      title: AppLocalizations.of(context)!.movies,
+      title: widget.title,
       onEndReached: () {
         notifier.loadMoreLocally();
       },
@@ -347,7 +475,8 @@ class _PersonMoviesSectionState extends ConsumerState<_PersonMoviesSection> {
 
 class _PersonTVShowsSection extends ConsumerStatefulWidget {
   final int personId;
-  const _PersonTVShowsSection({required this.personId});
+  final String title;
+  const _PersonTVShowsSection({required this.personId, required this.title});
 
   @override
   ConsumerState<_PersonTVShowsSection> createState() =>
@@ -366,17 +495,20 @@ class _PersonTVShowsSectionState extends ConsumerState<_PersonTVShowsSection> {
     );
 
     if (tvShowState.isLoading && tvShowState.visibleShows.isEmpty) {
-      return Center(child: CircularProgressIndicator(strokeWidth: 1));
+      return SizedBox(
+        height: 290,
+        child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
+      );
     }
 
     if (!tvShowState.isLoading && tvShowState.visibleShows.isEmpty) {
-      return Center(child: Text(AppLocalizations.of(context)!.noTVShowsFound));
+      return SizedBox.shrink();
     }
 
     return SliderHorizontalListview(
       allData: tvShowState.visibleShows,
       type: 'TVShow',
-      title: AppLocalizations.of(context)!.tvShows,
+      title: widget.title,
       onEndReached: () {
         notifier.loadMoreLocally();
       },

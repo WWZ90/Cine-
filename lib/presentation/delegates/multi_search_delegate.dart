@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:cinemania/config/helpers/known_for_department.dart';
-import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 
+import 'package:cinemania/config/helpers/known_for_department.dart';
 import 'package:cinemania/domain/entities/search.dart';
+import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
 typedef SearchCallback = Future<List<MultiSearch>> Function(String query);
@@ -84,18 +84,12 @@ class MultiSearchDelegate extends SearchDelegate<MultiSearch?> {
     final theme = Theme.of(context);
     return theme.copyWith(
       appBarTheme: theme.appBarTheme.copyWith(
-        // Elimina el espacio que hay entre el leading y el title
         titleSpacing: 0,
-        // opcional: ajusta la altura si hace falta
-        //toolbarHeight: 56,
       ),
-      // Quita el padding interno del TextField
       inputDecorationTheme: const InputDecorationTheme(
-        // ANULA cualquier borde
         border: InputBorder.none,
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
-        // quita padding interno
         contentPadding: EdgeInsets.zero,
         isDense: true,
       ),
@@ -254,7 +248,7 @@ class _ListItems extends StatelessWidget {
     String displayKnownForDepartment = '';
     if (knownForDepartment.isNotEmpty) {
 
-      KnownForDepartment departmentEnum = parseKnownForDepartment(knownForDepartment); // <--- USA TU FUNCIÓN DE PARSEO
+      KnownForDepartment departmentEnum = parseKnownForDepartment(knownForDepartment);
 
       displayKnownForDepartment = departmentEnum.toLocalizedString(context);
     }

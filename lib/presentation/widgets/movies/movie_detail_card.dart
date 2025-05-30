@@ -42,8 +42,8 @@ class MovieDetailCard extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 1, // grosor de la línea
-                      height: 60, // altura (ajusta según necesidad)
+                      width: 1,
+                      height: 60,
                       color: Colors.white12,
                       margin: const EdgeInsets.symmetric(horizontal: 8),
                     ),
@@ -55,8 +55,8 @@ class MovieDetailCard extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 1, // grosor de la línea
-                      height: 60, // altura (ajusta según necesidad)
+                      width: 1,
+                      height: 60,
                       color: Colors.white12,
                       margin: const EdgeInsets.symmetric(horizontal: 8),
                     ),
@@ -115,7 +115,7 @@ class MovieDetailCard extends StatelessWidget {
                   Text(
                     AppLocalizations.of(context)!.synopsis,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.grey[400],
+                      color: Colors.grey[500],
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -139,7 +139,8 @@ class MovieDetailCard extends StatelessWidget {
         SizedBox(height: 10),
         Reviews(id: movieDetails.id.toString(), type: 'Movie'),
         SizedBox(height: 10),
-        Actors(id: movieDetails.id.toString(), type: 'Movie'),
+        CastCarousel(id: movieDetails.id.toString(), type: 'Movie'),
+        CrewSection(id: movieDetails.id.toString(), type: 'Movie'),
         Similar(id: movieDetails.id.toString(), type: 'Movie'),
       ],
     );
@@ -151,7 +152,10 @@ Widget _infoBlock(String title, String value, BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      Text(title, style: TextStyle(fontSize: 16, color: Colors.grey[500])),
+      Text(
+        title,
+        style: textStyle.bodyMedium?.copyWith(color: Colors.grey[500]),
+      ),
       const SizedBox(height: 4),
       Text(value, style: textStyle.bodyMedium?.copyWith(color: Colors.white)),
     ],

@@ -59,4 +59,9 @@ class MovieRepositoryImpl extends MoviesRepository {
   Future<List<Movie>> getMoviesByPersonId(String id) {
     return datasource.getMoviesByPersonId(id);
   }
+
+  @override
+  Future<Map<String, List<Movie>>> getMoviesCrewByPersonId(String id) {
+    return datasource.getMoviesCrewByPersonId(id);
+  }
 }

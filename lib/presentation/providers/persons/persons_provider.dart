@@ -4,6 +4,7 @@ import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 
 typedef PersonsCallback = Future<List<Person>> Function({int page});
+typedef GetCreditsCallback = Future<CreditsData> Function(String id);
 
 class PersonState {
   final List<Person> persons;
@@ -19,57 +20,6 @@ class PersonState {
   }
 }
 
-// class PersonNotifier extends StateNotifier<List<Person>> {
-//   int currentPage = 0;
-//   bool isLoading = false;
-//   bool _initialized = false;
-//   final PersonsCallback fetchPersons;
-
-//   PersonNotifier({required this.fetchPersons}) : super([]);
-
-//   Future<void> loadNextPage() async {
-//     if (isLoading || _initialized) return;
-//     isLoading = true;
-//     currentPage++;
-
-//     final List<Person> persons = await fetchPersons(page: currentPage);
-//     state = [...state, ...persons];
-
-//     _initialized = true;
-//     await Future.delayed(Duration(milliseconds: 400));
-//     isLoading = false;
-//   }
-// }
-
-// class PersonNotifier extends StateNotifier<PersonState> {
-//   final Future<List<Person>> Function({int page}) fetchPersons;
-//   int currentPage = 0;
-
-//   PersonNotifier({required this.fetchPersons})
-//     : super(PersonState(persons: [], isLoading: false)) {
-//     loadNextPage();
-//   }
-
-//   Future<void> loadNextPage() async {
-//     if (state.isLoading) return;
-
-//     state = state.copyWith(isLoading: true);
-//     currentPage++;
-
-//     final newPersons = await fetchPersons(page: currentPage);
-//     state = state.copyWith(
-//       persons: [...state.persons, ...newPersons],
-//       isLoading: false,
-//     );
-//   }
-
-//   Future<void> reset() async {
-//     currentPage = 0;
-//     state = PersonState(persons: [], isLoading: false);
-//     await loadNextPage();
-//   }
-// }
-
 class PersonNotifier extends StateNotifier<PersonState> {
   int currentPage = 0;
   final PersonsCallback fetchPersons;
@@ -84,7 +34,10 @@ class PersonNotifier extends StateNotifier<PersonState> {
     currentPage++;
 
     final List<Person> persons = await fetchPersons(page: currentPage);
-    state = PersonState(persons: [...state.persons, ...persons], isLoading: false);
+    state = PersonState(
+      persons: [...state.persons, ...persons],
+      isLoading: false,
+    );
   }
 
   Future<void> reset() async {
@@ -96,7 +49,6 @@ class PersonNotifier extends StateNotifier<PersonState> {
 
 final personTrendingProvider =
     StateNotifierProvider<PersonNotifier, PersonState>((ref) {
-      //ref.keepAlive();
       final personRepository =
           ref.watch(personsRepositoryProvider).getPersonTrending;
       return PersonNotifier(fetchPersons: personRepository);
@@ -104,7 +56,6 @@ final personTrendingProvider =
 
 final personPopularProvider =
     StateNotifierProvider<PersonNotifier, PersonState>((ref) {
-      //ref.keepAlive();
       final personsRepository =
           ref.watch(personsRepositoryProvider).getPersonPopular;
       return PersonNotifier(fetchPersons: personsRepository);
@@ -113,7 +64,6 @@ final personPopularProvider =
 final curatedActorsProvider = FutureProvider<List<Person>>((ref) async {
   final personsRepo = ref.read(personsRepositoryProvider);
 
-  // Espera activa hasta que popularMoviesProvider tenga datos
   List<Movie> popularMovies = [];
 
   while (popularMovies.isEmpty) {
@@ -157,4 +107,36 @@ final personProvider = FutureProvider.family<Person?, ({int personId})>((
 ) async {
   final datasource = ref.watch(personsRepositoryProvider);
   return await datasource.getPersonById(params.personId.toString());
+});
+
+class CreditsNotifier extends StateNotifier<Map<String, CreditsData>> {
+  final GetCreditsCallback getCredits; 
+
+  CreditsNotifier({required this.getCredits}) : super({});
+
+  Future<void> loadCredits(String id) async {
+    if (state[id] != null &&
+        (state[id]!.cast.isNotEmpty || state[id]!.crew.isNotEmpty)) {
+      return; 
+    }
+
+    final CreditsData credits = await getCredits(id);
+    state = {...state, id: credits};
+  }
+}
+
+final movieCreditsProvider = 
+    StateNotifierProvider<CreditsNotifier, Map<String, CreditsData>>((ref) {
+  final personsRepository = ref.watch(personsRepositoryProvider);
+  return CreditsNotifier(
+    getCredits: personsRepository.getCreditsByMovie,
+  );
+});
+
+final tvShowCreditsProvider = 
+    StateNotifierProvider<CreditsNotifier, Map<String, CreditsData>>((ref) {
+  final personsRepository = ref.watch(personsRepositoryProvider);
+  return CreditsNotifier(
+    getCredits: personsRepository.getCreditsByTVShow,
+  ); 
 });

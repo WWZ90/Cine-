@@ -1,5 +1,7 @@
 export 'author_details.dart';
 export 'cast_person.dart';
+export 'credits_data.dart';
+export 'crew_person.dart';
 export 'genre.dart';
 export 'known_for.dart';
 export 'movie_detail.dart';

@@ -1,5 +1,5 @@
-import 'package:cinemania/config/global_app_state.dart';
 import 'package:dio/dio.dart';
+import 'package:cinemania/config/global_app_state.dart';
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/domain/datasources/tv_show_datasource.dart';
 import 'package:cinemania/domain/entities/tv_show.dart';
@@ -38,17 +38,32 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
               .map((tvShow) => TvShowMapper.tvShowToEntity(tvShow))
               .toList();
     } else {
-      final tvShowResponse = List<TVShowDB>.from(
-        json["cast"].map((x) => TVShowDB.fromJson(x)),
-      );
-      tvShows =
-          tvShowResponse
-              .cast()
-              .where((tvShow) => tvShow.posterPath != '')
-              .map((tvShow) => TvShowMapper.tvShowToEntity(tvShow))
-              .toList();
+      if (json["cast"] == null) {
+        return [];
+      }
+
+      final List<dynamic> tvCreditsJson = json["cast"] as List<dynamic>;
+
+      final Map<int, TVShow> uniqueTVShowsMap = {};
+
+      for (var creditJsonMap in tvCreditsJson) {
+        final tvShowDBInstance = TVShowDB.fromJson(
+          creditJsonMap as Map<String, dynamic>,
+        );
+
+        if (tvShowDBInstance.posterPath != '' &&
+            tvShowDBInstance.posterPath.isNotEmpty) {
+          if (!uniqueTVShowsMap.containsKey(tvShowDBInstance.id)) {
+            uniqueTVShowsMap[tvShowDBInstance.id] = TvShowMapper.tvShowToEntity(
+              tvShowDBInstance,
+            );
+          }
+        }
+      }
+      tvShows = uniqueTVShowsMap.values.toList();
     }
 
+    tvShows.sort((a, b) => b.voteAverage.compareTo(a.voteAverage));
     return tvShows;
   }
 
@@ -117,8 +132,9 @@ class TvShowMoviedbDatasource extends TvShowDatasource {
   Future<TvShowDetails> getTVShowById(String id) async {
     _updateLanguage();
     final response = await dio.get('/tv/$id');
-    if (response.statusCode != 200)
+    if (response.statusCode != 200) {
       throw Exception('No TVShow found for this id $id');
+    }
 
     final tvShowDetailsR = TvShowDetailsResponse.fromJson(response.data);
     return TvShowDetailMapper.tvShowDetailsToEntity(tvShowDetailsR);

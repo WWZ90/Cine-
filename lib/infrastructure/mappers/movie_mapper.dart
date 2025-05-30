@@ -45,7 +45,7 @@ class MovieFromMovieDetailMapper {
           moviedb.posterPath != ''
               ? 'https://image.tmdb.org/t/p/w500${moviedb.posterPath}'
               : 'no-poster',
-      releaseDate: moviedb.releaseDate ?? DateTime(1970, 1, 1),
+      releaseDate: moviedb.releaseDate,
       title: moviedb.title,
       video: moviedb.video,
       voteAverage: moviedb.voteAverage,

@@ -36,4 +36,14 @@ class PersonRepositoryImpl extends PersonRepository {
   Future<List<Person>> getPersonPopular({int page = 1}) {
     return datasource.getPersonPopular(page: page);
   }
+
+  @override
+  Future<CreditsData> getCreditsByMovie(String movieId) {
+    return datasource.getCreditsByMovie(movieId);
+  }
+
+  @override
+  Future<CreditsData> getCreditsByTVShow(String tvShowId) {
+    return datasource.getCreditsByTVShow(tvShowId);
+  }
 }

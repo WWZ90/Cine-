@@ -1,8 +1,8 @@
 import 'package:cinemania/domain/entities/entities.dart';
-import 'package:cinemania/domain/entities/cast_person.dart' as domain;
+import 'package:cinemania/domain/entities/crew_person.dart' as domain;
 import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 
-extension CastPersonToPerson on domain.CastPerson {
+extension CrewPersonToPerson on domain.CrewPerson {
   Person toPerson() {
     return Person(
       id: id,
@@ -12,7 +12,7 @@ extension CastPersonToPerson on domain.CastPerson {
       adult: false,
       popularity: popularity,
       gender: gender,
-      knownForDepartment: KnownForDepartment.ACTING,
+      knownForDepartment: parseKnownForDepartment(department),
       profilePath: profilePath,
       uniqueID: uniqueID,
     );

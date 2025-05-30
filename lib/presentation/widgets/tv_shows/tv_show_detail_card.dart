@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cinemania/config/helpers/date_format.dart';
-
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
 
@@ -42,8 +41,8 @@ class TvShowDetailCard extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 1, // grosor de la línea
-                      height: 60, // altura (ajusta según necesidad)
+                      width: 1,
+                      height: 60,
                       color: Colors.white12,
                       margin: const EdgeInsets.symmetric(horizontal: 8),
                     ),
@@ -137,7 +136,7 @@ class TvShowDetailCard extends StatelessWidget {
                   Text(
                     AppLocalizations.of(context)!.synopsis,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.grey[400],
+                      color: Colors.grey[500],
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -161,7 +160,8 @@ class TvShowDetailCard extends StatelessWidget {
         SizedBox(height: 10),
         Reviews(id: tvShowDetails.id.toString(), type: 'TVShow'),
         SizedBox(height: 10),
-        Actors(id: tvShowDetails.id.toString(), type: 'TVShow'),
+        CastCarousel(id: tvShowDetails.id.toString(), type: 'TVShow'),
+        CrewSection(id: tvShowDetails.id.toString(), type: 'TVShow'),
         Similar(id: tvShowDetails.id.toString(), type: 'TVShow'),
       ],
     );
@@ -173,7 +173,10 @@ Widget _infoBlock(String title, String value, BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(title, style: TextStyle(fontSize: 16, color: Colors.grey[500])),
+      Text(
+        title,
+        style: textStyle.bodyMedium?.copyWith(color: Colors.grey[500]),
+      ),
       const SizedBox(height: 4),
       Text(value, style: textStyle.bodyMedium?.copyWith(color: Colors.white)),
     ],

@@ -12,4 +12,5 @@ abstract class MoviesDatasource {
   Future<List<Movie>> getSimilar(String id, {int page = 1});
   Future<List<Movie>> getMoviesByGenreId(String id, {int page = 1});
   Future<List<Movie>> getMoviesByPersonId(String id);
+  Future<Map<String, List<Movie>>> getMoviesCrewByPersonId(String id);
 }

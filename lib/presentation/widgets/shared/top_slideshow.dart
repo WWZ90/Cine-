@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
@@ -24,20 +24,47 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
   Timer? _resumeTimer;
   late PageController _pageController;
 
+  List<dynamic> _displayData = [];
+  int _displayDataLength = 0;
+
   @override
   void initState() {
     super.initState();
+    _updateDisplayData();
     _pageController = PageController(initialPage: _currentIndex);
     _startAutoPlay();
   }
 
+  @override
+  void didUpdateWidget(TopSlideShow oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.allData != oldWidget.allData) {
+      _updateDisplayData();
+      if (_currentIndex >= _displayDataLength && _displayDataLength > 0) {
+        _currentIndex = _displayDataLength - 1;
+      } else if (_displayDataLength == 0) {
+        _currentIndex = 0;
+      }
+      _autoPlayTimer?.cancel();
+      _resumeTimer?.cancel();
+      if (_displayData.isNotEmpty) {
+        _startAutoPlay();
+      }
+    }
+  }
+
+  void _updateDisplayData() {
+    _displayData = widget.allData.take(20).toList();
+    _displayDataLength = _displayData.length;
+  }
+
   void _startAutoPlay() {
-    if (!mounted || widget.allData.isEmpty) return;
+    if (!mounted || _displayData.isEmpty) return;
     _autoPlayTimer?.cancel();
     _autoPlayTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (_pageController.hasClients && widget.allData.isNotEmpty) {
+      if (_pageController.hasClients && _displayData.isNotEmpty) {
         setState(() {
-          _currentIndex = (_currentIndex + 1) % widget.allData.length;
+          _currentIndex = (_currentIndex + 1) % _displayDataLength;
           _pageController.animateToPage(
             _currentIndex,
             duration: const Duration(milliseconds: 300),
@@ -69,7 +96,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
 
-    if (widget.allData.isEmpty) {
+    if (_displayData.isEmpty) {
       return SizedBox(
         height: screenHeight * 0.55,
         child: const Center(child: CircularProgressIndicator(strokeWidth: 1)),
@@ -93,7 +120,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  final data = widget.allData[_currentIndex];
+                  final data = _displayData[_currentIndex];
                   if (widget.type == 'Movie') {
                     context.pushNamed(MovieScreen.name, extra: data);
                   } else if (widget.type == 'TVShow') {
@@ -106,14 +133,14 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                 onTapUp: (_) => _onUserInteractionEnd(),
                 child: PageView.builder(
                   controller: _pageController,
-                  itemCount: widget.allData.length,
+                  itemCount: _displayDataLength,
                   onPageChanged: (index) {
                     setState(() {
                       _currentIndex = index;
                     });
                   },
                   itemBuilder: (context, index) {
-                    final data = widget.allData[index];
+                    final data = _displayData[index];
                     String name =
                         widget.type == 'Person' ? data.name : data.title;
                     data.uniqueID =
@@ -157,10 +184,12 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
                               left: 10,
                               right: 10,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
                                         width:
@@ -212,7 +241,7 @@ class _TopSlideShowState extends ConsumerState<TopSlideShow> {
             const SizedBox(height: 10),
             SmoothPageIndicator(
               controller: _pageController,
-              count: widget.allData.length,
+              count: _displayDataLength,
               effect: const WormEffect(
                 dotHeight: 6,
                 dotWidth: 6,

@@ -26,7 +26,7 @@ class _PersonsViewsState extends ConsumerState<PersonsViews> {
               children: [
                 TopSlideShow(allData: populars.persons, type: 'Person'),
                 SizedBox(height: 20),
-                PersonTab(persons: populars.persons),
+                PersonTab(),
               ],
             );
           }, childCount: 1),

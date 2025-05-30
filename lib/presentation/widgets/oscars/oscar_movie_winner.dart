@@ -27,7 +27,6 @@ class OscarMovieWinnerCard extends ConsumerWidget {
       data: (movie) {
         if (movie == null) {
           return Card(
-            // Tarjeta de error si la película no se encuentra
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
@@ -49,7 +48,7 @@ class OscarMovieWinnerCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    l10n.winningMovieLabel.toUpperCase(), // GANADOR
+                    l10n.winningMovieLabel.toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary,
@@ -88,30 +87,28 @@ class OscarMovieWinnerCard extends ConsumerWidget {
                       ),
 
                       const SizedBox(width: 12),
-                      // Info de la película
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               movie
-                                  .title, // Asume que tu entidad Movie tiene el título localizado según la petición
+                                  .title, 
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),
-                            if (movie.releaseDate != null)
-                              Text(
-                                '(${movie.releaseDate.year})',
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(color: Colors.grey[600]),
-                              ),
+                            Text(
+                              '(${movie.releaseDate.year})',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: Colors.grey[600]),
+                            ),
                             const SizedBox(height: 8),
                             StarsRatingBarWithInfo(
                               rating: movie.voteAverage,
                               voteCount: movie.voteCount,
-                              iconSize: 11, // Ajusta el tamaño
-                              color: Colors.yellow.shade600, // Ajusta el color
+                              iconSize: 11, 
+                              color: Colors.yellow.shade600,
                             ),
                           ],
                         ),
@@ -120,7 +117,7 @@ class OscarMovieWinnerCard extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    l10n.synopsis, // SINOPSIS
+                    l10n.synopsis, 
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -131,7 +128,7 @@ class OscarMovieWinnerCard extends ConsumerWidget {
                         ? movie.overview
                         : l10n.noSynopsis,
                     style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 4, // Limitar la sinopsis en la card
+                    maxLines: 4, 
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
@@ -140,12 +137,12 @@ class OscarMovieWinnerCard extends ConsumerWidget {
           ),
         );
       },
-      loading: () => SizedBox(
-        height: 350,
-        child: Center(child: CircularProgressIndicator(strokeWidth: 1))),
+      loading:
+          () => SizedBox(
+            height: 350,
+            child: Center(child: CircularProgressIndicator(strokeWidth: 1)),
+          ),
       error: (error, stack) {
-        // ignore: avoid_print
-        print('Error loading winner movie (${winnerNominee.tmdbId}): $error');
         return Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
+
 import 'package:cinemania/config/constants/environment.dart';
 import 'package:cinemania/config/global_app_state.dart';
 import 'package:cinemania/domain/datasources/persons_datasource.dart';
 import 'package:cinemania/domain/entities/entities.dart';
+
+import 'package:cinemania/infrastructure/mappers/crew_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/person_details_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/cast_mapper.dart';
 import 'package:cinemania/infrastructure/mappers/person_mapper.dart';
@@ -9,7 +13,6 @@ import 'package:cinemania/infrastructure/models/moviedb/credits_response.dart';
 import 'package:cinemania/infrastructure/models/moviedb/person_details_response.dart';
 import 'package:cinemania/infrastructure/models/moviedb/person_moviedb.dart';
 import 'package:cinemania/infrastructure/models/moviedb/person_response.dart';
-import 'package:dio/dio.dart';
 
 class PersonMovieDbDatasource extends PersonDatasource {
   final dio = Dio(
@@ -78,7 +81,6 @@ class PersonMovieDbDatasource extends PersonDatasource {
       }
 
       final personResponse = PersonDetailsResponse.fromJson(response.data);
-
 
       return PersonFromPersonDetailMapper.personDetailsToPerson(
         personResponse,
@@ -161,5 +163,102 @@ class PersonMovieDbDatasource extends PersonDatasource {
     } catch (e) {
       return [];
     }
+  }
+
+  @override
+  Future<CreditsData> getCreditsByMovie(String movieId) async {
+    _updateLanguage();
+    final response = await dio.get('/movie/$movieId/credits');
+    final jsonData = response.data as Map<String, dynamic>;
+
+    // CAST: Sigue filtrando por foto como antes
+    final List<CastPerson> castWithPhoto =
+        (jsonData['cast'] as List<dynamic>? ?? [])
+            .map((personJsonMap) {
+              final Cast castModel = Cast.fromJson(
+                personJsonMap as Map<String, dynamic>,
+              );
+              return CastMapper.castToEntity(castModel);
+            })
+            .where((castPerson) => castPerson.profilePath != 'no-avatar')
+            .toList();
+
+    // CREW: Lógica de filtrado especial
+    final List<CrewPerson> processedCrew = [];
+    final List<dynamic> crewJsonList = jsonData['crew'] as List<dynamic>? ?? [];
+
+    for (var crewJsonMap in crewJsonList) {
+      final crewMemberEntity = CrewMemberMapper.crewMemberFromJson(
+        crewJsonMap as Map<String, dynamic>,
+      );
+
+      bool hasPhoto =
+          crewMemberEntity.profilePath != null &&
+          crewMemberEntity.profilePath != 'no-avatar' &&
+          crewMemberEntity.profilePath!.isNotEmpty;
+
+      // Comprobar si es Director (o roles de dirección equivalentes)
+      // Es importante que las cadenas aquí coincidan con los 'job' de la API
+      bool isDirectorRole =
+          crewMemberEntity.job.toLowerCase() == 'director' ||
+          crewMemberEntity.job.toLowerCase() == 'co-director';
+
+      if (isDirectorRole) {
+        // Para directores, los añadimos siempre.
+        // Si no tiene foto, el mapper ya debería haber asignado 'no-avatar'.
+        processedCrew.add(crewMemberEntity);
+      } else if (hasPhoto) {
+        // Para otros roles del crew, solo los añadimos si tienen foto.
+        processedCrew.add(crewMemberEntity);
+      }
+    }
+
+    return CreditsData(cast: castWithPhoto, crew: processedCrew);
+  }
+
+  @override
+  Future<CreditsData> getCreditsByTVShow(String tvShowId) async {
+    _updateLanguage();
+    final response = await dio.get('/tv/$tvShowId/credits');
+    final jsonData = response.data as Map<String, dynamic>;
+
+    // CAST: Sigue filtrando por foto como antes
+    final List<CastPerson> castWithPhoto =
+        (jsonData['cast'] as List<dynamic>? ?? [])
+            .map((personJsonMap) {
+              final Cast castModel = Cast.fromJson(
+                personJsonMap as Map<String, dynamic>,
+              );
+              return CastMapper.castToEntity(castModel);
+            })
+            .where((castPerson) => castPerson.profilePath != 'no-avatar')
+            .toList();
+
+    // CREW: Lógica de filtrado especial
+    final List<CrewPerson> processedCrew = [];
+    final List<dynamic> crewJsonList = jsonData['crew'] as List<dynamic>? ?? [];
+
+    for (var crewJsonMap in crewJsonList) {
+      final crewMemberEntity = CrewMemberMapper.crewMemberFromJson(
+        crewJsonMap as Map<String, dynamic>,
+      );
+
+      bool hasPhoto =
+          crewMemberEntity.profilePath != null &&
+          crewMemberEntity.profilePath != 'no-avatar' &&
+          crewMemberEntity.profilePath!.isNotEmpty;
+
+      bool isDirectorRole =
+          crewMemberEntity.job.toLowerCase() == 'director' ||
+          crewMemberEntity.job.toLowerCase() == 'co-director';
+
+      if (isDirectorRole) {
+        processedCrew.add(crewMemberEntity);
+      } else if (hasPhoto) {
+        processedCrew.add(crewMemberEntity);
+      }
+    }
+
+    return CreditsData(cast: castWithPhoto, crew: processedCrew);
   }
 }

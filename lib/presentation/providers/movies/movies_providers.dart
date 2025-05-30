@@ -4,7 +4,6 @@ import 'package:cinemania/presentation/providers/movies/movies_repository_provid
 
 typedef MovieCallback = Future<List<Movie>> Function({int page});
 
-// Estado que contiene la lista de películas + si está cargando
 class MoviesState {
   final List<Movie> movies;
   final bool isLoading;
@@ -19,7 +18,6 @@ class MoviesState {
   }
 }
 
-// Notifier que maneja el estado con paginación y carga
 class MoviesNotifier extends StateNotifier<MoviesState> {
   int currentPage = 0;
   final MovieCallback fetchMoreMovies;
@@ -123,7 +121,68 @@ final moviesByPersonProvider = StateNotifierProvider.family<
   return MoviesByPersonNotifier(repository: repo, personId: personId);
 });
 
-// Providers por categoría
+class MoviesCrewByPersonGroupedState {
+
+  final Map<String, List<Movie>> groupedMovies; 
+  final bool isLoading;
+
+  MoviesCrewByPersonGroupedState({
+    required this.groupedMovies,
+    required this.isLoading,
+  });
+
+  factory MoviesCrewByPersonGroupedState.initial() =>
+      MoviesCrewByPersonGroupedState(groupedMovies: {}, isLoading: true);
+
+  MoviesCrewByPersonGroupedState copyWith({
+    Map<String, List<Movie>>? groupedMovies,
+    bool? isLoading,
+  }) {
+    return MoviesCrewByPersonGroupedState(
+      groupedMovies: groupedMovies ?? this.groupedMovies,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
+}
+
+class MoviesCrewByPersonGroupedNotifier
+    extends StateNotifier<MoviesCrewByPersonGroupedState> {
+  final dynamic repository; 
+  final String personId;
+
+  MoviesCrewByPersonGroupedNotifier({
+    required this.repository,
+    required this.personId,
+  }) : super(MoviesCrewByPersonGroupedState.initial()) {
+    _loadInitialGroupedData();
+  }
+
+  Future<void> _loadInitialGroupedData() async {
+    try {
+      final Map<String, List<Movie>> allGrouped = await repository.getMoviesCrewByPersonId(personId);
+      state = state.copyWith(groupedMovies: allGrouped, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        groupedMovies: {},
+      ); 
+    }
+  }
+}
+
+final moviesCrewByPersonGroupedProvider = StateNotifierProvider.family<
+  MoviesCrewByPersonGroupedNotifier,
+  MoviesCrewByPersonGroupedState,
+  String
+>((ref, personId) {
+  final repo = ref.watch(
+    movieRepositoryProvider,
+  );
+  return MoviesCrewByPersonGroupedNotifier(
+    repository: repo,
+    personId: personId,
+  );
+});
 
 final nowPlayingMoviesProvider =
     StateNotifierProvider<MoviesNotifier, MoviesState>((ref) {
@@ -149,8 +208,6 @@ final topRatedMoviesProvider =
       return MoviesNotifier(fetchMoreMovies: fecthMoreMovies);
     });
 
-// Providers familiares
-
 final similarMoviesProvider =
     StateNotifierProvider.family<MoviesNotifier, MoviesState, String>((
       ref,
@@ -173,11 +230,10 @@ final moviesByGenreProvider = StateNotifierProvider.family<
   return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
 });
 
-final movieProvider =
-    FutureProvider.family<Movie?, ({int movieId})>((
-      ref,
-      params,
-    ) async {
-      final datasource = ref.watch(movieRepositoryProvider);
-      return await datasource.getMovieById(params.movieId.toString());
-    });
+final movieProvider = FutureProvider.family<Movie?, ({int movieId})>((
+  ref,
+  params,
+) async {
+  final datasource = ref.watch(movieRepositoryProvider);
+  return await datasource.getMovieById(params.movieId.toString());
+});

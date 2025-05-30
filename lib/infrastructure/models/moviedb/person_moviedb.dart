@@ -53,13 +53,36 @@ class PersonMoviedb {
   };
 }
 
-enum KnownForDepartment { ACTING, DIRECTING, SOUND, WRITING }
+enum KnownForDepartment {
+  ACTING,
+  DIRECTING,
+  SOUND,
+  WRITING,
+  PRODUCTION,
+  CREW,
+  ART,
+  EDITING,
+  CAMERA,
+  COSTUME_MAKEUP,
+  VISUAL_EFFECTS,
+  LIGHTING,
+  UNKNOWN,
+}
 
 final knownForDepartmentValues = EnumValues({
   "Acting": KnownForDepartment.ACTING,
   "Directing": KnownForDepartment.DIRECTING,
   "Sound": KnownForDepartment.SOUND,
   "Writing": KnownForDepartment.WRITING,
+  "Production": KnownForDepartment.PRODUCTION,
+  "Crew": KnownForDepartment.CREW,
+  "Art": KnownForDepartment.ART,
+  "Editing": KnownForDepartment.EDITING,
+  "Costume & Make-Up": KnownForDepartment.COSTUME_MAKEUP,
+  "Visual effects": KnownForDepartment.VISUAL_EFFECTS,
+  "Lighting": KnownForDepartment.LIGHTING,
+  "Unknown": KnownForDepartment.UNKNOWN,
+
 });
 
 KnownForDepartment parseKnownForDepartment(String? value) {
@@ -72,8 +95,24 @@ KnownForDepartment parseKnownForDepartment(String? value) {
       return KnownForDepartment.WRITING;
     case 'sound':
       return KnownForDepartment.SOUND;
+    case 'production':
+      return KnownForDepartment.PRODUCTION;
+    case 'art':
+      return KnownForDepartment.ART;
+    case 'editing':
+      return KnownForDepartment.EDITING;
+    case 'camera':
+      return KnownForDepartment.CAMERA;
+    case 'costume & make-up':
+      return KnownForDepartment.COSTUME_MAKEUP;
+    case 'visual effects':
+      return KnownForDepartment.VISUAL_EFFECTS;
+    case 'lighting':
+      return KnownForDepartment.LIGHTING;
+    case 'crew':
+      return KnownForDepartment.CREW;
     default:
-      return KnownForDepartment.ACTING;
+      return KnownForDepartment.UNKNOWN;
   }
 }
 

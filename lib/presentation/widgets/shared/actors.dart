@@ -31,18 +31,16 @@ class Actors extends ConsumerWidget {
     final actors = actorsAll[id]!;
     if (actors.isNotEmpty) {
       return SizedBox(
-        height: 175,
+        height: 115,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: actors.length,
           itemBuilder: (context, index) {
             final domain.CastPerson actor = actors[index];
+            actor.uniqueID = '${actor.id}-actor-character';
             return GestureDetector(
               onTap: () {
-                context.pushNamed(
-                  PersonScreen.name,
-                  extra: actor.toPerson()
-                );
+                context.pushNamed(PersonScreen.name, extra: actor.toPerson());
               },
               child: FadeInRight(
                 child: Container(
@@ -54,16 +52,16 @@ class Actors extends ConsumerWidget {
                       Stack(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
+                            borderRadius: BorderRadius.circular(10),
                             child: LoadImage(
                               url: actor.profilePath,
-                              w: 100,
-                              h: 100,
+                              w: 90,
+                              h: 90,
                             ),
                           ),
                           Positioned(
                             bottom: 5,
-                            right: 10,
+                            right: 5,
                             child: FavLikeButtonConsumer(
                               data: actor.toPerson(),
                               type: 'Person',
@@ -78,7 +76,7 @@ class Actors extends ConsumerWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        actor.character ?? '',
+                        actor.character,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontWeight: FontWeight.w700),

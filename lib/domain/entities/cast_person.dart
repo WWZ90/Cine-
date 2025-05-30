@@ -2,6 +2,7 @@ class CastPerson {
   final bool adult;
   final int gender;
   final int id;
+  String? uniqueID;
   final String knownForDepartment;
   final String name;
   final String originalName;
@@ -21,5 +22,6 @@ class CastPerson {
     required this.profilePath,
     required this.character,
     required this.order,
+    this.uniqueID,
   });
 }
