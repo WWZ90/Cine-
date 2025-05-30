@@ -38,16 +38,13 @@ class PremiumView extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
-        Image.asset(
-          'assets/images/premium_back.jpg',
-          fit: BoxFit.cover,
-        ),
+        Image.asset('assets/images/premium_back.jpg', fit: BoxFit.cover),
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 const Color.fromARGB(153, 0, 0, 0),
-                const Color.fromARGB(77, 0, 0, 0),  
+                const Color.fromARGB(77, 0, 0, 0),
                 Colors.transparent,
               ],
               begin: Alignment.topCenter,
@@ -75,7 +72,12 @@ class PremiumView extends StatelessWidget {
                         shadows: [
                           Shadow(
                             blurRadius: 5.0,
-                            color: const Color.fromARGB(179, 0, 0, 0), // Colors.black.withOpacity(0.7)
+                            color: const Color.fromARGB(
+                              179,
+                              0,
+                              0,
+                              0,
+                            ), // Colors.black.withOpacity(0.7)
                             offset: Offset(2.0, 2.0),
                           ),
                         ],
@@ -107,12 +109,27 @@ class PremiumView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  _buildBenefitItem(context, l10n.premiumView_benefit_bestPicture),
-                  _buildBenefitItem(context, l10n.premiumView_benefit_animatedFeature),
-                  _buildBenefitItem(context, l10n.premiumView_benefit_visualEffects),
+                  _buildBenefitItem(
+                    context,
+                    l10n.premiumView_benefit_bestPicture,
+                  ),
+                  _buildBenefitItem(
+                    context,
+                    l10n.premiumView_benefit_animatedFeature,
+                  ),
+                  _buildBenefitItem(
+                    context,
+                    l10n.premiumView_benefit_visualEffects,
+                  ),
                   _buildBenefitItem(context, l10n.premiumView_benefit_director),
-                  _buildBenefitItem(context, l10n.premiumView_benefit_actorLeadingSupporting),
-                  _buildBenefitItem(context, l10n.premiumView_benefit_actressLeadingSupporting),
+                  _buildBenefitItem(
+                    context,
+                    l10n.premiumView_benefit_actorLeadingSupporting,
+                  ),
+                  _buildBenefitItem(
+                    context,
+                    l10n.premiumView_benefit_actressLeadingSupporting,
+                  ),
                   SizedBox(height: 15),
                   Text(
                     l10n.premiumView_workingHardMessage,
@@ -123,7 +140,17 @@ class PremiumView extends StatelessWidget {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  SizedBox(height: 35),
+                  SizedBox(height: 5),
+                  Text(
+                    l10n.premiumView_allNomineesMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  SizedBox(height: 30),
                   Text(
                     l10n.premiumView_comingNextTitle,
                     textAlign: TextAlign.center,
@@ -181,7 +208,7 @@ class PremiumView extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
                   Text(
                     l10n.premiumView_priceInfo,
                     textAlign: TextAlign.center,
@@ -195,10 +222,7 @@ class PremiumView extends StatelessWidget {
                   Text(
                     l10n.premiumView_renewalInfo,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 13,
-                    ),
+                    style: TextStyle(color: Colors.white54, fontSize: 13),
                   ),
                   SizedBox(height: 6),
                   Padding(
@@ -236,15 +260,28 @@ class PremiumView extends StatelessWidget {
                       // Restore purchases logic
                     },
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16)
+                      padding: EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 16,
+                      ),
                     ),
                     child: Text(
                       l10n.premiumView_restorePurchasesButtonText,
                       style: TextStyle(
-                        color: const Color.fromARGB(217, 255, 255, 255), // Colors.white.withOpacity(0.85)
+                        color: const Color.fromARGB(
+                          217,
+                          255,
+                          255,
+                          255,
+                        ), // Colors.white.withOpacity(0.85)
                         decoration: TextDecoration.underline,
-                        decorationColor: const Color.fromARGB(217, 255, 255, 255), // Colors.white.withOpacity(0.85)
-                        fontSize: 16
+                        decorationColor: const Color.fromARGB(
+                          217,
+                          255,
+                          255,
+                          255,
+                        ), // Colors.white.withOpacity(0.85)
+                        fontSize: 16,
                       ),
                     ),
                   ),
