@@ -81,6 +81,8 @@ class FavoritePosterLink extends StatelessWidget {
       type = 'Movie';
     } else if (favorite is TVShow) {
       type = 'TVShow';
+    } else if (favorite is Person) {
+      type = 'Person';
     }
     return GestureDetector(
       onTap: () {
