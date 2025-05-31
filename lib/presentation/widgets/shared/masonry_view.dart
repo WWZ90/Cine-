@@ -41,7 +41,7 @@ class _MasonryViewState extends State<MasonryView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 19, 19, 19),
+      color: Color.fromARGB(255, 18, 19, 24),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: MasonryGridView.count(

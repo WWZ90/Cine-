@@ -180,247 +180,242 @@ class AppDrawer extends ConsumerWidget {
     }
 
     return Drawer(
-      child: Column(
-        children: [
-          const DrawerHeader(
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/appDrawer.png'),
-                fit: BoxFit.cover,
+      child: Container(
+        color: const Color.fromARGB(255, 18, 19, 24),
+        child: Column(
+          children: [
+            const DrawerHeader(
+              padding: EdgeInsets.zero,
+              margin: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/appDrawer.png'),
+                  fit: BoxFit.cover,
+                ),
               ),
+              child:
+                  SizedBox.expand(), // ← esto expande al área completa del DrawerHeader
             ),
-            child:
-                SizedBox.expand(), // ← esto expande al área completa del DrawerHeader
-          ),
 
-          // --- Secciones principales ---
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.movie),
-                    title: Text(AppLocalizations.of(context)!.movies),
-                    selected: currentIndex == 0,
-                    selectedTileColor: Colors.grey.shade900,
-                    onTap: () {
-                      GlobalAppState.suppressExitSnackbar = true;
-                      Navigator.pop(context);
-                      navigationShell.goBranch(0);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.tv),
-                    title: Text(AppLocalizations.of(context)!.tvShows),
-                    selected: currentIndex == 1,
-                    selectedTileColor: Colors.grey.shade900,
-                    onTap: () {
-                      GlobalAppState.suppressExitSnackbar = true;
-                      Navigator.pop(context);
-                      navigationShell.goBranch(1);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.person),
-                    title: Text(AppLocalizations.of(context)!.actors),
-                    selected: currentIndex == 2,
-                    selectedTileColor: Colors.grey.shade900,
-                    onTap: () {
-                      GlobalAppState.suppressExitSnackbar = true;
-                      Navigator.pop(context);
-                      navigationShell.goBranch(2);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.favorite),
-                    title: Text(AppLocalizations.of(context)!.favorites),
-                    selected: currentIndex == 3,
-                    selectedTileColor: Colors.grey.shade900,
-                    onTap: () {
-                      GlobalAppState.suppressExitSnackbar = true;
-                      Navigator.pop(context);
-                      navigationShell.goBranch(3);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.workspace_premium_outlined,
-                      color: isPremiumSelected ? Colors.black : Colors.amber,
+            // --- Secciones principales ---
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.movie),
+                      title: Text(AppLocalizations.of(context)!.movies),
+                      selected: currentIndex == 0,
+                      selectedTileColor: Colors.grey.shade900,
+                      onTap: () {
+                        GlobalAppState.suppressExitSnackbar = true;
+                        Navigator.pop(context);
+                        navigationShell.goBranch(0);
+                      },
                     ),
-                    title: Text(AppLocalizations.of(context)!.becomePremium),
-                    selected: currentIndex == 4,
-                    selectedTileColor: const Color.fromARGB(255, 241, 203, 86),
-                    selectedColor: Colors.black,
-                    onTap: () {
-                      GlobalAppState.suppressExitSnackbar = true;
-                      Navigator.pop(context);
-                      navigationShell.goBranch(4);
-                    },
-                  ),
+                    ListTile(
+                      leading: const Icon(Icons.tv),
+                      title: Text(AppLocalizations.of(context)!.tvShows),
+                      selected: currentIndex == 1,
+                      selectedTileColor: Colors.grey.shade900,
+                      onTap: () {
+                        GlobalAppState.suppressExitSnackbar = true;
+                        Navigator.pop(context);
+                        navigationShell.goBranch(1);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: Text(AppLocalizations.of(context)!.actors),
+                      selected: currentIndex == 2,
+                      selectedTileColor: Colors.grey.shade900,
+                      onTap: () {
+                        GlobalAppState.suppressExitSnackbar = true;
+                        Navigator.pop(context);
+                        navigationShell.goBranch(2);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.favorite),
+                      title: Text(AppLocalizations.of(context)!.favorites),
+                      selected: currentIndex == 3,
+                      selectedTileColor: Colors.grey.shade900,
+                      onTap: () {
+                        GlobalAppState.suppressExitSnackbar = true;
+                        Navigator.pop(context);
+                        navigationShell.goBranch(3);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.workspace_premium_outlined,
+                        color: isPremiumSelected ? Colors.black : Colors.amber,
+                      ),
+                      title: Text(AppLocalizations.of(context)!.becomePremium),
+                      selected: currentIndex == 4,
+                      selectedTileColor: const Color.fromARGB(
+                        255,
+                        241,
+                        203,
+                        86,
+                      ),
+                      selectedColor: Colors.black,
+                      onTap: () {
+                        GlobalAppState.suppressExitSnackbar = true;
+                        Navigator.pop(context);
+                        navigationShell.goBranch(4);
+                      },
+                    ),
 
-                  // ListTile(
-                  //   leading: Icon(
-                  //     Icons.auto_awesome_outlined,
-                  //     color: isOscarsSelected ? Colors.black : Colors.amber,
-                  //   ),
-                  //   title: Text(AppLocalizations.of(context)!.oscars),
-                  //   selected: currentIndex == 5,
-                  //   selectedTileColor: const Color.fromARGB(255, 241, 203, 86),
-                  //   selectedColor: Colors.black,
-                  //   onTap: () {
-                  //     GlobalAppState.suppressExitSnackbar = true;
-                  //     Navigator.pop(context);
-                  //     navigationShell.goBranch(5);
-                  //   },
-                  // ),
-                  Column(
-                    children: [
-                      const Divider(height: 1),
-                      Theme(
-                        data: Theme.of(
-                          context,
-                        ).copyWith(dividerColor: Colors.transparent),
-                        child: ExpansionTile(
-                          key: const PageStorageKey<String>(
-                            'oscars_expansion_tile',
-                          ),
-                          leading: const Icon(
-                            Icons.auto_awesome_outlined,
-                            color: Colors.amber,
-                          ),
-                          title: Text(
-                            l10n.oscars,
-                            style: TextStyle(
-                              fontWeight:
-                                  isOscarsCategoryActive
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
+                    Column(
+                      children: [
+                        const Divider(height: 1),
+                        Theme(
+                          data: Theme.of(
+                            context,
+                          ).copyWith(dividerColor: Colors.transparent),
+                          child: ExpansionTile(
+                            key: const PageStorageKey<String>(
+                              'oscars_expansion_tile',
                             ),
+                            leading: const Icon(
+                              Icons.auto_awesome_outlined,
+                              color: Colors.amber,
+                            ),
+                            title: Text(
+                              l10n.oscars,
+                              style: TextStyle(
+                                fontWeight:
+                                    isOscarsCategoryActive
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                              ),
+                            ),
+                            children:
+                                oscarCategories.entries.map((entry) {
+                                  final categoryKey = entry.key;
+                                  final categoryDisplay = entry.value;
+                                  final categoryPathParameter =
+                                      Uri.encodeComponent(categoryKey);
+
+                                  final isSelected =
+                                      isOscarsCategoryActive &&
+                                      activeOscarsCategoryPathParameter ==
+                                          categoryKey;
+
+                                  final icon =
+                                      oscarCategoryIcons[categoryKey] ??
+                                      Icons.label_outline;
+
+                                  return Material(
+                                    color:
+                                        isSelected
+                                            ? (const Color.fromARGB(
+                                              255,
+                                              53,
+                                              51,
+                                              45,
+                                            ).withOpacity(0.5))
+                                            : Colors.transparent,
+                                    child: ListTile(
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 52.0,
+                                      ),
+                                      leading: Icon(
+                                        icon,
+                                        color: Colors.amber[300],
+                                      ),
+                                      title: Text(categoryDisplay),
+                                      selected: isSelected,
+                                      onTap:
+                                          () => _navigateToOscarsCategory(
+                                            context,
+                                            categoryPathParameter,
+                                            activeOscarsCategoryPathParameter,
+                                          ),
+                                    ),
+                                  );
+                                }).toList(),
                           ),
-                          children:
-                              oscarCategories.entries.map((entry) {
-                                final categoryKey = entry.key;
-                                final categoryDisplay = entry.value;
-                                final categoryPathParameter =
-                                    Uri.encodeComponent(categoryKey);
-
-                                final isSelected =
-                                    isOscarsCategoryActive &&
-                                    activeOscarsCategoryPathParameter ==
-                                        categoryKey;
-
-                                final icon =
-                                    oscarCategoryIcons[categoryKey] ??
-                                    Icons.label_outline;
-
-                                return Material(
-                                  color:
-                                      isSelected
-                                          ? (const Color.fromARGB(
-                                            255,
-                                            53,
-                                            51,
-                                            45,
-                                          ).withOpacity(0.5))
-                                          : Colors.transparent,
-                                  child: ListTile(
-                                    contentPadding: const EdgeInsets.only(
-                                      left: 52.0,
-                                    ),
-                                    leading: Icon(
-                                      icon,
-                                      color: Colors.amber[300],
-                                    ),
-                                    title: Text(categoryDisplay),
-                                    selected: isSelected,
-                                    onTap:
-                                        () => _navigateToOscarsCategory(
-                                          context,
-                                          categoryPathParameter,
-                                          activeOscarsCategoryPathParameter,
-                                        ),
-                                  ),
-                                );
-                              }).toList(),
+                        ),
+                      ],
+                    ),
+                    const Divider(thickness: 1, color: Colors.blueGrey),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          AppLocalizations.of(context)!.language,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                  const Divider(thickness: 1, color: Colors.blueGrey),
-
-                  // --- Ajustes y Lenguaje ---
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: Text(AppLocalizations.of(context)!.settings),
-                    onTap: () {}, // Acción futura
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
                     ),
-                    child: Text(
-                      AppLocalizations.of(context)!.language,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    ListTile(
+                      leading: const Text(
+                        '🇪🇸',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      title: const Text('Español'),
+                      trailing:
+                          langCode == 'es' ? const Icon(Icons.check) : null,
+                      onTap:
+                          () => changeLanguageWithLoader(
+                            context: context,
+                            ref: ref,
+                            locale: const Locale('es'),
+                            currentLangCode: langCode,
+                          ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        '🇺🇸',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      title: const Text('English'),
+                      trailing:
+                          langCode == 'en' ? const Icon(Icons.check) : null,
+                      onTap:
+                          () => changeLanguageWithLoader(
+                            context: context,
+                            ref: ref,
+                            locale: const Locale('en'),
+                            currentLangCode: langCode,
+                          ),
+                    ),
+
+                    ListTile(
+                      leading: const Icon(Icons.info_outline),
+                      title: Text(AppLocalizations.of(context)!.about),
+                      onTap: () {
+                        GlobalAppState.suppressExitSnackbar = true;
+                        Navigator.pop(context); // Cerramos el Drawer
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          showAboutDialogWithAnimation();
+                        });
+                      },
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        '${AppLocalizations.of(context)!.version}: ${AppInfo.version}',
+                        style: TextStyle(color: Colors.grey[600], fontSize: 12),
                       ),
                     ),
-                  ),
-                  ListTile(
-                    leading: const Text('🇪🇸', style: TextStyle(fontSize: 24)),
-                    title: const Text('Español'),
-                    trailing: langCode == 'es' ? const Icon(Icons.check) : null,
-                    onTap:
-                        () => changeLanguageWithLoader(
-                          context: context,
-                          ref: ref,
-                          locale: const Locale('es'),
-                          currentLangCode: langCode,
-                        ),
-                  ),
-                  ListTile(
-                    leading: const Text('🇺🇸', style: TextStyle(fontSize: 24)),
-                    title: const Text('English'),
-                    trailing: langCode == 'en' ? const Icon(Icons.check) : null,
-                    onTap:
-                        () => changeLanguageWithLoader(
-                          context: context,
-                          ref: ref,
-                          locale: const Locale('en'),
-                          currentLangCode: langCode,
-                        ),
-                  ),
-
-                  ListTile(
-                    leading: const Icon(Icons.info_outline),
-                    title: Text(AppLocalizations.of(context)!.about),
-                    onTap: () {
-                      GlobalAppState.suppressExitSnackbar = true;
-                      Navigator.pop(context); // Cerramos el Drawer
-                      Future.delayed(const Duration(milliseconds: 100), () {
-                        showAboutDialogWithAnimation();
-                      });
-                    },
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      '${AppLocalizations.of(context)!.version}: ${AppInfo.version}',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

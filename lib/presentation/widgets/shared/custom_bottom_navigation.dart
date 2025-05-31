@@ -16,55 +16,64 @@ class CustomBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StylishBottomBar(
-      option: AnimatedBarOptions(
-        iconSize: 28,
-        barAnimation: BarAnimation.fade,
-        iconStyle: IconStyle.animated,
-      ),
-      backgroundColor: Colors.black12,
-      items: [
-        BottomBarItem(
-          icon: const Icon(Icons.movie_creation_outlined),
-          selectedIcon: const Icon(
-            Icons.movie_creation_rounded,
-            color: Colors.white,
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 18, 19, 24), // Fondo base
+        border: const Border(
+          top: BorderSide(
+            color: Color.fromARGB(255, 28, 29, 34), // Línea sutil más clara
+            width: 1,
           ),
-          selectedColor: Colors.white,
-          title: Text(AppLocalizations.of(context)!.movies),
         ),
-        BottomBarItem(
-          icon: const Icon(Icons.movie_filter_outlined),
-          selectedIcon: const Icon(Icons.movie_filter, color: Colors.white),
-          selectedColor: Colors.white,
-          title: Text(AppLocalizations.of(context)!.tvShows),
-        ),
-        BottomBarItem(
-          icon: const Icon(Icons.person_2_outlined),
-          selectedIcon: const Icon(Icons.person_2_rounded, color: Colors.white),
-          selectedColor: Colors.white,
-          title: Text(AppLocalizations.of(context)!.actors),
-        ),
-        BottomBarItem(
-          icon: const Icon(Icons.favorite_border),
-          selectedIcon: const Icon(Icons.favorite, color: Colors.red),
-          selectedColor: Colors.white,
-          title: Text(AppLocalizations.of(context)!.favorites),
-        ),
-      ],
-      hasNotch: true,
-      fabLocation: null,
-      currentIndex: currentIndex,
-      notchStyle: NotchStyle.circle,
-      borderRadius: BorderRadius.circular(10),
-      gradient: LinearGradient(
-        colors: [const Color.fromARGB(255, 255, 255, 255), const Color.fromARGB(255, 0, 0, 0)],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
       ),
-      onTap: (index) {
-        onTap(index, false);
-      },
+      child: StylishBottomBar(
+        option: AnimatedBarOptions(
+          iconSize: 28,
+          barAnimation: BarAnimation.fade,
+          iconStyle: IconStyle.animated,
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0, 
+        items: [
+          BottomBarItem(
+            icon: const Icon(Icons.movie_creation_outlined),
+            selectedIcon: const Icon(
+              Icons.movie_creation_rounded,
+              color: Colors.white,
+            ),
+            selectedColor: Colors.white,
+            title: Text(AppLocalizations.of(context)!.movies),
+          ),
+          BottomBarItem(
+            icon: const Icon(Icons.movie_filter_outlined),
+            selectedIcon: const Icon(Icons.movie_filter, color: Colors.white),
+            selectedColor: Colors.white,
+            title: Text(AppLocalizations.of(context)!.tvShows),
+          ),
+          BottomBarItem(
+            icon: const Icon(Icons.person_2_outlined),
+            selectedIcon: const Icon(
+              Icons.person_2_rounded,
+              color: Colors.white,
+            ),
+            selectedColor: Colors.white,
+            title: Text(AppLocalizations.of(context)!.actors),
+          ),
+          BottomBarItem(
+            icon: const Icon(Icons.favorite_border),
+            selectedIcon: const Icon(Icons.favorite, color: Colors.red),
+            selectedColor: Colors.white,
+            title: Text(AppLocalizations.of(context)!.favorites),
+          ),
+        ],
+        hasNotch: true,
+        fabLocation: null,
+        currentIndex: currentIndex,
+        notchStyle: NotchStyle.circle,
+        onTap: (index) {
+          onTap(index, false);
+        },
+      ),
     );
   }
 }
