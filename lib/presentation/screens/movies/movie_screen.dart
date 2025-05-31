@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:cinemania/config/helpers/ask_for_review_if_needed.dart';
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
@@ -27,6 +28,8 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
       ref.read(similarMoviesProvider(id).notifier).loadNextPage();
     });
     ref.read(reviewsByMovieProvider(id));
+
+    ReviewFlags.markMovieDetail();
   }
 
   @override

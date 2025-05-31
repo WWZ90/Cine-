@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:cinemania/config/helpers/ask_for_review_if_needed.dart';
 import 'package:cinemania/domain/repositories/local_storage_repository.dart';
 
 final favoritesProvider =
@@ -36,7 +37,7 @@ class StorageNotifier extends StateNotifier<Map<int, dynamic>> {
       await localStorageRepository.toggleFavorite(data, 'Movie');
     } else if (data is TVShow) {
       await localStorageRepository.toggleFavorite(data, 'TVShow');
-    } else{
+    } else {
       await localStorageRepository.toggleFavorite(data, 'Person');
     }
 
@@ -47,6 +48,9 @@ class StorageNotifier extends StateNotifier<Map<int, dynamic>> {
       state = {...state};
     } else {
       state = {...state, data.id: data};
+      if (state.length == 2) {
+        await ReviewFlags.markTwoFavorites();
+      }
     }
   }
 }

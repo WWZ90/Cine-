@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:cinemania/config/helpers/ask_for_review_if_needed.dart';
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
@@ -29,6 +30,8 @@ class _TVShowScreenState extends ConsumerState<TVShowScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(similarTVShowsProvider(id).notifier).loadNextPage();
     });
+
+    ReviewFlags.markTVShowDetail();
   }
 
   @override

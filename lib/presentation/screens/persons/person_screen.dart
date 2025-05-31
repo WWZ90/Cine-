@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cinemania/config/helpers/date_format.dart';
+import 'package:cinemania/config/helpers/ask_for_review_if_needed.dart';
 import 'package:cinemania/domain/entities/entities.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
 import 'package:cinemania/presentation/widgets/widgets.dart';
@@ -26,6 +27,8 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
     super.initState();
     final id = widget.person.id.toString();
     ref.read(personDetailProvider.notifier).loadPerson(id);
+
+    ReviewFlags.markPersonView();
   }
 
   @override
