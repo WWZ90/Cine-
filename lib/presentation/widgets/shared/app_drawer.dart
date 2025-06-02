@@ -249,7 +249,7 @@ class AppDrawer extends ConsumerWidget {
                     ListTile(
                       leading: Icon(
                         Icons.workspace_premium_outlined,
-                        color: isPremiumSelected ? Colors.black : Colors.amber,
+                        color: const Color.fromARGB(255, 255, 218, 107),
                       ),
                       title: Text(AppLocalizations.of(context)!.becomePremium),
                       selected: currentIndex == 4,
@@ -259,7 +259,7 @@ class AppDrawer extends ConsumerWidget {
                         203,
                         86,
                       ),
-                      selectedColor: Colors.grey.shade900,
+                      textColor: const Color.fromARGB(255, 255, 218, 107),
                       onTap: () {
                         GlobalAppState.suppressExitSnackbar = true;
                         Navigator.pop(context);
@@ -280,7 +280,7 @@ class AppDrawer extends ConsumerWidget {
                             ),
                             leading: const Icon(
                               Icons.auto_awesome_outlined,
-                              color: Colors.amber,
+                              color: Color.fromARGB(255, 255, 218, 107),
                             ),
                             title: Text(
                               l10n.oscars,
@@ -323,7 +323,7 @@ class AppDrawer extends ConsumerWidget {
                                       ),
                                       leading: Icon(
                                         icon,
-                                        color: Colors.amber[300],
+                                        color: Color.fromARGB(255, 255, 218, 107),
                                       ),
                                       title: Text(categoryDisplay),
                                       selected: isSelected,
