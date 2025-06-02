@@ -259,7 +259,7 @@ class AppDrawer extends ConsumerWidget {
                         203,
                         86,
                       ),
-                      selectedColor: Colors.black,
+                      selectedColor: Colors.grey.shade900,
                       onTap: () {
                         GlobalAppState.suppressExitSnackbar = true;
                         Navigator.pop(context);

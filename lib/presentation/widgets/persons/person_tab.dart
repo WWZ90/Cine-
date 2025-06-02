@@ -210,8 +210,8 @@ class _CircleProfileTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String uniqueHeroTag =
-        person.uniqueID ?? 'personTabItem_${person.id}_${person.name}';
+    person.uniqueID = 'personTabItem_${person.id}_${person.name}';
+    final String uniqueHeroTag = person.uniqueID!;
 
     return GestureDetector(
       onTap: onTap,

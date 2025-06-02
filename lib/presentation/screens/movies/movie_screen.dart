@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,8 +30,6 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
       ref.read(similarMoviesProvider(id).notifier).loadNextPage();
     });
     ref.read(reviewsByMovieProvider(id));
-
-    ReviewFlags.markMovieDetail();
   }
 
   @override
@@ -48,6 +48,66 @@ class _CustomSliverAppBar extends ConsumerStatefulWidget {
 }
 
 class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
+  Timer? _reviewTimer;
+  final ScrollController _scrollController = ScrollController();
+  bool _viewMarked = false;
+  bool _hasScrolledToEnd = false;
+  bool _hasTimeElapsed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+
+    _reviewTimer = Timer(const Duration(seconds: 15), () {
+      if (mounted) {
+        print("Screen: 15 seconds timer elapsed.");
+        _hasTimeElapsed = true;
+        _checkConditionsAndMarkView();
+      }
+    });
+  }
+
+  void _onScroll() {
+    if (!mounted || _viewMarked) return;
+
+    final atBottomThreshold = _scrollController.position.maxScrollExtent - 200;
+    if (_scrollController.offset >= atBottomThreshold &&
+        _scrollController.position.maxScrollExtent > 0) {
+      if (!_hasScrolledToEnd) {
+        print("Screen: Scrolled near to end.");
+        _hasScrolledToEnd = true;
+        _checkConditionsAndMarkView();
+      }
+    }
+  }
+
+  void _checkConditionsAndMarkView() {
+    if (!mounted || _viewMarked) return;
+    if (_hasScrolledToEnd && _hasTimeElapsed) {
+      print(
+        "Screen: Both conditions (scroll to end AND time elapsed) met. Marking view.",
+      );
+      ReviewFlags.markMovieDetail();
+      _viewMarked = true;
+      _reviewTimer?.cancel();
+      _scrollController.removeListener(_onScroll);
+    } else {
+      if (_hasScrolledToEnd)
+        print("Screen: Scrolled to end, waiting for time.");
+      if (_hasTimeElapsed)
+        print("Screen: Time elapsed, waiting for scroll.");
+    }
+  }
+
+  @override
+  void dispose() {
+    _reviewTimer?.cancel();
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -55,6 +115,7 @@ class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
         ref.watch(movieDetailProvider)[widget.movie.id.toString()];
 
     return CustomScrollView(
+      controller: _scrollController,
       slivers: [
         SliverPersistentHeader(
           delegate: AppBarNetflix(

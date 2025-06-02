@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +23,11 @@ class PersonScreen extends ConsumerStatefulWidget {
 
 class _PersonScreenState extends ConsumerState<PersonScreen> {
   bool _isExpanded = false;
+  Timer? _reviewTimer;
+  final ScrollController _scrollController = ScrollController();
+  bool _personViewMarked = false;
+  bool _hasScrolledToEnd = false;
+  bool _hasTimeElapsed = false;
 
   @override
   void initState() {
@@ -28,7 +35,59 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
     final id = widget.person.id.toString();
     ref.read(personDetailProvider.notifier).loadPerson(id);
 
-    ReviewFlags.markPersonView();
+    _scrollController.addListener(_onScroll);
+
+    _reviewTimer = Timer(const Duration(seconds: 15), () {
+      if (mounted) {
+        print("PersonScreen: 15 seconds timer elapsed.");
+        _hasTimeElapsed = true;
+        _checkConditionsAndMarkView();
+      }
+    });
+  }
+
+  void _onScroll() {
+    if (!mounted || _personViewMarked) return;
+
+    final atBottomThreshold = _scrollController.position.maxScrollExtent - 200;
+    if (_scrollController.offset >= atBottomThreshold &&
+        _scrollController.position.maxScrollExtent > 0) {
+      if (!_hasScrolledToEnd) {
+        print("PersonScreen: Scrolled near to end.");
+        _hasScrolledToEnd = true;
+        _checkConditionsAndMarkView();
+      }
+    }
+  }
+
+  void _checkConditionsAndMarkView() {
+    if (!mounted || _personViewMarked) return;
+    if (_hasScrolledToEnd && _hasTimeElapsed) {
+      print(
+        "PersonScreen: Both conditions (scroll to end AND time elapsed) met. Marking person view.",
+      );
+      ReviewFlags.markPersonView();
+      _personViewMarked = true; 
+      _reviewTimer?.cancel();
+      _scrollController.removeListener(
+        _onScroll,
+      ); 
+    } else {
+      if (_hasScrolledToEnd)
+        print("PersonScreen: Scrolled to end, waiting for time.");
+      if (_hasTimeElapsed)
+        print("PersonScreen: Time elapsed, waiting for scroll.");
+    }
+  }
+
+  @override
+  void dispose() {
+    _reviewTimer?.cancel();
+    _scrollController.removeListener(
+      _onScroll,
+    );
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -56,6 +115,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
     return Container(
       color: Color(0xFF121318),
       child: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           SliverAppBar(
             pinned: false,
@@ -426,7 +486,7 @@ class _PersonGroupedCrewWorkSection extends ConsumerWidget {
       case 'Sound':
         return l10n.crewRoleSound;
       case 'Other Crew Work':
-        return l10n.crewRoleOther; 
+        return l10n.crewRoleOther;
       default:
         return categoryKey;
     }
