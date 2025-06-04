@@ -8,6 +8,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:purchases_flutter/purchases_flutter.dart';
+
 import 'package:cinemania/config/helpers/file_storage.dart';
 import 'package:cinemania/config/theme/app_theme.dart';
 import 'package:y_player/y_player.dart';
@@ -25,7 +27,23 @@ Future main() async {
   final locale = await isarSingleton.getAppLocale();
   GlobalAppState.currentLocale = locale;
 
+  await _configureRevenueCat();
+
   runApp(const ProviderScope(child: MainApp()));
+}
+
+Future<void> _configureRevenueCat() async {
+  await Purchases.setLogLevel(LogLevel.debug);
+
+  String apiKey = dotenv.env['REVENUECAT_GOOGLE_API_KEY'] ?? '';
+
+  if (apiKey.isEmpty || apiKey.contains('fallback')) {
+    print("WARNING: NO API KEY.");
+  } else {
+    PurchasesConfiguration configuration = PurchasesConfiguration(apiKey);
+    await Purchases.configure(configuration);
+    print("RevenueCat SDK configurado.");
+  }
 }
 
 class MainApp extends ConsumerWidget {
@@ -42,7 +60,6 @@ class MainApp extends ConsumerWidget {
         case null:
         case AppLifecycleState.detached:
         case AppLifecycleState.inactive:
-          // Evita cerrar la app cuando no está lista
           return true;
         case AppLifecycleState.resumed:
         case AppLifecycleState.hidden:
@@ -57,9 +74,9 @@ class MainApp extends ConsumerWidget {
       builder: (context, key, _) {
         return MaterialApp.router(
           onNavigationNotification: defaultOnNavigationNotification,
-          key: key, // ← reinicia todo el árbol
+          key: key, 
           routerConfig: appRouter,
-          locale: locale, // ← usa el provider, no GlobalAppState
+          locale: locale, 
           supportedLocales: const [Locale('en'), Locale('es')],
           localizationsDelegates: [
             AppLocalizations.delegate,

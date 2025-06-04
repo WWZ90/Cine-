@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cinemania/config/app_info.dart';
 import 'package:cinemania/config/global_app_state.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
+//import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class AppDrawer extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
@@ -34,7 +35,6 @@ class AppDrawer extends ConsumerWidget {
 
     GlobalAppState.suppressExitSnackbar = true;
 
-    // Mostrar loader
     if (context.mounted) {
       Navigator.of(context).push(
         PageRouteBuilder(
@@ -45,16 +45,13 @@ class AppDrawer extends ConsumerWidget {
       );
     }
 
-    // Capturar el notifier antes de posibles disposals
     final restartKeyNotifier = ref.read(appRestartKeyProvider);
 
     await Future.delayed(const Duration(milliseconds: 100));
 
-    // Cambiar idioma y reiniciar
     await _setLanguage(ref, locale);
     restartKeyNotifier.value = UniqueKey();
 
-    // Redirigir a home y cerrar loader
     if (context.mounted) {
       context.go('/home');
       Navigator.of(context).pop();
@@ -146,9 +143,10 @@ class AppDrawer extends ConsumerWidget {
     final locale = GlobalAppState.currentLocale;
     final langCode = locale.languageCode;
     final currentIndex = navigationShell.currentIndex;
-    final isPremiumSelected = currentIndex == 4;
     bool isOscarsCategoryActive = false;
     String? activeOscarsCategoryPathParameter;
+
+    final isUserPremium = ref.watch(premiumStatusProvider);
 
     final currentRoute = GoRouterState.of(context).uri.toString();
 
@@ -184,7 +182,7 @@ class AppDrawer extends ConsumerWidget {
         color: const Color.fromARGB(255, 18, 19, 24),
         child: Column(
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               padding: EdgeInsets.zero,
               margin: EdgeInsets.zero,
               decoration: BoxDecoration(
@@ -193,11 +191,50 @@ class AppDrawer extends ConsumerWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child:
-                  SizedBox.expand(), // ← esto expande al área completa del DrawerHeader
+              child: Stack(
+                children: [
+                  SizedBox.expand(),
+                  if (isUserPremium)
+                    Positioned(
+                      top: 30,
+                      left: 30,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.amber.shade700.withValues(alpha: 0.9),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              blurRadius: 4,
+                              offset: const Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(Icons.star, size: 16, color: Colors.white),
+                            SizedBox(width: 6),
+                            Text(
+                              'Premium',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
 
-            // --- Secciones principales ---
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -246,100 +283,135 @@ class AppDrawer extends ConsumerWidget {
                         navigationShell.goBranch(3);
                       },
                     ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.workspace_premium_outlined,
-                        color: const Color.fromARGB(255, 255, 218, 107),
-                      ),
-                      title: Text(AppLocalizations.of(context)!.becomePremium),
-                      selected: currentIndex == 4,
-                      selectedTileColor: const Color.fromARGB(
-                        255,
-                        241,
-                        203,
-                        86,
-                      ),
-                      textColor: const Color.fromARGB(255, 255, 218, 107),
-                      onTap: () {
-                        GlobalAppState.suppressExitSnackbar = true;
-                        Navigator.pop(context);
-                        navigationShell.goBranch(4);
-                      },
-                    ),
+                    !isUserPremium
+                        ? ListTile(
+                          leading: Icon(
+                            Icons.workspace_premium_outlined,
+                            color: const Color.fromARGB(255, 255, 218, 107),
+                          ),
+                          title: Text(
+                            isUserPremium
+                                ? l10n.premiumView_alreadySubscribed
+                                : l10n.becomePremium,
+                          ),
+                          selected: currentIndex == 4,
+                          selectedTileColor: const Color.fromARGB(
+                            255,
+                            241,
+                            203,
+                            86,
+                          ),
+                          textColor: const Color.fromARGB(255, 255, 218, 107),
+                          onTap: () async {
+                            GlobalAppState.suppressExitSnackbar = true;
+                            Navigator.pop(context);
+                            //final paywallResult = await RevenueCatUI.presentPaywallIfNeeded("Pro");
+                            navigationShell.goBranch(4);
+                          },
+                        )
+                        : SizedBox(),
+                    isUserPremium
+                        ? Column(
+                          children: [
+                            const Divider(height: 1),
+                            Theme(
+                              data: Theme.of(
+                                context,
+                              ).copyWith(dividerColor: Colors.transparent),
+                              child: ExpansionTile(
+                                key: const PageStorageKey<String>(
+                                  'oscars_expansion_tile',
+                                ),
+                                leading: const Icon(
+                                  Icons.auto_awesome_outlined,
+                                  color: Color.fromARGB(255, 255, 218, 107),
+                                ),
+                                title: Text(
+                                  l10n.oscars,
+                                  style: TextStyle(
+                                    fontWeight:
+                                        isOscarsCategoryActive
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                  ),
+                                ),
+                                children:
+                                    oscarCategories.entries.map((entry) {
+                                      final categoryKey = entry.key;
+                                      final categoryDisplay = entry.value;
+                                      final categoryPathParameter =
+                                          Uri.encodeComponent(categoryKey);
 
-                    Column(
-                      children: [
-                        const Divider(height: 1),
-                        Theme(
-                          data: Theme.of(
-                            context,
-                          ).copyWith(dividerColor: Colors.transparent),
-                          child: ExpansionTile(
-                            key: const PageStorageKey<String>(
-                              'oscars_expansion_tile',
-                            ),
-                            leading: const Icon(
-                              Icons.auto_awesome_outlined,
-                              color: Color.fromARGB(255, 255, 218, 107),
-                            ),
-                            title: Text(
-                              l10n.oscars,
-                              style: TextStyle(
-                                fontWeight:
-                                    isOscarsCategoryActive
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
+                                      final isSelected =
+                                          isOscarsCategoryActive &&
+                                          activeOscarsCategoryPathParameter ==
+                                              categoryKey;
+
+                                      final icon =
+                                          oscarCategoryIcons[categoryKey] ??
+                                          Icons.label_outline;
+
+                                      return Material(
+                                        color:
+                                            isSelected
+                                                ? (const Color.fromARGB(
+                                                  255,
+                                                  53,
+                                                  51,
+                                                  45,
+                                                ).withValues(alpha: 0.5))
+                                                : Colors.transparent,
+                                        child: ListTile(
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 52.0,
+                                          ),
+                                          leading: Icon(
+                                            icon,
+                                            color: Color.fromARGB(
+                                              255,
+                                              255,
+                                              218,
+                                              107,
+                                            ),
+                                          ),
+                                          title: Text(categoryDisplay),
+                                          selected: isSelected,
+                                          onTap:
+                                              () => _navigateToOscarsCategory(
+                                                context,
+                                                categoryPathParameter,
+                                                activeOscarsCategoryPathParameter,
+                                              ),
+                                        ),
+                                      );
+                                    }).toList(),
                               ),
                             ),
-                            children:
-                                oscarCategories.entries.map((entry) {
-                                  final categoryKey = entry.key;
-                                  final categoryDisplay = entry.value;
-                                  final categoryPathParameter =
-                                      Uri.encodeComponent(categoryKey);
-
-                                  final isSelected =
-                                      isOscarsCategoryActive &&
-                                      activeOscarsCategoryPathParameter ==
-                                          categoryKey;
-
-                                  final icon =
-                                      oscarCategoryIcons[categoryKey] ??
-                                      Icons.label_outline;
-
-                                  return Material(
-                                    color:
-                                        isSelected
-                                            ? (const Color.fromARGB(
-                                              255,
-                                              53,
-                                              51,
-                                              45,
-                                            ).withOpacity(0.5))
-                                            : Colors.transparent,
-                                    child: ListTile(
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 52.0,
-                                      ),
-                                      leading: Icon(
-                                        icon,
-                                        color: Color.fromARGB(255, 255, 218, 107),
-                                      ),
-                                      title: Text(categoryDisplay),
-                                      selected: isSelected,
-                                      onTap:
-                                          () => _navigateToOscarsCategory(
-                                            context,
-                                            categoryPathParameter,
-                                            activeOscarsCategoryPathParameter,
-                                          ),
-                                    ),
-                                  );
-                                }).toList(),
+                          ],
+                        )
+                        : Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0,
+                            vertical: 8.0,
+                          ),
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.lock_outline,
+                              color: Colors.grey,
+                            ),
+                            title: Text(
+                              l10n.oscarsLockedMessage,
+                              style: TextStyle(color: Colors.grey),
+                            ), // "Unlock Oscars & more!"
+                            onTap: () {
+                              GlobalAppState.suppressExitSnackbar = true;
+                              Navigator.pop(context);
+                              navigationShell.goBranch(
+                                4,
+                              ); // Navega a PremiumView
+                            },
                           ),
                         ),
-                      ],
-                    ),
                     const Divider(thickness: 1, color: Colors.blueGrey),
                     SizedBox(height: 10),
                     Padding(
@@ -427,11 +499,11 @@ final Map<String, IconData> oscarCategoryIcons = {
   'Best Visual Effects': Icons.auto_awesome_outlined,
   'Best Director': Icons.chair_outlined,
   'Actor in a Leading Role':
-      Icons.person_pin_outlined, // O Icons.theater_comedy_outlined
+      Icons.person_pin_outlined,
   'Actress in a Leading Role':
-      Icons.person_pin_outlined, // O Icons.theater_comedy_outlined
-  'Actor in a Supporting Role': Icons.group_outlined, // O Icons.person_outline
+      Icons.person_pin_outlined, 
+  'Actor in a Supporting Role': Icons.group_outlined,
   'Actress in a Supporting Role':
-      Icons.group_outlined, // O Icons.person_outline
+      Icons.group_outlined,
   'Best Original Screenplay': Icons.edit_note_outlined,
 };

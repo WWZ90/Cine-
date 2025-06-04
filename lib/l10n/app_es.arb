@@ -140,6 +140,7 @@
   "forLabel": "Por",
   "ceremonyTitle": "{number}ª Entrega de los Premios Oscar | {year}",
   "premiumView_title_go": "Hazte ",
+  "premiumView_title_go_2": "Ya eres ",
   "premiumView_title_premium": "PREMIUM",
   "premiumView_title_now": " ¡ahora!",
   "premiumView_oscarsAccessDescription": "Disfruta de la cobertura completa de los Premios Óscar con acceso exclusivo a:",
@@ -161,5 +162,18 @@
   "premiumView_priceInfo": "Solo $9.99 por año",
   "premiumView_renewalInfo": "Renovable automáticamente. Cancela cuando quieras.",
   "premiumView_subscribeButtonText": "Suscríbete Hoy",
-  "premiumView_restorePurchasesButtonText": "Restaurar Compras"
+  "premiumView_restorePurchasesButtonText": "Restaurar Compras",
+  "premiumView_alreadySubscribed": "¡Ya eres Premium!",
+  "premiumView_loadingPrice": "Cargando precio...",
+  "premiumView_premiumActiveMessage": "¡Acceso Premium Activo!",
+  "oscarsLockedMessage": "Desbloquea los Oscars (Premium)",
+  "premiumView_annualPlanTitle": "Plan Anual",
+  "premiumView_monthlyPlanTitle": "Plan Mensual",
+  "premiumView_annualPlanDescription": "Subscripción Anual (auto-renovable)",
+  "premiumView_monthlyPlanDescription": "Subscripción Mensual (auto-renovable)",
+  "premiumView_restoreSuccessMessage": "¡Compra restaurada con éxito!",
+  "premiumView_noPurchasesFoundMessage": "No se encontraron compras anteriores.",
+  "premiumView_restoreErrorMessage": "Error al restaurar las compras.",
+  "premiumView_youArePremiumTitle": "¡Ya eres miembro Premium!",
+  "premiumView_thankYouMessage": "Gracias por apoyar Cine+. Esperamos que disfrutes de todo el contenido exclusivo que hemos preparado para ti."  
 }

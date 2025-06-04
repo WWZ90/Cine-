@@ -141,6 +141,7 @@
   "forLabel": "For",
   "ceremonyTitle": "{number}th Academy Awards | {year}",
   "premiumView_title_go": "Go ",
+  "premiumView_title_go_2": "You are now ",
   "@premiumView_title_go": {
     "description": "Part of the main title on the premium screen"
   },
@@ -171,5 +172,18 @@
   "premiumView_priceInfo": "Just $9.99 per year",
   "premiumView_renewalInfo": "Auto-renewable. Cancel anytime.",
   "premiumView_subscribeButtonText": "Subscribe Today",
-  "premiumView_restorePurchasesButtonText": "Restore Purchases"
+  "premiumView_restorePurchasesButtonText": "Restore Purchases",
+  "premiumView_alreadySubscribed": "You are already Premium!",
+  "premiumView_loadingPrice": "Loading price...",
+  "premiumView_premiumActiveMessage": "Premium Access Active!", 
+  "oscarsLockedMessage": "Unlock Oscars & more (Premium)",
+  "premiumView_annualPlanTitle": "Annual Plan",
+  "premiumView_monthlyPlanTitle": "Monthly Plan",
+  "premiumView_annualPlanDescription": "Annual Subscription (auto-renewable)",
+  "premiumView_monthlyPlanDescription": "Monthly Subscription (auto-renewable)",
+  "premiumView_restoreSuccessMessage": "Purchase restored successfully!",
+  "premiumView_noPurchasesFoundMessage": "No previous purchases found.",
+  "premiumView_restoreErrorMessage": "Error while restoring purchases.",
+  "premiumView_youArePremiumTitle": "You're now a Premium Member!",
+  "premiumView_thankYouMessage": "Thanks for supporting Cine+. We hope you enjoy all the exclusive content we've prepared for you."
 }

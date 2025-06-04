@@ -232,9 +232,10 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
   bool _controllerReady = false;
   bool _playRequested = false;
   bool _isInFullscreen = false;
+  bool _isDisposed = false;
 
   void _handleVisibilityChanged(VisibilityInfo info) {
-    if (_controller == null) return;
+    if (!mounted || _controller == null || _isDisposed) return;
 
     final status = _controller!.status;
     if (info.visibleFraction == 0 &&
@@ -250,6 +251,7 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
 
   @override
   void dispose() {
+    _isDisposed = true;
     _controller?.dispose();
     super.dispose();
   }

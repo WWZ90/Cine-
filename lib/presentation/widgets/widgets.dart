@@ -4,6 +4,7 @@ export 'oscars/oscar_movie_winner.dart';
 export 'oscars/oscar_person_winner.dart';
 export 'persons/person_tab.dart';
 export 'shared/actors.dart';
+export 'shared/animated_dots.dart';
 export 'shared/app_drawer.dart';
 export 'shared/cast_carousel.dart';
 export 'shared/crew_carousel.dart';
