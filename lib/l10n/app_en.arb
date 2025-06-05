@@ -185,5 +185,7 @@
   "premiumView_noPurchasesFoundMessage": "No previous purchases found.",
   "premiumView_restoreErrorMessage": "Error while restoring purchases.",
   "premiumView_youArePremiumTitle": "You're now a Premium Member!",
-  "premiumView_thankYouMessage": "Thanks for supporting Cine+. We hope you enjoy all the exclusive content we've prepared for you."
+  "premiumView_thankYouMessage": "Thanks for supporting Cine+. We hope you enjoy all the exclusive content we've prepared for you.",
+  "userIdForSupport": "User ID for support",
+  "userIdCopiedToClipboard": "User ID copied to clipboard"
 }

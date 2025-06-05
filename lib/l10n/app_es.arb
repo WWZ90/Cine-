@@ -175,5 +175,7 @@
   "premiumView_noPurchasesFoundMessage": "No se encontraron compras anteriores.",
   "premiumView_restoreErrorMessage": "Error al restaurar las compras.",
   "premiumView_youArePremiumTitle": "¡Ya eres miembro Premium!",
-  "premiumView_thankYouMessage": "Gracias por apoyar Cine+. Esperamos que disfrutes de todo el contenido exclusivo que hemos preparado para ti."  
+  "premiumView_thankYouMessage": "Gracias por apoyar Cine+. Esperamos que disfrutes de todo el contenido exclusivo que hemos preparado para ti.",
+  "userIdForSupport": "ID de usuario para soporte",
+  "userIdCopiedToClipboard": "ID copiado al portapapeles"  
 }

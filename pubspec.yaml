@@ -1,7 +1,7 @@
 name: cinemania
 description: "An app to explore information about movies, TV shows, and actors."
 publish_to: "none"
-version: 1.0.6+12
+version: 1.0.6+13
 
 environment:
   sdk: ^3.7.2

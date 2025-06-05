@@ -1,15 +1,17 @@
-import 'package:cinemania/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cinemania/config/app_info.dart';
 import 'package:cinemania/config/global_app_state.dart';
 import 'package:cinemania/presentation/providers/providers.dart';
+import 'package:cinemania/presentation/screens/screens.dart';
 //import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class AppDrawer extends ConsumerWidget {
@@ -473,7 +475,69 @@ class AppDrawer extends ConsumerWidget {
                       },
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 15),
+
+                    if (isUserPremium)
+                      FutureBuilder<String>(
+                        future: Purchases.appUserID,
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) return const SizedBox.shrink();
+
+                          final userId = snapshot.data!;
+
+                          final userIdClean = userId.replaceFirst(r'$RCAnonymousID:', '');
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Divider(
+                                  thickness: 1,
+                                  color: Colors.blueGrey,
+                                ),
+                                Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.userIdForSupport,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: SelectableText(
+                                        userIdClean,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color.fromARGB(255, 255, 225, 136),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.copy,
+                                        size: 20,
+                                        color: Colors.white70,
+                                      ),
+                                      onPressed: () async {
+                                        await Clipboard.setData(
+                                          ClipboardData(text: userId),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
 
                     Padding(
                       padding: const EdgeInsets.all(12),
@@ -498,12 +562,9 @@ final Map<String, IconData> oscarCategoryIcons = {
   'Animated Feature Film': Icons.animation_outlined,
   'Best Visual Effects': Icons.auto_awesome_outlined,
   'Best Director': Icons.chair_outlined,
-  'Actor in a Leading Role':
-      Icons.person_pin_outlined,
-  'Actress in a Leading Role':
-      Icons.person_pin_outlined, 
+  'Actor in a Leading Role': Icons.person_pin_outlined,
+  'Actress in a Leading Role': Icons.person_pin_outlined,
   'Actor in a Supporting Role': Icons.group_outlined,
-  'Actress in a Supporting Role':
-      Icons.group_outlined,
+  'Actress in a Supporting Role': Icons.group_outlined,
   'Best Original Screenplay': Icons.edit_note_outlined,
 };
