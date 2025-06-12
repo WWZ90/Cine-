@@ -67,11 +67,9 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
         "PersonScreen: Both conditions (scroll to end AND time elapsed) met. Marking person view.",
       );
       ReviewFlags.markPersonView();
-      _personViewMarked = true; 
+      _personViewMarked = true;
       _reviewTimer?.cancel();
-      _scrollController.removeListener(
-        _onScroll,
-      ); 
+      _scrollController.removeListener(_onScroll);
     } else {
       if (_hasScrolledToEnd)
         print("PersonScreen: Scrolled to end, waiting for time.");
@@ -83,9 +81,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
   @override
   void dispose() {
     _reviewTimer?.cancel();
-    _scrollController.removeListener(
-      _onScroll,
-    );
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
@@ -397,6 +393,8 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                           ),
                         ],
                       ),
+
+                    SizedBox(height: 40),
                   ],
                 ),
             ]),

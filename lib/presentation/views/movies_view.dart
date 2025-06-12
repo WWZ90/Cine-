@@ -65,7 +65,6 @@ class HomeViewState extends ConsumerState<MoviesView> {
                     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
                   },
                 ),
-                SizedBox(height: 60),
               ],
             );
           }, childCount: 1),

@@ -15,7 +15,6 @@ class VideoThumbnailPlayer extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () async {
-        ref.read(isFullscreenProvider.notifier).state = true;
         await Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder:
@@ -35,8 +34,6 @@ class VideoThumbnailPlayer extends ConsumerWidget {
             },
           ),
         );
-
-        ref.read(isFullscreenProvider.notifier).state = false;
       },
       child: Center(
         child: ConstrainedBox(

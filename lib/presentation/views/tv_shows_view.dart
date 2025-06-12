@@ -66,7 +66,6 @@ class TVShowsViewsState extends ConsumerState<TVShowsViews> {
                     ref.read(topRatedTVShowsProvider.notifier).loadNextPage();
                   },
                 ),
-                SizedBox(height: 60),
               ],
             );
           }, childCount: 1),
