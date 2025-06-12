@@ -142,6 +142,7 @@ class MovieDetailCard extends StatelessWidget {
         CastCarousel(id: movieDetails.id.toString(), type: 'Movie'),
         CrewSection(id: movieDetails.id.toString(), type: 'Movie'),
         Similar(id: movieDetails.id.toString(), type: 'Movie'),
+        SizedBox(height: 5),
       ],
     );
   }

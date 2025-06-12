@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -68,19 +69,12 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
   Widget build(BuildContext context) {
     final isFullScreen = ref.watch(isFullscreenProvider);
     final isLoading = ref.watch(initialLoadingProvider);
-    final currentShellIndex =
-        widget.navigationShell.currentIndex;
+    final currentShellIndex = widget.navigationShell.currentIndex;
 
-    const List<int> mainBottomNavIndices = [0, 1, 2, 3];
-    final bool isMainSectionActive = mainBottomNavIndices.contains(
-      currentShellIndex,
-    );
+    final location = GoRouterState.of(context).uri.toString();
 
-    if (isFullScreen) {
-      showNav.value = false;
-    } else {
-      showNav.value = isMainSectionActive;
-    }
+    final showBottomNav =
+        ['/home', '/tv', '/persons', '/favorites'].contains(location) && !isFullScreen;
 
     if (isLoading) {
       return Scaffold(
@@ -90,20 +84,33 @@ class InitialScreenLoaderState extends ConsumerState<InitialScreenLoader> {
 
     return Scaffold(
       drawer: AppDrawer(navigationShell: widget.navigationShell),
-      body: widget.navigationShell,
-      bottomNavigationBar: ValueListenableBuilder<bool>(
-        valueListenable: showNav, 
-        builder: (_, visibleFromNotifier, __) {
-          if (!visibleFromNotifier) {
-            return const SizedBox.shrink();
-          }
-          return CustomBottomNavigation(
-            currentIndex: currentShellIndex,
-            onTap:
-                (idx, _) =>
-                    widget.navigationShell.goBranch(idx, initialLocation: true),
-          );
-        },
+      body: Stack(
+        children: [
+          widget.navigationShell,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              switchInCurve: Curves.easeOut,
+              switchOutCurve: Curves.easeIn,
+              transitionBuilder: (child, animation) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              child:
+                  showBottomNav
+                      ? CustomBottomNavigation(
+                        key: const ValueKey('bottom_nav'),
+                        currentIndex: currentShellIndex,
+                        onTap:
+                            (idx, _) => widget.navigationShell.goBranch(
+                              idx,
+                              initialLocation: true,
+                            ),
+                      )
+                      : const SizedBox(key: ValueKey('empty'), height: 0),
+            ),
+          ),
+        ],
       ),
     );
   }

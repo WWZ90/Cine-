@@ -1,5 +1,6 @@
 // lib/presentation/screens/video_page.dart
 import 'package:cinemania/config/helpers/date_format.dart';
+import 'package:cinemania/presentation/widgets/shared/video_thumbnail_player.dart';
 import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -146,16 +147,16 @@ class VideosPage extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    YouTubeVideoPlayer(
-                                      youtubeId: video.key,
-                                      videoTitle: video.name,
-                                    ),
+                                    VideoThumbnailPlayer(youtubeId: video.key),
                                     const SizedBox(height: 4),
                                     Text(
                                       AppLocalizations.of(
                                         context,
                                       )!.video_publishedOn(
-                                        formatDateNew(context, video.publishedAt),
+                                        formatDateNew(
+                                          context,
+                                          video.publishedAt,
+                                        ),
                                       ),
                                       style: const TextStyle(
                                         fontSize: 12,

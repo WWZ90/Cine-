@@ -25,7 +25,7 @@ export 'tv_shows/tv_show_detail_provider.dart';
 export 'tv_shows/tv_show_initial_loading_provider.dart';
 export 'tv_shows/tv_shows_provider.dart';
 export 'tv_shows/tv_shows_repository_provider.dart';
-export 'videos/is_fullscreen.dart';
+export 'global_providers.dart';
 export 'videos/video_provider.dart';
 export 'videos/video_repository_provider.dart';
 export 'premium_provider.dart';

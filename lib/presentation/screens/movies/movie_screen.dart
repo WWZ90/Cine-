@@ -21,6 +21,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   @override
   void initState() {
     super.initState();
+
     final id = widget.movie.id.toString();
     ref.read(movieDetailProvider.notifier).loadMovie(id);
     ref.read(movieCreditsProvider.notifier).loadCredits(id);
@@ -95,8 +96,7 @@ class _CustomSliverAppBarState extends ConsumerState<_CustomSliverAppBar> {
     } else {
       if (_hasScrolledToEnd)
         print("Screen: Scrolled to end, waiting for time.");
-      if (_hasTimeElapsed)
-        print("Screen: Time elapsed, waiting for scroll.");
+      if (_hasTimeElapsed) print("Screen: Time elapsed, waiting for scroll.");
     }
   }
 

@@ -45,6 +45,7 @@ class CustomAppbar extends ConsumerWidget {
               icon: Icon(Icons.search),
               padding: EdgeInsets.zero,
               onPressed: () async {
+                ref.read(isFullscreenProvider.notifier).state = true;
                 final searchedMulti = ref.read(searchedProvider);
                 final searchQuery = ref.read(searchQueryProvider);
                 final response = await showSearch<MultiSearch?>(
@@ -61,6 +62,7 @@ class CustomAppbar extends ConsumerWidget {
                     search: ref.read(searchedProvider.notifier).searchByQuery,
                   ),
                 );
+                ref.read(isFullscreenProvider.notifier).state = false;
                 if (!context.mounted || response == null) return;
 
                 if (response.mediaType == 'movie') {

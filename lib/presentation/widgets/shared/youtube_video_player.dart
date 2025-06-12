@@ -205,6 +205,8 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
   }
 }
 */
+
+/*
 // ACTUAL
 
 import 'package:flutter/material.dart';
@@ -330,7 +332,7 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
     );
   }
 }
-
+*/
 
 /*
 // NUEVO YPLAYER - TESTING
@@ -764,6 +766,126 @@ class _YouTubeVideoPlayerState extends ConsumerState<YouTubeVideoPlayer> {
           ),
         );
       },
+    );
+  }
+}
+*/
+
+/*
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:visibility_detector/visibility_detector.dart';
+import 'package:youtube_web_player/youtube_web_player.dart';
+
+class YouTubeVideoPlayer extends StatefulWidget {
+  final String youtubeId;
+  final String videoTitle;
+
+  const YouTubeVideoPlayer({
+    required this.youtubeId,
+    required this.videoTitle,
+    super.key,
+  });
+
+  @override
+  State<YouTubeVideoPlayer> createState() => _YouTubeVideoPlayerState();
+}
+
+class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
+  YoutubeWebPlayerController? _controller;
+  @override
+  void initState() {
+    _controller = YoutubeWebPlayerController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
+  }
+
+  void _handleVisibilityChanged(VisibilityInfo info) {
+    if (info.visibleFraction == 0) {
+      _controller?.pause(); // pausa cuando ya no es visible
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return VisibilityDetector(
+      key: Key('youtube-player-${widget.youtubeId}'),
+      onVisibilityChanged: _handleVisibilityChanged,
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: YoutubeWebPlayer(
+          videoId: widget.youtubeId,
+          isIframeAllowFullscreen: false,
+          isAllowsInlineMediaPlayback: false,
+          controller: _controller,
+        ),
+      ),
+    );
+  }
+}
+*/
+/*
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:teqani_youtube_player/teqani_youtube_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
+import 'package:splayer/splayer.dart';
+import 'package:youtube_player_flutter_plus/youtube_player_flutter_plus.dart';
+
+class YouTubeVideoPlayer extends StatefulWidget {
+  final String youtubeId;
+  final String videoTitle;
+
+  const YouTubeVideoPlayer({
+    required this.youtubeId,
+    required this.videoTitle,
+    super.key,
+  });
+
+  @override
+  State<YouTubeVideoPlayer> createState() => _YouTubeVideoPlayerState();
+}
+
+class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
+  @override
+  Widget build(BuildContext context) {
+    final playerConfig = PlayerConfig(
+      videoId: widget.youtubeId, // Your YouTube video ID
+      autoPlay: true,
+      showControls: true,
+      fullscreenByDefault: false,
+      allowFullscreen: true,
+      muted: false,
+      loop: false,
+      playbackRate: 1.0,
+      enableCaption: true,
+      enableJsApi: true,
+      showRelatedVideos: false,
+      startAt: 30, // Start at 30 seconds
+      endAt: 120, // End at 2 minutes
+      enableHardwareAcceleration: true,
+      volume: 0.8,
+      styleOptions: YouTubeStyleOptions(
+        showPlayButton: true,
+        showVolumeControls: true,
+        showProgressBar: true,
+        showFullscreenButton: true,
+      ),
+    );
+    final thumbnailUrl =
+        'https://img.youtube.com/vi/${widget.youtubeId}/hqdefault.jpg';
+    return TeqaniYoutubePlayer(
+      controller: TeqaniYoutubePlayerController(
+        initialConfig: playerConfig,
+        onReady: () => print('Player is ready'),
+        onStateChanged: (state) => print('Player state: $state'),
+      ),
+      aspectRatio: 16 / 9,
     );
   }
 }

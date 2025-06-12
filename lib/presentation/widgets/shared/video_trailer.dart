@@ -1,3 +1,4 @@
+import 'package:cinemania/presentation/widgets/shared/video_thumbnail_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemania/presentation/widgets/shared/youtube_video_player.dart';
@@ -27,7 +28,10 @@ class _VideoTrailerState extends ConsumerState<VideoTrailer> {
     }
     return videosAsync.when(
       data: (videos) => _VideosList(videos: videos),
-      error: (_, __) => Center(child: Text(AppLocalizations.of(context)!.unableToLoadVideos)),
+      error:
+          (_, __) => Center(
+            child: Text(AppLocalizations.of(context)!.unableToLoadVideos),
+          ),
       loading:
           () => const Center(child: CircularProgressIndicator(strokeWidth: 1)),
     );
@@ -58,8 +62,7 @@ class _VideosList extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [YouTubeVideoPlayer(youtubeId: selectedVideo.key, videoTitle: selectedVideo.name,)],
+      children: [VideoThumbnailPlayer(youtubeId: selectedVideo.key)],
     );
   }
 }
-
