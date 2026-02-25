@@ -1,5 +1,7 @@
 # cinemania
 
+https://play.google.com/store/apps/details?id=com.influtterdev.cineplus
+
 # Dev
 
 1. Copy the .env.template and rename it to .env
